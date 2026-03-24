@@ -100,6 +100,38 @@
                     </ol>
                 </div>
             </section>
+
+            <section class="section rating-section">
+                <div class="section-heading">
+                    <p class="eyebrow">Valoracion final</p>
+                    <h3>¿Que nota le das al archivo?</h3>
+                </div>
+                <form class="rating-card" id="ratingForm" name="valoracion-archivo" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <input type="hidden" name="form-name" value="valoracion-archivo">
+                    <p class="hidden-honeypot">
+                        <label>No rellenes esto <input name="bot-field"></label>
+                    </p>
+                    <input type="hidden" id="ratingInput" name="rating" value="">
+                    <p class="rating-copy">Puedes dejar una puntuacion y una nota corta al final de la experiencia.</p>
+                    <div class="rating-stars" id="ratingStars" aria-label="Selecciona una puntuacion del 1 al 5">
+                        <button type="button" class="star-button" data-value="1" aria-label="1 estrella">★</button>
+                        <button type="button" class="star-button" data-value="2" aria-label="2 estrellas">★</button>
+                        <button type="button" class="star-button" data-value="3" aria-label="3 estrellas">★</button>
+                        <button type="button" class="star-button" data-value="4" aria-label="4 estrellas">★</button>
+                        <button type="button" class="star-button" data-value="5" aria-label="5 estrellas">★</button>
+                    </div>
+                    <p class="rating-value" id="ratingValue">Sin valorar todavia</p>
+                    <label class="field">
+                        <span>Comentario opcional</span>
+                        <textarea id="ratingMessage" name="message" rows="4" placeholder="Escribe una reaccion breve"></textarea>
+                    </label>
+                    <div class="rating-actions">
+                        <button type="submit" id="saveRatingButton">Guardar valoracion</button>
+                        <button type="button" class="secondary-button" id="clearRatingButton">Borrar</button>
+                    </div>
+                    <p class="feedback" id="ratingFeedback" aria-live="polite"></p>
+                </form>
+            </section>
         </main>
     </div>
 

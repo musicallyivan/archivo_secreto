@@ -17,14 +17,24 @@ const backgroundAudio = document.getElementById("backgroundAudio");
 const musicStatus = document.getElementById("musicStatus");
 const toggleMusicButton = document.getElementById("toggleMusicButton");
 const nextTrackButton = document.getElementById("nextTrackButton");
+const ratingForm = document.getElementById("ratingForm");
+const ratingStars = document.getElementById("ratingStars");
+const ratingValue = document.getElementById("ratingValue");
+const ratingInput = document.getElementById("ratingInput");
+const ratingMessage = document.getElementById("ratingMessage");
+const ratingFeedback = document.getElementById("ratingFeedback");
+const clearRatingButton = document.getElementById("clearRatingButton");
+const saveRatingButton = document.getElementById("saveRatingButton");
 
 const SESSION_KEY = "archivo-secreto-session";
 const VISITS_KEY = "archivo-secreto-visits";
 const LOCK_KEY = "archivo-secreto-lock-until";
 const ATTEMPTS_KEY = "archivo-secreto-attempts";
+const RATING_KEY = "archivo-secreto-rating";
 const MAX_ATTEMPTS = 4;
 const LOCK_MINUTES = 1;
 let currentTrackIndex = 0;
+let selectedRating = 0;
 
 function escapeHtml(value) {
     return String(value)
@@ -172,6 +182,84 @@ function pauseBackgroundMusic() {
     updateMusicUi();
 }
 
+function updateRatingUi() {
+    const stars = ratingStars.querySelectorAll(".star-button");
+    stars.forEach((star) => {
+        const value = Number(star.dataset.value);
+        star.classList.toggle("is-active", value <= selectedRating);
+    });
+
+    ratingInput.value = selectedRating ? String(selectedRating) : "";
+    ratingValue.textContent = selectedRating ? `${selectedRating}/5 estrellas` : "Sin valorar todavia";
+}
+
+function loadSavedRating() {
+    const saved = localStorage.getItem(RATING_KEY);
+    if (!saved) {
+        updateRatingUi();
+        return;
+    }
+
+    try {
+        const parsed = JSON.parse(saved);
+        selectedRating = Number(parsed.rating) || 0;
+        ratingMessage.value = parsed.message || "";
+    } catch {
+        selectedRating = 0;
+        ratingMessage.value = "";
+    }
+
+    updateRatingUi();
+}
+
+async function submitRating() {
+    if (!selectedRating) {
+        ratingFeedback.textContent = "Selecciona una puntuacion antes de guardar.";
+        ratingFeedback.dataset.state = "error";
+        return;
+    }
+
+    const payload = {
+        rating: selectedRating,
+        message: ratingMessage.value.trim()
+    };
+
+    localStorage.setItem(RATING_KEY, JSON.stringify(payload));
+    saveRatingButton.disabled = true;
+    ratingFeedback.textContent = "Enviando valoracion...";
+    ratingFeedback.dataset.state = "";
+
+    try {
+        const formData = new FormData(ratingForm);
+        const response = await fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(formData).toString()
+        });
+
+        if (!response.ok) {
+            throw new Error("netlify-submit-failed");
+        }
+
+        ratingFeedback.textContent = "Valoracion enviada y guardada en este dispositivo.";
+        ratingFeedback.dataset.state = "success";
+    } catch {
+        ratingFeedback.textContent = "No se pudo enviar a Netlify, pero la valoracion se guardo en este dispositivo.";
+        ratingFeedback.dataset.state = "error";
+    } finally {
+        saveRatingButton.disabled = false;
+    }
+}
+
+function clearRating() {
+    selectedRating = 0;
+    ratingMessage.value = "";
+    localStorage.removeItem(RATING_KEY);
+    updateRatingUi();
+    ratingFeedback.textContent = "Valoracion borrada.";
+    ratingFeedback.dataset.state = "success";
+}
+
 function unlockApp() {
     loginShell.classList.add("hidden");
     app.classList.remove("hidden");
@@ -224,6 +312,7 @@ function bootstrap() {
     visitCount.textContent = localStorage.getItem(VISITS_KEY) || "0";
     setTrack(0);
     updateLoginAvailability();
+    loadSavedRating();
 
     if (localStorage.getItem(SESSION_KEY) === "open") {
         unlockApp();
@@ -287,6 +376,25 @@ window.addEventListener("keydown", (event) => {
         closeLightboxModal();
     }
 });
+
+ratingStars.addEventListener("click", (event) => {
+    const star = event.target.closest(".star-button");
+    if (!star) {
+        return;
+    }
+
+    selectedRating = Number(star.dataset.value);
+    updateRatingUi();
+    ratingFeedback.textContent = "";
+    ratingFeedback.dataset.state = "";
+});
+
+ratingForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    submitRating();
+});
+
+clearRatingButton.addEventListener("click", clearRating);
 
 setInterval(updateLoginAvailability, 1000);
 
