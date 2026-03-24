@@ -112,6 +112,7 @@
                         <label>No rellenes esto <input name="bot-field"></label>
                     </p>
                     <input type="hidden" id="ratingInput" name="rating" value="">
+                    <input type="hidden" id="submittedAtInput" name="submitted_at" value="">
                     <p class="rating-copy">Puedes dejar una puntuacion y una nota corta al final de la experiencia.</p>
                     <div class="rating-stars" id="ratingStars" aria-label="Selecciona una puntuacion del 1 al 5">
                         <button type="button" class="star-button" data-value="1" aria-label="1 estrella">★</button>
@@ -131,6 +132,15 @@
                     </div>
                     <p class="feedback" id="ratingFeedback" aria-live="polite"></p>
                 </form>
+                <div class="thank-you-card hidden" id="thankYouCard">
+                    <p class="eyebrow">Mensaje recibido</p>
+                    <h4>Gracias por dejar tu nota.</h4>
+                    <p class="thank-you-copy" id="thankYouMessage">
+                        Tu valoracion ya forma parte del archivo.
+                    </p>
+                    <p class="thank-you-meta" id="thankYouMeta"></p>
+                    <button type="button" class="secondary-button" id="rateAgainButton">Editar valoracion</button>
+                </div>
             </section>
         </main>
     </div>

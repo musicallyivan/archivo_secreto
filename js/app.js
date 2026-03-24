@@ -21,10 +21,15 @@ const ratingForm = document.getElementById("ratingForm");
 const ratingStars = document.getElementById("ratingStars");
 const ratingValue = document.getElementById("ratingValue");
 const ratingInput = document.getElementById("ratingInput");
+const submittedAtInput = document.getElementById("submittedAtInput");
 const ratingMessage = document.getElementById("ratingMessage");
 const ratingFeedback = document.getElementById("ratingFeedback");
 const clearRatingButton = document.getElementById("clearRatingButton");
 const saveRatingButton = document.getElementById("saveRatingButton");
+const thankYouCard = document.getElementById("thankYouCard");
+const thankYouMessage = document.getElementById("thankYouMessage");
+const thankYouMeta = document.getElementById("thankYouMeta");
+const rateAgainButton = document.getElementById("rateAgainButton");
 
 const SESSION_KEY = "archivo-secreto-session";
 const VISITS_KEY = "archivo-secreto-visits";
@@ -35,6 +40,41 @@ const MAX_ATTEMPTS = 4;
 const LOCK_MINUTES = 1;
 let currentTrackIndex = 0;
 let selectedRating = 0;
+
+function formatTimestamp(date) {
+    return new Intl.DateTimeFormat("es-ES", {
+        dateStyle: "long",
+        timeStyle: "short"
+    }).format(date);
+}
+
+function getClosingMessage(rating) {
+    if (rating === 5) {
+        return "Tu 5/5 deja este rincón en lo más alto del archivo.";
+    }
+
+    if (rating === 4) {
+        return "Una nota alta siempre deja ganas de seguir ampliando este recuerdo.";
+    }
+
+    if (rating === 3) {
+        return "Queda registrada una nota equilibrada, con margen para seguir mejorándolo.";
+    }
+
+    return "Valoracion recibida. Queda guardada como parte de esta historia.";
+}
+
+function showThankYouCard(rating, message, submittedAt) {
+    thankYouMessage.textContent = message || getClosingMessage(rating);
+    thankYouMeta.textContent = `Enviado el ${submittedAt} con una puntuacion de ${rating}/5.`;
+    ratingForm.classList.add("hidden");
+    thankYouCard.classList.remove("hidden");
+}
+
+function showRatingForm() {
+    thankYouCard.classList.add("hidden");
+    ratingForm.classList.remove("hidden");
+}
 
 function escapeHtml(value) {
     return String(value)
@@ -196,6 +236,7 @@ function updateRatingUi() {
 function loadSavedRating() {
     const saved = localStorage.getItem(RATING_KEY);
     if (!saved) {
+        showRatingForm();
         updateRatingUi();
         return;
     }
@@ -204,9 +245,15 @@ function loadSavedRating() {
         const parsed = JSON.parse(saved);
         selectedRating = Number(parsed.rating) || 0;
         ratingMessage.value = parsed.message || "";
+        if (parsed.submittedAt && selectedRating) {
+            showThankYouCard(selectedRating, parsed.message, parsed.submittedAt);
+        } else {
+            showRatingForm();
+        }
     } catch {
         selectedRating = 0;
         ratingMessage.value = "";
+        showRatingForm();
     }
 
     updateRatingUi();
@@ -219,9 +266,13 @@ async function submitRating() {
         return;
     }
 
+    const submittedAt = formatTimestamp(new Date());
+    submittedAtInput.value = submittedAt;
+
     const payload = {
         rating: selectedRating,
-        message: ratingMessage.value.trim()
+        message: ratingMessage.value.trim(),
+        submittedAt
     };
 
     localStorage.setItem(RATING_KEY, JSON.stringify(payload));
@@ -243,6 +294,7 @@ async function submitRating() {
 
         ratingFeedback.textContent = "Valoracion enviada y guardada en este dispositivo.";
         ratingFeedback.dataset.state = "success";
+        showThankYouCard(selectedRating, payload.message, submittedAt);
     } catch {
         ratingFeedback.textContent = "No se pudo enviar a Netlify, pero la valoracion se guardo en este dispositivo.";
         ratingFeedback.dataset.state = "error";
@@ -253,11 +305,13 @@ async function submitRating() {
 
 function clearRating() {
     selectedRating = 0;
+    submittedAtInput.value = "";
     ratingMessage.value = "";
     localStorage.removeItem(RATING_KEY);
     updateRatingUi();
     ratingFeedback.textContent = "Valoracion borrada.";
     ratingFeedback.dataset.state = "success";
+    showRatingForm();
 }
 
 function unlockApp() {
@@ -384,6 +438,9 @@ ratingStars.addEventListener("click", (event) => {
     }
 
     selectedRating = Number(star.dataset.value);
+    star.classList.remove("is-burst");
+    void star.offsetWidth;
+    star.classList.add("is-burst");
     updateRatingUi();
     ratingFeedback.textContent = "";
     ratingFeedback.dataset.state = "";
@@ -395,6 +452,7 @@ ratingForm.addEventListener("submit", (event) => {
 });
 
 clearRatingButton.addEventListener("click", clearRating);
+rateAgainButton.addEventListener("click", showRatingForm);
 
 setInterval(updateLoginAvailability, 1000);
 
