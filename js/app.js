@@ -1,15 +1,30 @@
-const content = window.ARCHIVO_CONTENT || { featured: [], photos: [], password: "" };
+const content = window.ARCHIVO_CONTENT || { profiles: {}, password: "" };
 
 const loginShell = document.getElementById("loginShell");
 const app = document.getElementById("app");
 const loginForm = document.getElementById("loginForm");
+const profileStep = document.getElementById("profileStep");
+const backToPasswordButton = document.getElementById("backToPasswordButton");
+const profileButtons = document.querySelectorAll(".profile-button");
 const passwordInput = document.getElementById("password");
 const submitButton = document.getElementById("submitButton");
 const loginFeedback = document.getElementById("loginFeedback");
 const logoutButton = document.getElementById("logoutButton");
 const visitCount = document.getElementById("visitCount");
+const heroEyebrow = document.getElementById("heroEyebrow");
+const heroTitle = document.getElementById("heroTitle");
+const heroDescription = document.getElementById("heroDescription");
+const statusValue = document.getElementById("statusValue");
+const profileValue = document.getElementById("profileValue");
+const libraryTitle = document.getElementById("libraryTitle");
+const galleryTitle = document.getElementById("galleryTitle");
+const lettersTitle = document.getElementById("lettersTitle");
+const notesTitle = document.getElementById("notesTitle");
+const notesList = document.getElementById("notesList");
+const ratingTitle = document.getElementById("ratingTitle");
 const featuredGrid = document.getElementById("featuredGrid");
 const photoGrid = document.getElementById("photoGrid");
+const lettersGrid = document.getElementById("lettersGrid");
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightboxImage");
 const closeLightbox = document.getElementById("closeLightbox");
@@ -20,6 +35,7 @@ const nextTrackButton = document.getElementById("nextTrackButton");
 const ratingForm = document.getElementById("ratingForm");
 const ratingStars = document.getElementById("ratingStars");
 const ratingValue = document.getElementById("ratingValue");
+const profileInput = document.getElementById("profileInput");
 const ratingInput = document.getElementById("ratingInput");
 const submittedAtInput = document.getElementById("submittedAtInput");
 const ratingMessage = document.getElementById("ratingMessage");
@@ -32,6 +48,7 @@ const thankYouMeta = document.getElementById("thankYouMeta");
 const rateAgainButton = document.getElementById("rateAgainButton");
 
 const SESSION_KEY = "archivo-secreto-session";
+const PROFILE_KEY = "archivo-secreto-profile";
 const VISITS_KEY = "archivo-secreto-visits";
 const LOCK_KEY = "archivo-secreto-lock-until";
 const ATTEMPTS_KEY = "archivo-secreto-attempts";
@@ -40,6 +57,11 @@ const MAX_ATTEMPTS = 4;
 const LOCK_MINUTES = 1;
 let currentTrackIndex = 0;
 let selectedRating = 0;
+let activeProfileName = "";
+
+function getActiveProfile() {
+    return content.profiles?.[activeProfileName] || null;
+}
 
 function formatTimestamp(date) {
     return new Intl.DateTimeFormat("es-ES", {
@@ -66,7 +88,7 @@ function getClosingMessage(rating) {
 
 function showThankYouCard(rating, message, submittedAt) {
     thankYouMessage.textContent = message || getClosingMessage(rating);
-    thankYouMeta.textContent = `Enviado el ${submittedAt} con una puntuacion de ${rating}/5.`;
+    thankYouMeta.textContent = `Enviado el ${submittedAt} por ${activeProfileName} con una puntuacion de ${rating}/5.`;
     ratingForm.classList.add("hidden");
     thankYouCard.classList.remove("hidden");
 }
@@ -74,6 +96,8 @@ function showThankYouCard(rating, message, submittedAt) {
 function showRatingForm() {
     thankYouCard.classList.add("hidden");
     ratingForm.classList.remove("hidden");
+    ratingFeedback.textContent = "";
+    ratingFeedback.dataset.state = "";
 }
 
 function escapeHtml(value) {
@@ -116,8 +140,10 @@ function updateLoginAvailability() {
 }
 
 function registerVisit() {
-    const visits = Number(localStorage.getItem(VISITS_KEY) || 0) + 1;
-    localStorage.setItem(VISITS_KEY, String(visits));
+    const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}");
+    const visits = Number(visitsByProfile[activeProfileName] || 0) + 1;
+    visitsByProfile[activeProfileName] = visits;
+    localStorage.setItem(VISITS_KEY, JSON.stringify(visitsByProfile));
     visitCount.textContent = String(visits);
 }
 
@@ -153,8 +179,25 @@ function renderPhotos(items) {
     `).join("");
 }
 
+function renderNotes(items) {
+    notesList.innerHTML = items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+}
+
+function renderLetters(items) {
+    lettersGrid.innerHTML = items.map((item) => `
+        <article class="letter-card">
+            <div class="letter-top">
+                <h4 class="letter-title">${escapeHtml(item.title)}</h4>
+                <span class="letter-tag">${escapeHtml(item.tag || "Carta")}</span>
+            </div>
+            <p class="letter-body">${escapeHtml(item.body || "")}</p>
+            <p class="letter-signature">${escapeHtml(item.signature || "")}</p>
+        </article>
+    `).join("");
+}
+
 function openLightbox(index) {
-    const photo = content.photos[index];
+    const photo = getActiveProfile()?.photos?.[index];
     if (!photo) {
         return;
     }
@@ -171,7 +214,7 @@ function closeLightboxModal() {
 }
 
 function updateMusicUi() {
-    const tracks = content.backgroundTracks || [];
+    const tracks = getActiveProfile()?.backgroundTracks || [];
     const activeTrack = tracks[currentTrackIndex];
 
     if (!tracks.length || !activeTrack) {
@@ -186,7 +229,7 @@ function updateMusicUi() {
 }
 
 function setTrack(index) {
-    const tracks = content.backgroundTracks || [];
+    const tracks = getActiveProfile()?.backgroundTracks || [];
     if (!tracks.length) {
         updateMusicUi();
         return;
@@ -198,7 +241,7 @@ function setTrack(index) {
 }
 
 async function playBackgroundMusic() {
-    const tracks = content.backgroundTracks || [];
+    const tracks = getActiveProfile()?.backgroundTracks || [];
     if (!tracks.length) {
         updateMusicUi();
         return;
@@ -234,17 +277,22 @@ function updateRatingUi() {
 }
 
 function loadSavedRating() {
-    const saved = localStorage.getItem(RATING_KEY);
+    const ratingsByProfile = JSON.parse(localStorage.getItem(RATING_KEY) || "{}");
+    const saved = ratingsByProfile[activeProfileName];
     if (!saved) {
         showRatingForm();
+        ratingMessage.value = "";
+        selectedRating = 0;
+        submittedAtInput.value = "";
         updateRatingUi();
         return;
     }
 
     try {
-        const parsed = JSON.parse(saved);
+        const parsed = typeof saved === "string" ? JSON.parse(saved) : saved;
         selectedRating = Number(parsed.rating) || 0;
         ratingMessage.value = parsed.message || "";
+        submittedAtInput.value = parsed.submittedAt || "";
         if (parsed.submittedAt && selectedRating) {
             showThankYouCard(selectedRating, parsed.message, parsed.submittedAt);
         } else {
@@ -270,12 +318,15 @@ async function submitRating() {
     submittedAtInput.value = submittedAt;
 
     const payload = {
+        profile: activeProfileName,
         rating: selectedRating,
         message: ratingMessage.value.trim(),
         submittedAt
     };
 
-    localStorage.setItem(RATING_KEY, JSON.stringify(payload));
+    const ratingsByProfile = JSON.parse(localStorage.getItem(RATING_KEY) || "{}");
+    ratingsByProfile[activeProfileName] = payload;
+    localStorage.setItem(RATING_KEY, JSON.stringify(ratingsByProfile));
     saveRatingButton.disabled = true;
     ratingFeedback.textContent = "Enviando valoracion...";
     ratingFeedback.dataset.state = "";
@@ -307,28 +358,76 @@ function clearRating() {
     selectedRating = 0;
     submittedAtInput.value = "";
     ratingMessage.value = "";
-    localStorage.removeItem(RATING_KEY);
+    const ratingsByProfile = JSON.parse(localStorage.getItem(RATING_KEY) || "{}");
+    delete ratingsByProfile[activeProfileName];
+    localStorage.setItem(RATING_KEY, JSON.stringify(ratingsByProfile));
     updateRatingUi();
     ratingFeedback.textContent = "Valoracion borrada.";
     ratingFeedback.dataset.state = "success";
     showRatingForm();
 }
 
+function showProfileStep() {
+    loginForm.classList.add("hidden");
+    profileStep.classList.remove("hidden");
+    setFeedback("");
+}
+
+function showPasswordStep() {
+    profileStep.classList.add("hidden");
+    loginForm.classList.remove("hidden");
+}
+
+function applyProfile(profileName) {
+    const profile = content.profiles?.[profileName];
+    if (!profile) {
+        return;
+    }
+
+    activeProfileName = profileName;
+    currentTrackIndex = 0;
+    document.body.dataset.profile = profile.theme || "";
+    heroEyebrow.textContent = profile.eyebrow;
+    heroTitle.textContent = profile.heroTitle;
+    heroDescription.textContent = profile.heroDescription;
+    statusValue.textContent = profile.statusLabel;
+    profileValue.textContent = profileName;
+    libraryTitle.textContent = profile.libraryTitle;
+    galleryTitle.textContent = profile.galleryTitle;
+    lettersTitle.textContent = profile.lettersTitle || "Mensajes solo para ti";
+    notesTitle.textContent = profile.notesTitle;
+    ratingTitle.textContent = profile.ratingTitle;
+    profileInput.value = profileName;
+    renderFeatured(profile.featured || []);
+    renderPhotos(profile.photos || []);
+    renderLetters(profile.letters || []);
+    renderNotes(profile.notes || []);
+    const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}");
+    visitCount.textContent = String(visitsByProfile[profileName] || 0);
+    setTrack(0);
+    loadSavedRating();
+}
+
 function unlockApp() {
     loginShell.classList.add("hidden");
     app.classList.remove("hidden");
     localStorage.setItem(SESSION_KEY, "open");
+    localStorage.setItem(PROFILE_KEY, activeProfileName);
     registerVisit();
     playBackgroundMusic();
 }
 
 function lockApp() {
     localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(PROFILE_KEY);
     loginShell.classList.remove("hidden");
     app.classList.add("hidden");
     passwordInput.value = "";
     setFeedback("");
     pauseBackgroundMusic();
+    showPasswordStep();
+    activeProfileName = "";
+    document.body.removeAttribute("data-profile");
 }
 
 function handleLogin(password) {
@@ -340,8 +439,8 @@ function handleLogin(password) {
     if (password === content.password) {
         localStorage.removeItem(ATTEMPTS_KEY);
         localStorage.removeItem(LOCK_KEY);
-        setFeedback("Acceso concedido.", "success");
-        unlockApp();
+        setFeedback("Contraseña correcta. Ahora elige tu nombre.", "success");
+        showProfileStep();
         return;
     }
 
@@ -361,14 +460,12 @@ function handleLogin(password) {
 }
 
 function bootstrap() {
-    renderFeatured(content.featured);
-    renderPhotos(content.photos);
-    visitCount.textContent = localStorage.getItem(VISITS_KEY) || "0";
-    setTrack(0);
     updateLoginAvailability();
-    loadSavedRating();
+    showPasswordStep();
 
-    if (localStorage.getItem(SESSION_KEY) === "open") {
+    const savedProfile = localStorage.getItem(PROFILE_KEY);
+    if (localStorage.getItem(SESSION_KEY) === "open" && savedProfile && content.profiles?.[savedProfile]) {
+        applyProfile(savedProfile);
         unlockApp();
     }
 }
@@ -379,6 +476,14 @@ loginForm.addEventListener("submit", (event) => {
 });
 
 logoutButton.addEventListener("click", lockApp);
+backToPasswordButton.addEventListener("click", showPasswordStep);
+
+profileButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        applyProfile(button.dataset.profile);
+        unlockApp();
+    });
+});
 
 photoGrid.addEventListener("click", (event) => {
     const card = event.target.closest(".photo-card");

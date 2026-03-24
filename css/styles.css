@@ -15,6 +15,34 @@
     --radius-md: 16px;
 }
 
+body[data-profile="carla"] {
+    --bg: #fff0f6;
+    --bg-strong: #ffd9e8;
+    --surface: rgba(255, 244, 250, 0.8);
+    --surface-strong: #fff7fb;
+    --text: #351823;
+    --muted: #8b5a6c;
+    --accent: #e36a96;
+    --accent-strong: #c7487b;
+    --accent-soft: rgba(227, 106, 150, 0.14);
+    --border: rgba(137, 53, 90, 0.14);
+    --shadow: 0 24px 60px rgba(188, 98, 133, 0.18);
+}
+
+body[data-profile="alina"] {
+    --bg: #eef9ff;
+    --bg-strong: #d5efff;
+    --surface: rgba(244, 252, 255, 0.82);
+    --surface-strong: #f7fdff;
+    --text: #173340;
+    --muted: #5a7d8f;
+    --accent: #68bfe8;
+    --accent-strong: #3095cb;
+    --accent-soft: rgba(104, 191, 232, 0.16);
+    --border: rgba(49, 127, 168, 0.14);
+    --shadow: 0 24px 60px rgba(93, 169, 210, 0.18);
+}
+
 * {
     box-sizing: border-box;
 }
@@ -32,6 +60,20 @@ body {
         radial-gradient(circle at top left, rgba(163, 63, 49, 0.16), transparent 30%),
         radial-gradient(circle at top right, rgba(196, 136, 62, 0.18), transparent 25%),
         linear-gradient(180deg, #f8f2ea 0%, var(--bg) 45%, #eadfce 100%);
+}
+
+body[data-profile="carla"] {
+    background:
+        radial-gradient(circle at top left, rgba(255, 145, 191, 0.24), transparent 32%),
+        radial-gradient(circle at top right, rgba(252, 190, 220, 0.28), transparent 24%),
+        linear-gradient(180deg, #fff8fc 0%, var(--bg) 46%, #ffdbe9 100%);
+}
+
+body[data-profile="alina"] {
+    background:
+        radial-gradient(circle at top left, rgba(126, 213, 255, 0.26), transparent 30%),
+        radial-gradient(circle at top right, rgba(180, 235, 255, 0.3), transparent 24%),
+        linear-gradient(180deg, #f8fdff 0%, var(--bg) 46%, #d8f1ff 100%);
 }
 
 body::before {
@@ -134,6 +176,54 @@ button {
     margin-top: 1.4rem;
     display: grid;
     gap: 1rem;
+}
+
+.profile-step {
+    margin-top: 1.4rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.profile-step h2 {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(2.3rem, 7vw, 3.8rem);
+    line-height: 0.95;
+}
+
+.profile-grid {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.profile-button {
+    min-height: 68px;
+    padding: 1rem 1.2rem;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(255, 250, 243, 0.96) 0%, rgba(239, 230, 219, 0.92) 100%);
+    border: 1px solid rgba(124, 39, 29, 0.12);
+    color: var(--text);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.8rem;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.profile-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 32px rgba(68, 42, 32, 0.12);
+    border-color: rgba(124, 39, 29, 0.28);
+}
+
+body[data-profile="carla"] .profile-button {
+    background: linear-gradient(135deg, rgba(255, 244, 249, 0.98) 0%, rgba(255, 221, 235, 0.94) 100%);
+}
+
+body[data-profile="alina"] .profile-button {
+    background: linear-gradient(135deg, rgba(246, 252, 255, 0.98) 0%, rgba(221, 244, 255, 0.94) 100%);
+}
+
+.back-button {
+    width: 100%;
 }
 
 .field {
@@ -262,6 +352,22 @@ button {
     border: 1px solid rgba(124, 39, 29, 0.08);
 }
 
+body[data-profile="carla"] .hero-panel,
+body[data-profile="carla"] .rating-card,
+body[data-profile="carla"] .thank-you-card {
+    background:
+        radial-gradient(circle at top left, rgba(255, 182, 210, 0.28), transparent 30%),
+        linear-gradient(180deg, rgba(255, 248, 252, 0.96) 0%, rgba(255, 235, 244, 0.92) 100%);
+}
+
+body[data-profile="alina"] .hero-panel,
+body[data-profile="alina"] .rating-card,
+body[data-profile="alina"] .thank-you-card {
+    background:
+        radial-gradient(circle at top left, rgba(176, 232, 255, 0.3), transparent 30%),
+        linear-gradient(180deg, rgba(248, 253, 255, 0.96) 0%, rgba(231, 247, 255, 0.92) 100%);
+}
+
 .hero-panel strong {
     font-size: 1.3rem;
 }
@@ -300,13 +406,15 @@ button {
 }
 
 .media-grid,
-.photo-grid {
+.photo-grid,
+.letters-grid {
     display: grid;
     gap: 1rem;
 }
 
 .media-card,
-.photo-card {
+.photo-card,
+.letter-card {
     padding: 1rem;
     border-radius: var(--radius-lg);
 }
@@ -326,6 +434,14 @@ button {
     overflow: hidden;
     border-radius: var(--radius-md);
     background: #e9ddcf;
+}
+
+body[data-profile="carla"] .media-frame {
+    background: linear-gradient(135deg, #ffe6f1 0%, #ffd4e6 100%);
+}
+
+body[data-profile="alina"] .media-frame {
+    background: linear-gradient(135deg, #e3f6ff 0%, #cfefff 100%);
 }
 
 .media-frame img,
@@ -391,6 +507,69 @@ button {
     margin-top: 0.8rem;
 }
 
+.letters-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.letter-card {
+    display: grid;
+    gap: 0.9rem;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(252, 244, 238, 0.92) 100%);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.letter-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.letter-title,
+.letter-signature {
+    margin: 0;
+}
+
+.letter-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.8rem;
+    line-height: 0.95;
+}
+
+.letter-tag {
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.letter-body {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+.letter-signature {
+    color: var(--accent-strong);
+    font-weight: 700;
+}
+
+body[data-profile="carla"] .letter-card {
+    background:
+        radial-gradient(circle at top left, rgba(255, 205, 226, 0.3), transparent 34%),
+        linear-gradient(180deg, rgba(255, 249, 252, 0.96) 0%, rgba(255, 239, 246, 0.92) 100%);
+}
+
+body[data-profile="alina"] .letter-card {
+    background:
+        radial-gradient(circle at top left, rgba(201, 238, 255, 0.3), transparent 34%),
+        linear-gradient(180deg, rgba(249, 254, 255, 0.96) 0%, rgba(235, 248, 255, 0.92) 100%);
+}
+
 .notes-card {
     padding: 1rem 1.2rem;
     border-radius: var(--radius-lg);
@@ -438,6 +617,16 @@ button {
     background: linear-gradient(135deg, #d68553 0%, #a33f31 100%);
     color: #fff9f5;
     transform: translateY(-2px);
+}
+
+body[data-profile="carla"] .star-button.is-active,
+body[data-profile="carla"] .star-button:hover {
+    background: linear-gradient(135deg, #ff9cc2 0%, #d85d91 100%);
+}
+
+body[data-profile="alina"] .star-button.is-active,
+body[data-profile="alina"] .star-button:hover {
+    background: linear-gradient(135deg, #9fe4ff 0%, #4aaedd 100%);
 }
 
 .rating-actions {
@@ -550,6 +739,10 @@ button {
 }
 
 @media (min-width: 720px) {
+    .profile-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .hero {
         grid-template-columns: 1.6fr 0.9fr;
         align-items: stretch;

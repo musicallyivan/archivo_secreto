@@ -36,15 +36,26 @@
                 <p class="hint">La sesión queda abierta en este dispositivo hasta que pulses "Cerrar acceso".</p>
                 <p class="feedback" id="loginFeedback" aria-live="polite"></p>
             </form>
+
+            <section class="profile-step hidden" id="profileStep" aria-labelledby="profileTitle">
+                <p class="eyebrow">Segundo paso</p>
+                <h2 id="profileTitle">Elige tu nombre</h2>
+                <p class="login-copy">Cada nombre abre una version distinta del archivo.</p>
+                <div class="profile-grid">
+                    <button type="button" class="profile-button" data-profile="Carla">Carla</button>
+                    <button type="button" class="profile-button" data-profile="Alina">Alina</button>
+                </div>
+                <button type="button" class="secondary-button back-button" id="backToPasswordButton">Cambiar contraseña</button>
+            </section>
         </section>
     </div>
 
     <div class="page hidden" id="app">
         <header class="hero">
             <div class="hero-copy">
-                <p class="eyebrow">Colección privada</p>
-                <h2>Un archivo más limpio, moderno y cómodo en móvil.</h2>
-                <p>
+                <p class="eyebrow" id="heroEyebrow">Colección privada</p>
+                <h2 id="heroTitle">Un archivo más limpio, moderno y cómodo en móvil.</h2>
+                <p id="heroDescription">
                     La portada, el acceso y la biblioteca quedan separados para poder seguir creciendo sin tocar toda la página cada vez.
                 </p>
             </div>
@@ -52,11 +63,15 @@
             <div class="hero-panel">
                 <div>
                     <p class="panel-label">Estado</p>
-                    <strong>Protegido</strong>
+                    <strong id="statusValue">Protegido</strong>
                 </div>
                 <div>
                     <p class="panel-label">Visitas</p>
                     <strong id="visitCount">0</strong>
+                </div>
+                <div>
+                    <p class="panel-label">Perfil</p>
+                    <strong id="profileValue">Sin elegir</strong>
                 </div>
                 <div>
                     <p class="panel-label">Musica de fondo</p>
@@ -74,7 +89,7 @@
             <section class="section">
                 <div class="section-heading">
                     <p class="eyebrow">Biblioteca</p>
-                    <h3>Contenido destacado</h3>
+                    <h3 id="libraryTitle">Contenido destacado</h3>
                 </div>
                 <div class="media-grid" id="featuredGrid"></div>
             </section>
@@ -82,35 +97,40 @@
             <section class="section">
                 <div class="section-heading">
                     <p class="eyebrow">Galeria</p>
-                    <h3>Recuerdos en imagen</h3>
+                    <h3 id="galleryTitle">Recuerdos en imagen</h3>
                 </div>
                 <div class="photo-grid" id="photoGrid"></div>
             </section>
 
             <section class="section">
                 <div class="section-heading">
+                    <p class="eyebrow">Cartas privadas</p>
+                    <h3 id="lettersTitle">Mensajes solo para ti</h3>
+                </div>
+                <div class="letters-grid" id="lettersGrid"></div>
+            </section>
+
+            <section class="section">
+                <div class="section-heading">
                     <p class="eyebrow">Notas</p>
-                    <h3>Como subir multimedia</h3>
+                    <h3 id="notesTitle">Como subir multimedia</h3>
                 </div>
                 <div class="notes-card">
-                    <ol>
-                        <li>Guarda fotos, videos y audios dentro de <code>assets/media/</code>.</li>
-                        <li>Edita <code>js/content.js</code> y cambia los nombres de ejemplo por tus archivos reales.</li>
-                        <li>Recarga la pagina y el contenido aparecera automaticamente.</li>
-                    </ol>
+                    <ol id="notesList"></ol>
                 </div>
             </section>
 
             <section class="section rating-section">
                 <div class="section-heading">
                     <p class="eyebrow">Valoracion final</p>
-                    <h3>¿Que nota le das al archivo?</h3>
+                    <h3 id="ratingTitle">¿Que nota le das al archivo?</h3>
                 </div>
                 <form class="rating-card" id="ratingForm" name="valoracion-archivo" method="POST" data-netlify="true" netlify-honeypot="bot-field">
                     <input type="hidden" name="form-name" value="valoracion-archivo">
                     <p class="hidden-honeypot">
                         <label>No rellenes esto <input name="bot-field"></label>
                     </p>
+                    <input type="hidden" id="profileInput" name="profile" value="">
                     <input type="hidden" id="ratingInput" name="rating" value="">
                     <input type="hidden" id="submittedAtInput" name="submitted_at" value="">
                     <p class="rating-copy">Puedes dejar una puntuacion y una nota corta al final de la experiencia.</p>
