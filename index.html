@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f4efe7">
+    <title>Archivo secreto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="login-shell" id="loginShell">
+        <section class="login-card" aria-labelledby="loginTitle">
+            <p class="eyebrow">Acceso privado</p>
+            <h1 id="loginTitle">Archivo de Carla y Alina</h1>
+            <p class="login-copy">
+                Un rincón privado para guardar cartas, audios, fotos y videos sin perder el aire íntimo del proyecto.
+            </p>
+
+            <form class="login-form" id="loginForm">
+                <label class="field">
+                    <span>Contraseña</span>
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Escribe la clave"
+                        autocomplete="current-password"
+                        required
+                    >
+                </label>
+
+                <button type="submit" id="submitButton">Entrar al archivo</button>
+                <p class="hint">La sesión queda abierta en este dispositivo hasta que pulses "Cerrar acceso".</p>
+                <p class="feedback" id="loginFeedback" aria-live="polite"></p>
+            </form>
+        </section>
+    </div>
+
+    <div class="page hidden" id="app">
+        <header class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">Colección privada</p>
+                <h2>Un archivo más limpio, moderno y cómodo en móvil.</h2>
+                <p>
+                    La portada, el acceso y la biblioteca quedan separados para poder seguir creciendo sin tocar toda la página cada vez.
+                </p>
+            </div>
+
+            <div class="hero-panel">
+                <div>
+                    <p class="panel-label">Estado</p>
+                    <strong>Protegido</strong>
+                </div>
+                <div>
+                    <p class="panel-label">Visitas</p>
+                    <strong id="visitCount">0</strong>
+                </div>
+                <div>
+                    <p class="panel-label">Musica de fondo</p>
+                    <strong id="musicStatus">Lista</strong>
+                </div>
+                <div class="music-controls">
+                    <button class="secondary-button" type="button" id="toggleMusicButton">Pausar musica</button>
+                    <button class="secondary-button" type="button" id="nextTrackButton">Siguiente pista</button>
+                </div>
+                <button class="secondary-button" type="button" id="logoutButton">Cerrar acceso</button>
+            </div>
+        </header>
+
+        <main class="layout">
+            <section class="section">
+                <div class="section-heading">
+                    <p class="eyebrow">Biblioteca</p>
+                    <h3>Contenido destacado</h3>
+                </div>
+                <div class="media-grid" id="featuredGrid"></div>
+            </section>
+
+            <section class="section">
+                <div class="section-heading">
+                    <p class="eyebrow">Galeria</p>
+                    <h3>Recuerdos en imagen</h3>
+                </div>
+                <div class="photo-grid" id="photoGrid"></div>
+            </section>
+
+            <section class="section">
+                <div class="section-heading">
+                    <p class="eyebrow">Notas</p>
+                    <h3>Como subir multimedia</h3>
+                </div>
+                <div class="notes-card">
+                    <ol>
+                        <li>Guarda fotos, videos y audios dentro de <code>assets/media/</code>.</li>
+                        <li>Edita <code>js/content.js</code> y cambia los nombres de ejemplo por tus archivos reales.</li>
+                        <li>Recarga la pagina y el contenido aparecera automaticamente.</li>
+                    </ol>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <dialog class="lightbox" id="lightbox">
+        <button class="lightbox-close" type="button" id="closeLightbox" aria-label="Cerrar visor">Cerrar</button>
+        <img id="lightboxImage" alt="">
+    </dialog>
+
+    <audio id="backgroundAudio" preload="auto"></audio>
+
+    <script src="js/content.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

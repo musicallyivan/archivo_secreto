@@ -1,0 +1,442 @@
+:root {
+    --bg: #f4efe7;
+    --bg-strong: #efe6db;
+    --surface: rgba(255, 252, 247, 0.76);
+    --surface-strong: #fffaf3;
+    --text: #241915;
+    --muted: #6f5a50;
+    --accent: #a33f31;
+    --accent-strong: #7c271d;
+    --accent-soft: rgba(163, 63, 49, 0.12);
+    --border: rgba(50, 29, 24, 0.12);
+    --shadow: 0 24px 60px rgba(68, 42, 32, 0.16);
+    --radius-xl: 28px;
+    --radius-lg: 22px;
+    --radius-md: 16px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Manrope", sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, rgba(163, 63, 49, 0.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(196, 136, 62, 0.18), transparent 25%),
+        linear-gradient(180deg, #f8f2ea 0%, var(--bg) 45%, #eadfce 100%);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.24) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 90%);
+    opacity: 0.5;
+}
+
+button,
+input,
+audio,
+video {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.eyebrow {
+    margin: 0 0 0.6rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.login-shell,
+.page {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+.login-shell {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem 0;
+}
+
+.login-card,
+.hero,
+.section,
+.notes-card,
+.media-card,
+.photo-card {
+    backdrop-filter: blur(18px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.login-card {
+    width: min(100%, 520px);
+    padding: 1.4rem;
+    border-radius: var(--radius-xl);
+}
+
+.login-card h1,
+.hero h2,
+.section-heading h3 {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    line-height: 0.95;
+}
+
+.login-card h1 {
+    font-size: clamp(2.8rem, 8vw, 4.5rem);
+}
+
+.login-copy {
+    margin: 1rem 0 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.login-form {
+    margin-top: 1.4rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.field {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.field span {
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.field input {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(124, 39, 29, 0.2);
+    background: rgba(255, 255, 255, 0.86);
+    color: var(--text);
+    outline: none;
+    transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.field input:focus {
+    border-color: rgba(124, 39, 29, 0.8);
+    box-shadow: 0 0 0 4px rgba(163, 63, 49, 0.12);
+    transform: translateY(-1px);
+}
+
+.login-form button,
+.secondary-button {
+    min-height: 52px;
+    padding: 0.9rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 700;
+    transition: transform 160ms ease, opacity 160ms ease, background 160ms ease;
+}
+
+.login-form button {
+    color: #fff7f3;
+    background: linear-gradient(135deg, var(--accent) 0%, #bf6246 100%);
+}
+
+.login-form button:hover,
+.secondary-button:hover,
+.lightbox-close:hover {
+    transform: translateY(-1px);
+}
+
+.login-form button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.hint,
+.feedback,
+.panel-label,
+.media-meta,
+.notes-card,
+.hero-copy p,
+.media-description {
+    color: var(--muted);
+}
+
+.hint,
+.feedback {
+    margin: 0;
+    font-size: 0.92rem;
+}
+
+.feedback[data-state="error"] {
+    color: #8c2318;
+}
+
+.feedback[data-state="success"] {
+    color: #255f2e;
+}
+
+.page {
+    padding: 1.2rem 0 2.4rem;
+}
+
+.hero {
+    display: grid;
+    gap: 1.2rem;
+    padding: 1.3rem;
+    border-radius: var(--radius-xl);
+}
+
+.hero h2 {
+    font-size: clamp(2.6rem, 8vw, 4.8rem);
+    max-width: 12ch;
+}
+
+.hero-copy p:last-child {
+    margin-bottom: 0;
+    line-height: 1.7;
+}
+
+.hero-panel {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+    background: var(--surface-strong);
+    border: 1px solid rgba(124, 39, 29, 0.08);
+}
+
+.hero-panel strong {
+    font-size: 1.3rem;
+}
+
+.secondary-button {
+    color: var(--accent-strong);
+    background: var(--accent-soft);
+}
+
+.music-controls {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.music-controls .secondary-button {
+    width: 100%;
+}
+
+.layout {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.section {
+    padding: 1.2rem;
+    border-radius: var(--radius-xl);
+}
+
+.section-heading {
+    margin-bottom: 1rem;
+}
+
+.section-heading h3 {
+    font-size: clamp(2rem, 6vw, 3rem);
+}
+
+.media-grid,
+.photo-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.media-card,
+.photo-card {
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+}
+
+.media-card h4,
+.photo-caption {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.media-card figure,
+.photo-card figure {
+    margin: 0;
+}
+
+.media-frame {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: #e9ddcf;
+}
+
+.media-frame img,
+.media-frame video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+}
+
+.media-card audio {
+    width: 100%;
+    margin-top: 0.8rem;
+}
+
+.audio-placeholder {
+    display: grid;
+    place-items: center;
+    min-height: 220px;
+    border-radius: var(--radius-md);
+    background:
+        radial-gradient(circle at top left, rgba(163, 63, 49, 0.22), transparent 32%),
+        linear-gradient(135deg, #f2e8dd 0%, #e6d8c8 100%);
+    color: var(--accent-strong);
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    letter-spacing: 0.04em;
+}
+
+.media-body {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 0.9rem;
+}
+
+.media-meta {
+    font-size: 0.88rem;
+}
+
+.media-description {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.photo-card {
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.photo-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 44px rgba(68, 42, 32, 0.14);
+}
+
+.photo-card img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+}
+
+.photo-caption {
+    margin-top: 0.8rem;
+}
+
+.notes-card {
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius-lg);
+    line-height: 1.7;
+}
+
+.notes-card ol {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.notes-card code {
+    padding: 0.1rem 0.35rem;
+    border-radius: 999px;
+    background: rgba(124, 39, 29, 0.08);
+    color: var(--accent-strong);
+}
+
+.lightbox {
+    width: min(92vw, 960px);
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.lightbox::backdrop {
+    background: rgba(20, 12, 10, 0.82);
+    backdrop-filter: blur(6px);
+}
+
+.lightbox img {
+    width: 100%;
+    max-height: 82vh;
+    object-fit: contain;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+}
+
+.lightbox-close {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 250, 243, 0.92);
+    color: var(--accent-strong);
+}
+
+@media (min-width: 720px) {
+    .hero {
+        grid-template-columns: 1.6fr 0.9fr;
+        align-items: stretch;
+    }
+
+    .media-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 980px) {
+    .page {
+        padding-top: 1.8rem;
+    }
+
+    .layout {
+        gap: 1.2rem;
+    }
+
+    .photo-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
