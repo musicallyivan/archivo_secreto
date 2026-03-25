@@ -221,6 +221,15 @@ button {
     line-height: 1.7;
 }
 
+.login-copyright {
+    margin: 1.3rem 0 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 .login-form {
     margin-top: 1.4rem;
     display: grid;
