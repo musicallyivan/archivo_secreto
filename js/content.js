@@ -63,6 +63,26 @@ window.ARCHIVO_CONTENT = {
                     title: "Retrato 1",
                     description: "Imagen vertical del archivo de Carla.",
                     file: "assets/media/RETRATO 1.PNG"
+                },
+                {
+                    title: "Recuerdos de Vietnam",
+                    description: "Otra imagen vertical del archivo de Carla.",
+                    file: "assets/media/IVAN_CARLA.PNG"
+                },
+                {
+                    title: "Las primas guapas ❤️",
+                    description: "Un recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA_CARLA_FILTRO.JPEG"
+                },
+                {
+                    title: "Recuerdos de Vietnam 2",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA_CARLA.PNG"
+                },
+                {
+                    title: "Los platanos sensuales",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/TIKTOK_LIVE_1.PNG"
                 }
             ]
         },
@@ -128,6 +148,56 @@ window.ARCHIVO_CONTENT = {
                     title: "Comparativa",
                     description: "La comparativa entra como apoyo visual secundario.",
                     file: "assets/media/COMPARATIVA.JPEG"
+                },
+                {
+                    title: "La dupla perfecta 🔥",
+                    description: "Una imagen vertical del archivo de Alina.",
+                    file: "assets/media/ALINA_ANUEL.PNG"
+                },
+                {
+                    title: "Las primas guapas ❤️",
+                    description: "Otra imagen vertical del archivo de Alina.",
+                    file: "assets/media/ALINA_CARLA_FILTRO.JPEG"
+                },
+                {
+                    title: "Recuerdos de Vietnam",
+                    description: "Un recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA_CARLA.PNG"
+                },
+                {
+                    title: "STICKER 1",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA1.JPEG"
+                },
+                {
+                    title: "STICKER 2",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA2.JPEG"
+                },
+                {
+                    title: "STICKER 3",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA3.JPEG"
+                },
+                {
+                    title: "STICKER 4",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA4.JPEG"
+                },
+                {
+                    title: "STICKER 5",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA5.JPEG"
+                },
+                {
+                    title: "STICKER 6",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA6.JPEG"
+                },
+                {
+                    title: "STICKER 7",
+                    description: "Otro recuerdo especial de nuestro tiempo juntos.",
+                    file: "assets/media/ALINA7.JPEG"
                 }
             ]
         }
