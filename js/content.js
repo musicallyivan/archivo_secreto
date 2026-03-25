@@ -11,14 +11,60 @@ window.ARCHIVO_CONTENT = {
             heroTitle: "Tu version abre un refugio calido, directo y luminoso.",
             heroDescription: "Este lado del archivo mezcla recuerdos, ritmo y una despedida suave al final del recorrido.",
             statusLabel: "Modo Carla",
+            surpriseLabel: "Activa",
             libraryTitle: "Tu seleccion destacada",
             galleryTitle: "Recuerdos para Carla",
             lettersTitle: "Cartas para Carla",
+            timelineTitle: "Como ha ido creciendo lo nuestro",
+            capsuleTitle: "Abrir en el momento correcto",
             notesTitle: "Pequenas pistas",
+            securitySummary: "La clave de Carla sigue estando en el codigo del navegador. El acceso filtra, pero no blinda el contenido.",
+            securityNextStep: "Si esto tiene que ser privado de verdad, toca pasar a un backend, Netlify Identity o una zona protegida por servidor.",
             notes: [
                 "Cada bloque puede seguir creciendo sin tocar el resto de la pagina.",
                 "La musica de fondo y la galeria se cargan solo para tu perfil.",
                 "La valoracion final tambien viaja con tu nombre a Netlify Forms."
+            ],
+            timeline: [
+                {
+                    date: "Primeras conversaciones",
+                    title: "La chispa inicial",
+                    body: "Aqui empezo ese tono tan vuestro de contarlo todo, mezclar ideas raras y hacer que hasta lo absurdo tuviera sitio."
+                },
+                {
+                    date: "Cuando todo cogio ritmo",
+                    title: "Rutina con personalidad propia",
+                    body: "Las bromas, los planes y el rollo creativo empezaron a sentirse ya como algo con identidad."
+                },
+                {
+                    date: "Este archivo",
+                    title: "Recuerdo convertido en refugio",
+                    body: "El proyecto deja de ser solo una idea y se convierte en un sitio al que volver cuando quieras."
+                }
+            ],
+            capsule: [
+                {
+                    when: "Abrir cuando necesites reirte",
+                    title: "Reserva de buen rollo",
+                    body: "Vuelve a esta parte cuando todo este pesado. Aqui sigue guardada la version mas ligera de lo vuestro."
+                },
+                {
+                    when: "Abrir dentro de unos meses",
+                    title: "Comprobar si todo sigue igual",
+                    body: "La gracia de una capsula del tiempo es ver que cambia y que sigue intacto. Esta esta hecha justo para eso."
+                }
+            ],
+            surprises: [
+                {
+                    eyebrow: "Sorpresa de Carla",
+                    title: "Una entrada distinta cada vez",
+                    body: "Hay recuerdos que no necesitan orden exacto. A veces lo mejor es que el archivo elija por ti."
+                },
+                {
+                    eyebrow: "Momento privado",
+                    title: "La chispa sigue aqui",
+                    body: "Incluso cuando no abras una carta concreta, el tono del proyecto sigue diciendo bastante por si solo."
+                }
             ],
             letters: [
                 {
@@ -96,14 +142,60 @@ window.ARCHIVO_CONTENT = {
             heroTitle: "Tu version entra mas cinematica, mas intensa y con otro pulso.",
             heroDescription: "Este lado del archivo prioriza un tono mas nocturno, otra mezcla musical y un cierre distinto en la valoracion.",
             statusLabel: "Modo Alina",
+            surpriseLabel: "Disponible",
             libraryTitle: "Contenido para Alina",
             galleryTitle: "Recuerdos para Alina",
             lettersTitle: "Cartas para Alina",
+            timelineTitle: "Momentos que han dejado marca",
+            capsuleTitle: "Guardado para despues",
             notesTitle: "Notas de Alina",
+            securitySummary: "El perfil de Alina sigue siendo una proteccion de cliente. Cualquiera con acceso al codigo puede encontrar la clave.",
+            securityNextStep: "Para privacidad real hay que sacar la contraseña del frontend y servir el contenido desde una capa protegida.",
             notes: [
                 "El contenido puede ser completamente distinto aunque viva en la misma web.",
                 "Cada perfil usa su propia musica, textos y envio de valoracion.",
                 "Si anades mas archivos, puedes asignarlos solo al perfil que quieras."
+            ],
+            timeline: [
+                {
+                    date: "Primer tramo",
+                    title: "Conexion natural",
+                    body: "La confianza entra rapido y las conversaciones ya salen sin tener que forzarlas."
+                },
+                {
+                    date: "Entre bromas y mensajes",
+                    title: "El tono propio",
+                    body: "Aparece esa mezcla entre vacile, confianza y momentos que se quedan mejor de lo que parecian."
+                },
+                {
+                    date: "Version actual",
+                    title: "Un archivo con su propio pulso",
+                    body: "Esta parte deja de ser una simple pagina y se convierte en una version hecha expresamente para ella."
+                }
+            ],
+            capsule: [
+                {
+                    when: "Abrir cuando quieras recordar el tono",
+                    title: "Lo que se mantiene",
+                    body: "No todo tiene que ser enorme para importar. A veces basta con volver a una energia que ya funcionaba."
+                },
+                {
+                    when: "Abrir en una noche tranquila",
+                    title: "Version nocturna",
+                    body: "Esta capsula esta pensada para entrar sin prisa, con otra musica y con la sensacion de mirar algo mas cinematografico."
+                }
+            ],
+            surprises: [
+                {
+                    eyebrow: "Sorpresa de Alina",
+                    title: "Un archivo que cambia el orden",
+                    body: "La misma historia se puede sentir distinta si el primer detalle no siempre es el mismo."
+                },
+                {
+                    eyebrow: "Momento reservado",
+                    title: "Un pequeño giro de entrada",
+                    body: "A veces la sorpresa no es el contenido, sino la forma en la que reaparece."
+                }
             ],
             letters: [
                 {

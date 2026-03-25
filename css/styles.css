@@ -470,13 +470,16 @@ body[data-profile="alina"] .intro-card {
 
 .media-grid,
 .photo-grid,
-.letters-grid {
+.letters-grid,
+.capsule-grid {
     display: grid;
     gap: 1rem;
 }
 
 .media-card,
 .photo-card,
+.timeline-item,
+.capsule-card,
 .letter-card {
     padding: 1rem;
     border-radius: var(--radius-lg);
@@ -574,6 +577,81 @@ body[data-profile="alina"] .media-frame {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+.timeline {
+    display: grid;
+    gap: 1rem;
+    position: relative;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+    opacity: 0.28;
+}
+
+.timeline-item {
+    position: relative;
+    margin-left: 1.5rem;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(252, 244, 238, 0.92) 100%);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -1.42rem;
+    top: 1.25rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 6px var(--accent-soft);
+}
+
+.timeline-date,
+.capsule-when {
+    margin: 0 0 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.timeline-item h4,
+.capsule-card h4 {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2rem;
+    line-height: 0.95;
+}
+
+.timeline-body,
+.capsule-body {
+    margin: 0.7rem 0 0;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.capsule-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.capsule-card {
+    background:
+        radial-gradient(circle at top right, rgba(214, 133, 83, 0.16), transparent 34%),
+        linear-gradient(180deg, rgba(255, 250, 243, 0.94) 0%, rgba(249, 240, 230, 0.9) 100%);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
 .letter-card {
     display: grid;
     gap: 0.9rem;
@@ -633,10 +711,43 @@ body[data-profile="alina"] .letter-card {
         linear-gradient(180deg, rgba(249, 254, 255, 0.96) 0%, rgba(235, 248, 255, 0.92) 100%);
 }
 
+body[data-profile="carla"] .timeline-item,
+body[data-profile="carla"] .capsule-card {
+    background:
+        radial-gradient(circle at top left, rgba(255, 205, 226, 0.26), transparent 34%),
+        linear-gradient(180deg, rgba(255, 249, 252, 0.96) 0%, rgba(255, 239, 246, 0.92) 100%);
+}
+
+body[data-profile="alina"] .timeline-item,
+body[data-profile="alina"] .capsule-card {
+    background:
+        radial-gradient(circle at top left, rgba(201, 238, 255, 0.28), transparent 34%),
+        linear-gradient(180deg, rgba(249, 254, 255, 0.96) 0%, rgba(235, 248, 255, 0.92) 100%);
+}
+
 .notes-card {
     padding: 1rem 1.2rem;
     border-radius: var(--radius-lg);
     line-height: 1.7;
+}
+
+.security-card {
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius-lg);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.86) 0%, rgba(252, 244, 238, 0.92) 100%);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.security-card p {
+    margin: 0;
+    line-height: 1.8;
+    color: var(--muted);
+}
+
+.security-card p + p {
+    margin-top: 0.8rem;
 }
 
 .rating-card {
@@ -755,7 +866,19 @@ body[data-profile="alina"] .star-button:hover {
     background: transparent;
 }
 
+.surprise-modal {
+    width: min(92vw, 720px);
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
 .lightbox::backdrop {
+    background: rgba(20, 12, 10, 0.82);
+    backdrop-filter: blur(6px);
+}
+
+.surprise-modal::backdrop {
     background: rgba(20, 12, 10, 0.82);
     backdrop-filter: blur(6px);
 }
@@ -776,6 +899,33 @@ body[data-profile="alina"] .star-button:hover {
     border-radius: 999px;
     background: rgba(255, 250, 243, 0.92);
     color: var(--accent-strong);
+}
+
+.surprise-card {
+    padding: 1.4rem;
+    border-radius: calc(var(--radius-xl) + 4px);
+    background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.24), transparent 30%),
+        var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.surprise-card h4,
+.surprise-copy {
+    margin: 0;
+}
+
+.surprise-card h4 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(2.4rem, 8vw, 4.5rem);
+    line-height: 0.94;
+}
+
+.surprise-copy {
+    margin-top: 0.9rem;
+    color: var(--muted);
+    line-height: 1.8;
 }
 
 @keyframes starBurst {

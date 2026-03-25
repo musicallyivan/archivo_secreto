@@ -96,10 +96,15 @@
                     <p class="panel-label">Musica de fondo</p>
                     <strong id="musicStatus">Lista</strong>
                 </div>
+                <div>
+                    <p class="panel-label">Momento sorpresa</p>
+                    <strong id="surpriseStatus">Pendiente</strong>
+                </div>
                 <div class="music-controls">
                     <button class="secondary-button" type="button" id="toggleMusicButton">Pausar musica</button>
                     <button class="secondary-button" type="button" id="nextTrackButton">Siguiente pista</button>
                 </div>
+                <button class="secondary-button" type="button" id="surpriseButton">Abrir sorpresa</button>
                 <button class="secondary-button" type="button" id="logoutButton">Cerrar acceso</button>
             </div>
         </header>
@@ -131,11 +136,42 @@
 
             <section class="section">
                 <div class="section-heading">
+                    <p class="eyebrow">Linea del tiempo</p>
+                    <h3 id="timelineTitle">Recorrido de recuerdos</h3>
+                </div>
+                <div class="timeline" id="timelineList"></div>
+            </section>
+
+            <section class="section">
+                <div class="section-heading">
+                    <p class="eyebrow">Capsula del tiempo</p>
+                    <h3 id="capsuleTitle">Mensajes para otro momento</h3>
+                </div>
+                <div class="capsule-grid" id="capsuleGrid"></div>
+            </section>
+
+            <section class="section">
+                <div class="section-heading">
                     <p class="eyebrow">Notas</p>
                     <h3 id="notesTitle">Como subir multimedia</h3>
                 </div>
                 <div class="notes-card">
                     <ol id="notesList"></ol>
+                </div>
+            </section>
+
+            <section class="section security-section">
+                <div class="section-heading">
+                    <p class="eyebrow">Seguridad</p>
+                    <h3>Estado real del acceso</h3>
+                </div>
+                <div class="security-card">
+                    <p id="securitySummary">
+                        Esta web sigue protegida solo en el navegador. Sirve como filtro visual, no como seguridad real.
+                    </p>
+                    <p id="securityNextStep">
+                        Si quieres privacidad real, el siguiente paso es mover la contraseña y el contenido sensible a un backend o a un acceso privado del hosting.
+                    </p>
                 </div>
             </section>
 
@@ -187,6 +223,15 @@
     <dialog class="lightbox" id="lightbox">
         <button class="lightbox-close" type="button" id="closeLightbox" aria-label="Cerrar visor">Cerrar</button>
         <img id="lightboxImage" alt="">
+    </dialog>
+
+    <dialog class="surprise-modal" id="surpriseModal">
+        <button class="lightbox-close" type="button" id="closeSurpriseModal" aria-label="Cerrar sorpresa">Cerrar</button>
+        <div class="surprise-card">
+            <p class="eyebrow" id="surpriseEyebrow">Sorpresa</p>
+            <h4 id="surpriseModalTitle">Tu archivo te ha guardado algo</h4>
+            <p class="surprise-copy" id="surpriseModalBody"></p>
+        </div>
     </dialog>
 
     <audio id="backgroundAudio" preload="auto"></audio>

@@ -24,19 +24,30 @@ const profileValue = document.getElementById("profileValue");
 const libraryTitle = document.getElementById("libraryTitle");
 const galleryTitle = document.getElementById("galleryTitle");
 const lettersTitle = document.getElementById("lettersTitle");
+const timelineTitle = document.getElementById("timelineTitle");
+const capsuleTitle = document.getElementById("capsuleTitle");
 const notesTitle = document.getElementById("notesTitle");
 const notesList = document.getElementById("notesList");
 const ratingTitle = document.getElementById("ratingTitle");
 const featuredGrid = document.getElementById("featuredGrid");
 const photoGrid = document.getElementById("photoGrid");
 const lettersGrid = document.getElementById("lettersGrid");
+const timelineList = document.getElementById("timelineList");
+const capsuleGrid = document.getElementById("capsuleGrid");
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightboxImage");
 const closeLightbox = document.getElementById("closeLightbox");
+const surpriseModal = document.getElementById("surpriseModal");
+const closeSurpriseModal = document.getElementById("closeSurpriseModal");
+const surpriseEyebrow = document.getElementById("surpriseEyebrow");
+const surpriseModalTitle = document.getElementById("surpriseModalTitle");
+const surpriseModalBody = document.getElementById("surpriseModalBody");
 const backgroundAudio = document.getElementById("backgroundAudio");
 const musicStatus = document.getElementById("musicStatus");
+const surpriseStatus = document.getElementById("surpriseStatus");
 const toggleMusicButton = document.getElementById("toggleMusicButton");
 const nextTrackButton = document.getElementById("nextTrackButton");
+const surpriseButton = document.getElementById("surpriseButton");
 const ratingForm = document.getElementById("ratingForm");
 const ratingStars = document.getElementById("ratingStars");
 const ratingValue = document.getElementById("ratingValue");
@@ -51,6 +62,8 @@ const thankYouCard = document.getElementById("thankYouCard");
 const thankYouMessage = document.getElementById("thankYouMessage");
 const thankYouMeta = document.getElementById("thankYouMeta");
 const rateAgainButton = document.getElementById("rateAgainButton");
+const securitySummary = document.getElementById("securitySummary");
+const securityNextStep = document.getElementById("securityNextStep");
 
 const SESSION_KEY = "archivo-secreto-session";
 const PROFILE_KEY = "archivo-secreto-profile";
@@ -63,6 +76,7 @@ const LOCK_MINUTES = 1;
 let currentTrackIndex = 0;
 let selectedRating = 0;
 let activeProfileName = "";
+let lastSurpriseIndex = -1;
 
 function getActiveProfile() {
     return content.profiles?.[activeProfileName] || null;
@@ -188,6 +202,26 @@ function renderNotes(items) {
     notesList.innerHTML = items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
+function renderTimeline(items) {
+    timelineList.innerHTML = items.map((item) => `
+        <article class="timeline-item">
+            <p class="timeline-date">${escapeHtml(item.date || "")}</p>
+            <h4>${escapeHtml(item.title || "")}</h4>
+            <p class="timeline-body">${escapeHtml(item.body || "")}</p>
+        </article>
+    `).join("");
+}
+
+function renderCapsule(items) {
+    capsuleGrid.innerHTML = items.map((item) => `
+        <article class="capsule-card">
+            <p class="capsule-when">${escapeHtml(item.when || "")}</p>
+            <h4>${escapeHtml(item.title || "")}</h4>
+            <p class="capsule-body">${escapeHtml(item.body || "")}</p>
+        </article>
+    `).join("");
+}
+
 function renderLetters(items) {
     lettersGrid.innerHTML = items.map((item) => `
         <article class="letter-card">
@@ -218,6 +252,12 @@ function closeLightboxModal() {
     }
 }
 
+function closeSurprise() {
+    if (surpriseModal.open) {
+        surpriseModal.close();
+    }
+}
+
 function updateMusicUi() {
     const tracks = getActiveProfile()?.backgroundTracks || [];
     const activeTrack = tracks[currentTrackIndex];
@@ -231,6 +271,33 @@ function updateMusicUi() {
 
     musicStatus.textContent = backgroundAudio.paused ? `${activeTrack.title} en pausa` : activeTrack.title;
     toggleMusicButton.textContent = backgroundAudio.paused ? "Reproducir musica" : "Pausar musica";
+}
+
+function updateSurpriseStatus() {
+    const profile = getActiveProfile();
+    const surprises = profile?.surprises || [];
+    surpriseStatus.textContent = surprises.length ? profile?.surpriseLabel || "Lista" : "Sin sorpresas";
+    surpriseButton.disabled = !surprises.length;
+}
+
+function showRandomSurprise() {
+    const surprises = getActiveProfile()?.surprises || [];
+    if (!surprises.length) {
+        return;
+    }
+
+    let nextIndex = Math.floor(Math.random() * surprises.length);
+    if (surprises.length > 1 && nextIndex === lastSurpriseIndex) {
+        nextIndex = (nextIndex + 1) % surprises.length;
+    }
+
+    lastSurpriseIndex = nextIndex;
+    const surprise = surprises[nextIndex];
+    surpriseEyebrow.textContent = surprise.eyebrow || "Sorpresa";
+    surpriseModalTitle.textContent = surprise.title || "Momento sorpresa";
+    surpriseModalBody.textContent = surprise.body || "";
+    surpriseStatus.textContent = `Ultima sorpresa #${nextIndex + 1}`;
+    surpriseModal.showModal();
 }
 
 function setTrack(index) {
@@ -418,16 +485,24 @@ function applyProfile(profileName) {
     libraryTitle.textContent = profile.libraryTitle;
     galleryTitle.textContent = profile.galleryTitle;
     lettersTitle.textContent = profile.lettersTitle || "Mensajes solo para ti";
+    timelineTitle.textContent = profile.timelineTitle || "Recorrido de recuerdos";
+    capsuleTitle.textContent = profile.capsuleTitle || "Mensajes para otro momento";
     notesTitle.textContent = profile.notesTitle;
     ratingTitle.textContent = profile.ratingTitle;
+    securitySummary.textContent = profile.securitySummary || "La proteccion actual es solo de navegador.";
+    securityNextStep.textContent = profile.securityNextStep || "Para privacidad real necesitas backend o una capa privada del hosting.";
     profileInput.value = profileName;
     renderFeatured(profile.featured || []);
     renderPhotos(profile.photos || []);
     renderLetters(profile.letters || []);
+    renderTimeline(profile.timeline || []);
+    renderCapsule(profile.capsule || []);
     renderNotes(profile.notes || []);
     const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}");
     visitCount.textContent = String(visitsByProfile[profileName] || 0);
+    lastSurpriseIndex = -1;
     setTrack(0);
+    updateSurpriseStatus();
     loadSavedRating();
 }
 
@@ -529,9 +604,15 @@ photoGrid.addEventListener("keydown", (event) => {
 });
 
 closeLightbox.addEventListener("click", closeLightboxModal);
+closeSurpriseModal.addEventListener("click", closeSurprise);
 lightbox.addEventListener("click", (event) => {
     if (event.target === lightbox) {
         closeLightboxModal();
+    }
+});
+surpriseModal.addEventListener("click", (event) => {
+    if (event.target === surpriseModal) {
+        closeSurprise();
     }
 });
 
@@ -549,6 +630,8 @@ nextTrackButton.addEventListener("click", async () => {
     await playBackgroundMusic();
 });
 
+surpriseButton.addEventListener("click", showRandomSurprise);
+
 backgroundAudio.addEventListener("ended", async () => {
     setTrack(currentTrackIndex + 1);
     await playBackgroundMusic();
@@ -557,6 +640,7 @@ backgroundAudio.addEventListener("ended", async () => {
 window.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
         closeLightboxModal();
+        closeSurprise();
     }
 });
 
