@@ -17,18 +17,30 @@ const loginFeedback = document.getElementById("loginFeedback");
 const logoutButton = document.getElementById("logoutButton");
 const visitCount = document.getElementById("visitCount");
 const heroEyebrow = document.getElementById("heroEyebrow");
+const timeGreeting = document.getElementById("timeGreeting");
 const heroTitle = document.getElementById("heroTitle");
 const heroDescription = document.getElementById("heroDescription");
 const statusValue = document.getElementById("statusValue");
 const profileValue = document.getElementById("profileValue");
+const countdownStatus = document.getElementById("countdownStatus");
 const libraryTitle = document.getElementById("libraryTitle");
 const galleryTitle = document.getElementById("galleryTitle");
 const lettersTitle = document.getElementById("lettersTitle");
 const timelineTitle = document.getElementById("timelineTitle");
 const capsuleTitle = document.getElementById("capsuleTitle");
+const playlistTitle = document.getElementById("playlistTitle");
+const dailyMemoryTitle = document.getElementById("dailyMemoryTitle");
+const countdownTitle = document.getElementById("countdownTitle");
 const notesTitle = document.getElementById("notesTitle");
 const notesList = document.getElementById("notesList");
 const ratingTitle = document.getElementById("ratingTitle");
+const countdownLabel = document.getElementById("countdownLabel");
+const countdownDays = document.getElementById("countdownDays");
+const countdownHours = document.getElementById("countdownHours");
+const countdownMinutes = document.getElementById("countdownMinutes");
+const countdownCopy = document.getElementById("countdownCopy");
+const dailyMemoryCard = document.getElementById("dailyMemoryCard");
+const playlistCard = document.getElementById("playlistCard");
 const featuredGrid = document.getElementById("featuredGrid");
 const photoGrid = document.getElementById("photoGrid");
 const lettersGrid = document.getElementById("lettersGrid");
@@ -77,6 +89,7 @@ let currentTrackIndex = 0;
 let selectedRating = 0;
 let activeProfileName = "";
 let lastSurpriseIndex = -1;
+let countdownTimerId = null;
 
 function getActiveProfile() {
     return content.profiles?.[activeProfileName] || null;
@@ -87,6 +100,24 @@ function formatTimestamp(date) {
         dateStyle: "long",
         timeStyle: "short"
     }).format(date);
+}
+
+function getTimeBucket() {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+        return "morning";
+    }
+
+    if (hour < 20) {
+        return "afternoon";
+    }
+
+    return "evening";
+}
+
+function getTodaySeed() {
+    const now = new Date();
+    return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 }
 
 function getClosingMessage(rating) {
@@ -202,6 +233,47 @@ function renderNotes(items) {
     notesList.innerHTML = items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
+function renderPlaylist(items) {
+    playlistCard.innerHTML = items.map((item, index) => `
+        <article class="playlist-item ${index === currentTrackIndex ? "is-active" : ""}">
+            <div>
+                <p class="playlist-index">Pista ${index + 1}</p>
+                <h4>${escapeHtml(item.title || `Pista ${index + 1}`)}</h4>
+            </div>
+            <p class="playlist-file">${escapeHtml(item.file || "")}</p>
+        </article>
+    `).join("");
+}
+
+function hashString(value) {
+    let hash = 0;
+    for (let index = 0; index < value.length; index += 1) {
+        hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+    }
+    return hash;
+}
+
+function renderDailyMemory(profile) {
+    const pool = [
+        ...(profile.photos || []).map((item) => ({ kind: "Foto", title: item.title, description: item.description })),
+        ...(profile.letters || []).map((item) => ({ kind: "Carta", title: item.title, description: item.tag || item.signature || "" })),
+        ...(profile.featured || []).map((item) => ({ kind: "Video", title: item.title, description: item.description }))
+    ];
+
+    if (!pool.length) {
+        dailyMemoryCard.innerHTML = "<p class=\"daily-memory-empty\">Todavia no hay recuerdos suficientes para elegir uno aleatorio.</p>";
+        return;
+    }
+
+    const seed = hashString(`${activeProfileName}-${getTodaySeed()}`);
+    const selected = pool[seed % pool.length];
+    dailyMemoryCard.innerHTML = `
+        <p class="daily-memory-kind">${escapeHtml(selected.kind)}</p>
+        <h4>${escapeHtml(selected.title || "Recuerdo del dia")}</h4>
+        <p class="daily-memory-copy">${escapeHtml(selected.description || "El archivo ha querido destacar esta pieza hoy.")}</p>
+    `;
+}
+
 function renderTimeline(items) {
     timelineList.innerHTML = items.map((item) => `
         <article class="timeline-item">
@@ -271,6 +343,7 @@ function updateMusicUi() {
 
     musicStatus.textContent = backgroundAudio.paused ? `${activeTrack.title} en pausa` : activeTrack.title;
     toggleMusicButton.textContent = backgroundAudio.paused ? "Reproducir musica" : "Pausar musica";
+    renderPlaylist(tracks);
 }
 
 function updateSurpriseStatus() {
@@ -310,6 +383,79 @@ function setTrack(index) {
     currentTrackIndex = (index + tracks.length) % tracks.length;
     backgroundAudio.src = tracks[currentTrackIndex].file;
     updateMusicUi();
+}
+
+function updateTimeGreeting(profile) {
+    const greetings = profile?.timeGreetings || {};
+    const bucket = getTimeBucket();
+    timeGreeting.textContent = greetings[bucket] || "Esta version del archivo cambia segun el momento del dia.";
+}
+
+function stopCountdown() {
+    if (countdownTimerId) {
+        clearInterval(countdownTimerId);
+        countdownTimerId = null;
+    }
+}
+
+function updateCountdownUi() {
+    const countdown = getActiveProfile()?.countdown;
+    if (!countdown?.target) {
+        countdownStatus.textContent = "Sin fecha";
+        countdownLabel.textContent = "Proximo recuerdo";
+        countdownCopy.textContent = "";
+        countdownDays.textContent = "0";
+        countdownHours.textContent = "0";
+        countdownMinutes.textContent = "0";
+        return;
+    }
+
+    const targetTime = new Date(countdown.target).getTime();
+    const diff = targetTime - Date.now();
+    countdownLabel.textContent = countdown.label || "Cuenta atras";
+
+    if (diff <= 0) {
+        countdownStatus.textContent = "Fecha alcanzada";
+        countdownDays.textContent = "0";
+        countdownHours.textContent = "0";
+        countdownMinutes.textContent = "0";
+        countdownCopy.textContent = countdown.completeText || "La fecha ya ha llegado.";
+        return;
+    }
+
+    const totalMinutes = Math.floor(diff / 60000);
+    const days = Math.floor(totalMinutes / (60 * 24));
+    const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+    const minutes = totalMinutes % 60;
+    countdownDays.textContent = String(days);
+    countdownHours.textContent = String(hours);
+    countdownMinutes.textContent = String(minutes);
+    countdownStatus.textContent = `${days}d ${hours}h`;
+    countdownCopy.textContent = countdown.title || "El archivo espera el siguiente momento.";
+}
+
+function startCountdown() {
+    stopCountdown();
+    updateCountdownUi();
+    countdownTimerId = setInterval(updateCountdownUi, 60000);
+}
+
+function setupRevealAnimations() {
+    const sections = document.querySelectorAll(".section, .hero");
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.16 });
+
+    sections.forEach((section, index) => {
+        section.classList.add("reveal");
+        section.style.setProperty("--reveal-delay", `${index * 70}ms`);
+        observer.observe(section);
+    });
 }
 
 async function playBackgroundMusic() {
@@ -478,6 +624,7 @@ function applyProfile(profileName) {
     introDescription.textContent = profile.introDescription || "Tu version arranca con su propia introduccion.";
     enterProfileButton.textContent = profile.introButton || "Entrar a mi archivo";
     heroEyebrow.textContent = profile.eyebrow;
+    updateTimeGreeting(profile);
     heroTitle.textContent = profile.heroTitle;
     heroDescription.textContent = profile.heroDescription;
     statusValue.textContent = profile.statusLabel;
@@ -487,6 +634,9 @@ function applyProfile(profileName) {
     lettersTitle.textContent = profile.lettersTitle || "Mensajes solo para ti";
     timelineTitle.textContent = profile.timelineTitle || "Recorrido de recuerdos";
     capsuleTitle.textContent = profile.capsuleTitle || "Mensajes para otro momento";
+    playlistTitle.textContent = profile.playlistTitle || "Las pistas de esta version";
+    dailyMemoryTitle.textContent = profile.dailyMemoryTitle || "Hoy el archivo ha elegido esto";
+    countdownTitle.textContent = profile.countdownTitle || "Un momento marcado en el archivo";
     notesTitle.textContent = profile.notesTitle;
     ratingTitle.textContent = profile.ratingTitle;
     securitySummary.textContent = profile.securitySummary || "La proteccion actual es solo de navegador.";
@@ -497,12 +647,15 @@ function applyProfile(profileName) {
     renderLetters(profile.letters || []);
     renderTimeline(profile.timeline || []);
     renderCapsule(profile.capsule || []);
+    renderDailyMemory(profile);
+    renderPlaylist(profile.backgroundTracks || []);
     renderNotes(profile.notes || []);
     const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}");
     visitCount.textContent = String(visitsByProfile[profileName] || 0);
     lastSurpriseIndex = -1;
     setTrack(0);
     updateSurpriseStatus();
+    startCountdown();
     loadSavedRating();
 }
 
@@ -522,6 +675,7 @@ function lockApp() {
     passwordInput.value = "";
     setFeedback("");
     pauseBackgroundMusic();
+    stopCountdown();
     showPasswordStep();
     activeProfileName = "";
     document.body.removeAttribute("data-profile");
@@ -669,4 +823,5 @@ rateAgainButton.addEventListener("click", showRatingForm);
 
 setInterval(updateLoginAvailability, 1000);
 
+setupRevealAnimations();
 bootstrap();

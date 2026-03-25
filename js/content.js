@@ -8,6 +8,11 @@ window.ARCHIVO_CONTENT = {
             introTitle: "Carla, esta portada es solo tuya.",
             introDescription: "Todo aqui entra con una energia mas rosa, mas cercana y mas tuya. Primero esta pequeña antesala, y despues el resto del archivo.",
             introButton: "Entrar al archivo de Carla",
+            timeGreetings: {
+                morning: "Buenos dias, Carla. Esta version despierta suave, rosa y muy tuya.",
+                afternoon: "Buenas tardes, Carla. El archivo entra calido y con la energia justa.",
+                evening: "Buenas noches, Carla. Este refugio se ve mejor cuando todo fuera va mas lento."
+            },
             heroTitle: "Tu version abre un refugio calido, directo y luminoso.",
             heroDescription: "Este lado del archivo mezcla recuerdos, ritmo y una despedida suave al final del recorrido.",
             statusLabel: "Modo Carla",
@@ -15,11 +20,20 @@ window.ARCHIVO_CONTENT = {
             libraryTitle: "Tu seleccion destacada",
             galleryTitle: "Recuerdos para Carla",
             lettersTitle: "Cartas para Carla",
+            playlistTitle: "La mezcla que acompana a Carla",
+            dailyMemoryTitle: "Hoy la pagina ha elegido este recuerdo para Carla",
             timelineTitle: "Como ha ido creciendo lo nuestro",
             capsuleTitle: "Abrir en el momento correcto",
+            countdownTitle: "Lo que queda para el siguiente momento",
             notesTitle: "Pequenas pistas",
             securitySummary: "La clave de Carla sigue estando en el codigo del navegador. El acceso filtra, pero no blinda el contenido.",
             securityNextStep: "Si esto tiene que ser privado de verdad, toca pasar a un backend, Netlify Identity o una zona protegida por servidor.",
+            countdown: {
+                label: "Cuenta atras para el verano",
+                title: "Lo que queda para el proximo recuerdo fuerte",
+                target: "2026-06-21T00:00:00+02:00",
+                completeText: "La fecha ya ha llegado. Ahora toca llenar esta parte con recuerdos nuevos."
+            },
             notes: [
                 "Cada bloque puede seguir creciendo sin tocar el resto de la pagina.",
                 "La musica de fondo y la galeria se cargan solo para tu perfil.",
@@ -139,6 +153,11 @@ window.ARCHIVO_CONTENT = {
             introTitle: "Alina, esta version entra con otro aire.",
             introDescription: "Tu portada va mas limpia, mas celeste y con una sensacion distinta antes de abrir el contenido completo.",
             introButton: "Entrar al archivo de Alina",
+            timeGreetings: {
+                morning: "Buenos dias, Alina. Esta portada entra ligera, limpia y con otro aire.",
+                afternoon: "Buenas tardes, Alina. El archivo mantiene el tono claro pero con mas pulso.",
+                evening: "Buenas noches, Alina. Esta version funciona mejor con una entrada mas cinematica."
+            },
             heroTitle: "Tu version entra mas cinematica, mas intensa y con otro pulso.",
             heroDescription: "Este lado del archivo prioriza un tono mas nocturno, otra mezcla musical y un cierre distinto en la valoracion.",
             statusLabel: "Modo Alina",
@@ -146,11 +165,20 @@ window.ARCHIVO_CONTENT = {
             libraryTitle: "Contenido para Alina",
             galleryTitle: "Recuerdos para Alina",
             lettersTitle: "Cartas para Alina",
+            playlistTitle: "La mezcla que acompana a Alina",
+            dailyMemoryTitle: "Hoy la pagina ha elegido este recuerdo para Alina",
             timelineTitle: "Momentos que han dejado marca",
             capsuleTitle: "Guardado para despues",
+            countdownTitle: "La cuenta atras de esta version",
             notesTitle: "Notas de Alina",
             securitySummary: "El perfil de Alina sigue siendo una proteccion de cliente. Cualquiera con acceso al codigo puede encontrar la clave.",
             securityNextStep: "Para privacidad real hay que sacar la contraseña del frontend y servir el contenido desde una capa protegida.",
+            countdown: {
+                label: "Cuenta atras para una noche especial",
+                title: "Lo que queda para volver a abrir este tono",
+                target: "2026-05-15T21:00:00+02:00",
+                completeText: "La espera se ha cerrado. Este tramo ya puede convertirse en un recuerdo nuevo."
+            },
             notes: [
                 "El contenido puede ser completamente distinto aunque viva en la misma web.",
                 "Cada perfil usa su propia musica, textos y envio de valoracion.",
