@@ -4,6 +4,10 @@ window.ARCHIVO_CONTENT = {
         Carla: {
             theme: "carla",
             eyebrow: "Archivo de Carla",
+            introEyebrow: "Entrada de Carla",
+            introTitle: "Carla, esta portada es solo tuya.",
+            introDescription: "Todo aqui entra con una energia mas rosa, mas cercana y mas tuya. Primero esta pequeña antesala, y despues el resto del archivo.",
+            introButton: "Entrar al archivo de Carla",
             heroTitle: "Tu version abre un refugio calido, directo y luminoso.",
             heroDescription: "Este lado del archivo mezcla recuerdos, ritmo y una despedida suave al final del recorrido.",
             statusLabel: "Modo Carla",
@@ -65,6 +69,10 @@ window.ARCHIVO_CONTENT = {
         Alina: {
             theme: "alina",
             eyebrow: "Archivo de Alina",
+            introEyebrow: "Entrada de Alina",
+            introTitle: "Alina, esta version entra con otro aire.",
+            introDescription: "Tu portada va mas limpia, mas celeste y con una sensacion distinta antes de abrir el contenido completo.",
+            introButton: "Entrar al archivo de Alina",
             heroTitle: "Tu version entra mas cinematica, mas intensa y con otro pulso.",
             heroDescription: "Este lado del archivo prioriza un tono mas nocturno, otra mezcla musical y un cierre distinto en la valoracion.",
             statusLabel: "Modo Alina",

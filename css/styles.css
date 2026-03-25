@@ -124,6 +124,7 @@ button {
 }
 
 .login-shell,
+.intro-screen,
 .page {
     width: min(1120px, calc(100% - 2rem));
     margin: 0 auto;
@@ -136,7 +137,15 @@ button {
     padding: 1.5rem 0;
 }
 
+.intro-screen {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem 0;
+}
+
 .login-card,
+.intro-card,
 .hero,
 .section,
 .notes-card,
@@ -152,6 +161,46 @@ button {
     width: min(100%, 520px);
     padding: 1.4rem;
     border-radius: var(--radius-xl);
+}
+
+.intro-card {
+    width: min(100%, 760px);
+    padding: 1.6rem;
+    border-radius: calc(var(--radius-xl) + 4px);
+    text-align: center;
+    background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.2), transparent 30%),
+        var(--surface);
+}
+
+.intro-card h2 {
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(3rem, 9vw, 5.8rem);
+    line-height: 0.92;
+}
+
+.intro-copy {
+    max-width: 36rem;
+    margin: 1rem auto 0;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.intro-card button {
+    min-width: min(100%, 260px);
+    margin-top: 1.4rem;
+    min-height: 56px;
+    padding: 0.95rem 1.3rem;
+    border-radius: 999px;
+    color: #fff8fb;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    font-weight: 700;
+    transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.intro-card button:hover {
+    transform: translateY(-2px);
 }
 
 .login-card h1,
@@ -360,12 +409,26 @@ body[data-profile="carla"] .thank-you-card {
         linear-gradient(180deg, rgba(255, 248, 252, 0.96) 0%, rgba(255, 235, 244, 0.92) 100%);
 }
 
+body[data-profile="carla"] .intro-card {
+    background:
+        radial-gradient(circle at top left, rgba(255, 190, 217, 0.34), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(255, 225, 236, 0.36), transparent 28%),
+        linear-gradient(180deg, rgba(255, 248, 252, 0.98) 0%, rgba(255, 232, 242, 0.94) 100%);
+}
+
 body[data-profile="alina"] .hero-panel,
 body[data-profile="alina"] .rating-card,
 body[data-profile="alina"] .thank-you-card {
     background:
         radial-gradient(circle at top left, rgba(176, 232, 255, 0.3), transparent 30%),
         linear-gradient(180deg, rgba(248, 253, 255, 0.96) 0%, rgba(231, 247, 255, 0.92) 100%);
+}
+
+body[data-profile="alina"] .intro-card {
+    background:
+        radial-gradient(circle at top left, rgba(186, 233, 255, 0.36), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(224, 246, 255, 0.38), transparent 28%),
+        linear-gradient(180deg, rgba(248, 253, 255, 0.98) 0%, rgba(230, 246, 255, 0.94) 100%);
 }
 
 .hero-panel strong {

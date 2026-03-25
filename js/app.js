@@ -1,6 +1,11 @@
 const content = window.ARCHIVO_CONTENT || { profiles: {}, password: "" };
 
 const loginShell = document.getElementById("loginShell");
+const introScreen = document.getElementById("introScreen");
+const introEyebrow = document.getElementById("introEyebrow");
+const introTitle = document.getElementById("introTitle");
+const introDescription = document.getElementById("introDescription");
+const enterProfileButton = document.getElementById("enterProfileButton");
 const app = document.getElementById("app");
 const loginForm = document.getElementById("loginForm");
 const profileStep = document.getElementById("profileStep");
@@ -376,6 +381,20 @@ function showProfileStep() {
 function showPasswordStep() {
     profileStep.classList.add("hidden");
     loginForm.classList.remove("hidden");
+    introScreen.classList.add("hidden");
+    app.classList.add("hidden");
+}
+
+function showIntroScreen() {
+    loginShell.classList.add("hidden");
+    introScreen.classList.remove("hidden");
+    app.classList.add("hidden");
+}
+
+function showApp() {
+    loginShell.classList.add("hidden");
+    introScreen.classList.add("hidden");
+    app.classList.remove("hidden");
 }
 
 function applyProfile(profileName) {
@@ -387,6 +406,10 @@ function applyProfile(profileName) {
     activeProfileName = profileName;
     currentTrackIndex = 0;
     document.body.dataset.profile = profile.theme || "";
+    introEyebrow.textContent = profile.introEyebrow || `Entrada de ${profileName}`;
+    introTitle.textContent = profile.introTitle || "Una portada hecha para ti.";
+    introDescription.textContent = profile.introDescription || "Tu version arranca con su propia introduccion.";
+    enterProfileButton.textContent = profile.introButton || "Entrar a mi archivo";
     heroEyebrow.textContent = profile.eyebrow;
     heroTitle.textContent = profile.heroTitle;
     heroDescription.textContent = profile.heroDescription;
@@ -409,8 +432,7 @@ function applyProfile(profileName) {
 }
 
 function unlockApp() {
-    loginShell.classList.add("hidden");
-    app.classList.remove("hidden");
+    showApp();
     localStorage.setItem(SESSION_KEY, "open");
     localStorage.setItem(PROFILE_KEY, activeProfileName);
     registerVisit();
@@ -481,9 +503,11 @@ backToPasswordButton.addEventListener("click", showPasswordStep);
 profileButtons.forEach((button) => {
     button.addEventListener("click", () => {
         applyProfile(button.dataset.profile);
-        unlockApp();
+        showIntroScreen();
     });
 });
+
+enterProfileButton.addEventListener("click", unlockApp);
 
 photoGrid.addEventListener("click", (event) => {
     const card = event.target.closest(".photo-card");
