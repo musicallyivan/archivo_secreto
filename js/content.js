@@ -28,12 +28,26 @@ window.ARCHIVO_CONTENT = {
             notesTitle: "Pequenas pistas",
             securitySummary: "La clave de Carla sigue estando en el codigo del navegador. El acceso filtra, pero no blinda el contenido.",
             securityNextStep: "Si esto tiene que ser privado de verdad, toca pasar a un backend, Netlify Identity o una zona protegida por servidor.",
-            countdown: {
-                label: "Cuenta atras para el verano",
-                title: "Lo que queda para el proximo recuerdo fuerte",
-                target: "2026-06-21T00:00:00+02:00",
-                completeText: "La fecha ya ha llegado. Ahora toca llenar esta parte con recuerdos nuevos."
-            },
+            countdowns: [
+                {
+                    label: "Cuenta atras para el verano",
+                    title: "Lo que queda para el proximo recuerdo fuerte",
+                    target: "2026-06-21T00:00:00+02:00",
+                    completeText: "La fecha ya ha llegado. Ahora toca llenar esta parte con recuerdos nuevos."
+                },
+                {
+                    label: "Cuenta atras para el cumple de Ivan",
+                    title: "El siguiente punto marcado para Carla dentro del archivo",
+                    target: "2026-06-15T00:00:00+02:00",
+                    completeText: "El cumple de Ivan ya ha llegado. Toca cambiar esta tarjeta por un recuerdo nuevo."
+                },
+                {
+                    label: "Cuenta atras para el cumple de Carla",
+                    title: "El momento más especial del año",
+                    target: "2027-01-12T00:00:00+02:00",
+                    completeText: "Tu cumple ya ha llegado. ¡Felicidades! Que te lo pases genial y que esta parte del archivo se llene de recuerdos nuevos ❤️"
+                }
+            ],
             notes: [
                 "Cada bloque puede seguir creciendo sin tocar el resto de la pagina.",
                 "La musica de fondo y la galeria se cargan solo para tu perfil.",
@@ -111,6 +125,14 @@ window.ARCHIVO_CONTENT = {
                 {
                     title: "Tell Me",
                     file: "assets/media/MUSICA 2.mp3"
+                },
+                {
+                    title: "Raindance",
+                    file: "assets/media/MUSICA 4.mp3"
+                },
+                {
+                    title: "Buenos Días",
+                    file: "assets/media/MUSICA 5.mp3"
                 }
             ],
             photos: [
@@ -173,12 +195,20 @@ window.ARCHIVO_CONTENT = {
             notesTitle: "Notas de Alina",
             securitySummary: "El perfil de Alina sigue siendo una proteccion de cliente. Cualquiera con acceso al codigo puede encontrar la clave.",
             securityNextStep: "Para privacidad real hay que sacar la contraseña del frontend y servir el contenido desde una capa protegida.",
-            countdown: {
-                label: "Cuenta atras para una noche especial",
-                title: "Lo que queda para volver a abrir este tono",
-                target: "2026-05-15T21:00:00+02:00",
-                completeText: "La espera se ha cerrado. Este tramo ya puede convertirse en un recuerdo nuevo."
-            },
+            countdowns: [
+                {
+                    label: "Cuenta atras para una noche especial",
+                    title: "Lo que queda para volver a abrir este tono",
+                    target: "2026-05-15T21:00:00+02:00",
+                    completeText: "La espera se ha cerrado. Este tramo ya puede convertirse en un recuerdo nuevo."
+                },
+                {
+                    label: "Cuenta atras para el verano de Alina",
+                    title: "Otro momento guardado para esta version del archivo",
+                    target: "2026-07-01T00:00:00+02:00",
+                    completeText: "Esta segunda fecha de Alina ya se ha cumplido. Sustituyela por el siguiente recuerdo."
+                }
+            ],
             notes: [
                 "El contenido puede ser completamente distinto aunque viva en la misma web.",
                 "Cada perfil usa su propia musica, textos y envio de valoracion.",

@@ -34,11 +34,7 @@ const countdownTitle = document.getElementById("countdownTitle");
 const notesTitle = document.getElementById("notesTitle");
 const notesList = document.getElementById("notesList");
 const ratingTitle = document.getElementById("ratingTitle");
-const countdownLabel = document.getElementById("countdownLabel");
-const countdownDays = document.getElementById("countdownDays");
-const countdownHours = document.getElementById("countdownHours");
-const countdownMinutes = document.getElementById("countdownMinutes");
-const countdownCopy = document.getElementById("countdownCopy");
+const countdownList = document.getElementById("countdownList");
 const dailyMemoryCard = document.getElementById("dailyMemoryCard");
 const playlistCard = document.getElementById("playlistCard");
 const featuredGrid = document.getElementById("featuredGrid");
@@ -240,7 +236,6 @@ function renderPlaylist(items) {
                 <p class="playlist-index">Pista ${index + 1}</p>
                 <h4>${escapeHtml(item.title || `Pista ${index + 1}`)}</h4>
             </div>
-            <p class="playlist-file">${escapeHtml(item.file || "")}</p>
         </article>
     `).join("");
 }
@@ -398,40 +393,118 @@ function stopCountdown() {
     }
 }
 
-function updateCountdownUi() {
-    const countdown = getActiveProfile()?.countdown;
+function getProfileCountdowns(profile = getActiveProfile()) {
+    if (!profile) {
+        return [];
+    }
+
+    if (Array.isArray(profile.countdowns) && profile.countdowns.length) {
+        return profile.countdowns;
+    }
+
+    return profile.countdown ? [profile.countdown] : [];
+}
+
+function getCountdownSnapshot(countdown) {
+    const fallback = {
+        label: countdown?.label || "Cuenta atras",
+        title: countdown?.title || "",
+        days: "0",
+        hours: "0",
+        minutes: "0",
+        status: "Sin fecha",
+        complete: true
+    };
+
     if (!countdown?.target) {
-        countdownStatus.textContent = "Sin fecha";
-        countdownLabel.textContent = "Proximo recuerdo";
-        countdownCopy.textContent = "";
-        countdownDays.textContent = "0";
-        countdownHours.textContent = "0";
-        countdownMinutes.textContent = "0";
-        return;
+        return fallback;
     }
 
     const targetTime = new Date(countdown.target).getTime();
-    const diff = targetTime - Date.now();
-    countdownLabel.textContent = countdown.label || "Cuenta atras";
+    if (Number.isNaN(targetTime)) {
+        return fallback;
+    }
 
+    const diff = targetTime - Date.now();
     if (diff <= 0) {
-        countdownStatus.textContent = "Fecha alcanzada";
-        countdownDays.textContent = "0";
-        countdownHours.textContent = "0";
-        countdownMinutes.textContent = "0";
-        countdownCopy.textContent = countdown.completeText || "La fecha ya ha llegado.";
-        return;
+        return {
+            ...fallback,
+            status: "Fecha alcanzada",
+            title: countdown.completeText || "La fecha ya ha llegado.",
+            complete: true
+        };
     }
 
     const totalMinutes = Math.floor(diff / 60000);
     const days = Math.floor(totalMinutes / (60 * 24));
     const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
     const minutes = totalMinutes % 60;
-    countdownDays.textContent = String(days);
-    countdownHours.textContent = String(hours);
-    countdownMinutes.textContent = String(minutes);
-    countdownStatus.textContent = `${days}d ${hours}h`;
-    countdownCopy.textContent = countdown.title || "El archivo espera el siguiente momento.";
+
+    return {
+        label: countdown.label || "Cuenta atras",
+        title: countdown.title || "El archivo espera el siguiente momento.",
+        days: String(days),
+        hours: String(hours),
+        minutes: String(minutes),
+        status: `${days}d ${hours}h`,
+        complete: false,
+        remainingMinutes: totalMinutes
+    };
+}
+
+function updateCountdownUi() {
+    const countdowns = getProfileCountdowns();
+    if (!countdowns.length) {
+        countdownStatus.textContent = "Sin fecha";
+        countdownList.innerHTML = `
+            <div class="countdown-card">
+                <p class="countdown-label">Proximo recuerdo</p>
+                <div class="countdown-grid">
+                    <article class="countdown-unit">
+                        <strong>0</strong>
+                        <span>Dias</span>
+                    </article>
+                    <article class="countdown-unit">
+                        <strong>0</strong>
+                        <span>Horas</span>
+                    </article>
+                    <article class="countdown-unit">
+                        <strong>0</strong>
+                        <span>Min</span>
+                    </article>
+                </div>
+                <p class="countdown-copy"></p>
+            </div>
+        `;
+        return;
+    }
+
+    const snapshots = countdowns.map(getCountdownSnapshot);
+    const nextActiveCountdown = snapshots
+        .filter((item) => !item.complete && Number.isFinite(item.remainingMinutes))
+        .sort((left, right) => left.remainingMinutes - right.remainingMinutes)[0];
+
+    countdownStatus.textContent = nextActiveCountdown ? nextActiveCountdown.status : "Fecha alcanzada";
+    countdownList.innerHTML = snapshots.map((item) => `
+        <div class="countdown-card">
+            <p class="countdown-label">${item.label}</p>
+            <div class="countdown-grid">
+                <article class="countdown-unit">
+                    <strong>${item.days}</strong>
+                    <span>Dias</span>
+                </article>
+                <article class="countdown-unit">
+                    <strong>${item.hours}</strong>
+                    <span>Horas</span>
+                </article>
+                <article class="countdown-unit">
+                    <strong>${item.minutes}</strong>
+                    <span>Min</span>
+                </article>
+            </div>
+            <p class="countdown-copy">${item.title}</p>
+        </div>
+    `).join("");
 }
 
 function startCountdown() {
