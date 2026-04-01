@@ -197,16 +197,22 @@ window.ARCHIVO_CONTENT = {
             securityNextStep: "Para privacidad real hay que sacar la contraseña del frontend y servir el contenido desde una capa protegida.",
             countdowns: [
                 {
-                    label: "Cuenta atras para una noche especial",
-                    title: "Lo que queda para volver a abrir este tono",
-                    target: "2026-05-15T21:00:00+02:00",
-                    completeText: "La espera se ha cerrado. Este tramo ya puede convertirse en un recuerdo nuevo."
+                    label: "Cuenta atras para el verano",
+                    title: "Lo que queda para el proximo recuerdo fuerte",
+                    target: "2026-06-21T21:00:00+02:00",
+                    completeText: "La fecha ya ha llegado. Ahora toca llenar esta parte con recuerdos nuevos."
                 },
                 {
-                    label: "Cuenta atras para el verano de Alina",
-                    title: "Otro momento guardado para esta version del archivo",
-                    target: "2026-07-01T00:00:00+02:00",
-                    completeText: "Esta segunda fecha de Alina ya se ha cumplido. Sustituyela por el siguiente recuerdo."
+                    label: "Cuenta atras para el cumple de Ivan",
+                    title: "El siguiente momento marcado para Alina en esta version del archivo",
+                    target: "2026-06-15T00:00:00+02:00",
+                    completeText: "El cumple de Ivan ya ha llegado. Toca cambiar esta tarjeta por un recuerdo nuevo."
+                },
+                {
+                    label: "Cuenta atras para el cumple de Alina",
+                    title: "El momento más especial del año",
+                    target: "2026-10-10T00:00:00+02:00",
+                    completeText: "Tu cumple ya ha llegado. ¡Felicidades! Que te lo pases genial y que esta parte del archivo se llene de recuerdos nuevos ❤️"
                 }
             ],
             notes: [
@@ -284,8 +290,12 @@ window.ARCHIVO_CONTENT = {
                     file: "assets/media/MUSICA 3.mp3"
                 },
                 {
-                    title: "Tell Me",
-                    file: "assets/media/MUSICA 2.mp3"
+                    title: "Choque",
+                    file: "assets/media/MUSICA 6.mp3"
+                },
+                {
+                    title: "Tussi Channel",
+                    file: "assets/media/MUSICA 7.mp3"
                 }
             ],
             photos: [
