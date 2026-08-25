@@ -1,18 +1,17 @@
-// Compatibility loader: keeps the current archive app intact while adding a dedicated password alias.
-// "cumple_carla" opens the same protected area as the 2027 access until its own content is defined.
+// The birthday password has its own completely separate experience.
+// Other passwords continue to use the existing archive application.
 (function () {
-    const ORIGINAL_APP = "https://raw.githubusercontent.com/musicallyivan/archivo_secreto/f973bbf7f3aaafd75cb773da22bfae312400983e/js/app.js";
-
-    document.addEventListener("submit", (event) => {
+    document.addEventListener("submit", function (event) {
         const form = event.target;
-        const passwordInput = form?.querySelector?.("#password");
-        if (passwordInput && passwordInput.value.trim() === "cumple_carla") {
-            passwordInput.value = "2027";
-        }
+        const input = form && form.querySelector ? form.querySelector("#password") : null;
+        if (!input || input.value.trim() !== "cumple_carla") return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        window.location.href = "cumple-carla.html";
     }, true);
 
-    const script = document.createElement("script");
-    script.src = ORIGINAL_APP;
-    script.async = false;
-    document.currentScript?.after(script) || document.head.appendChild(script);
+    const legacyScript = document.createElement("script");
+    legacyScript.src = "https://raw.githubusercontent.com/musicallyivan/archivo_secreto/f973bbf7f3aaafd75cb773da22bfae312400983e/js/app.js";
+    legacyScript.async = false;
+    document.head.appendChild(legacyScript);
 })();
