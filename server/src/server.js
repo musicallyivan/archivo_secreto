@@ -27,11 +27,21 @@ await pool.query(`
   )
 `);
 
-const allowedOrigins = process.env.ALLOWED_ORIGIN
-  ? process.env.ALLOWED_ORIGIN.split(',').map(v => v.trim()).filter(Boolean)
-  : true;
+const configuredOrigins = (process.env.ALLOWED_ORIGIN || 'https://musicallyivan.github.io')
+  .split(',').map(v => v.trim()).filter(Boolean);
 
-app.use(cors({ origin: allowedOrigins }));
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || configuredOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Origin not allowed by CORS'));
+  },
+  methods: ['GET', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '8kb' }));
 
 app.get('/api/health', async (_req, res) => {
@@ -46,11 +56,9 @@ app.get('/api/health', async (_req, res) => {
 app.get('/api/future-message', async (req, res) => {
   const profile = String(req.query.profile || 'carla').trim().slice(0, 64);
   if (!profile) return res.status(400).json({ error: 'Perfil inválido.' });
-
   try {
     const { rows } = await pool.query(
-      'SELECT message, created_at, updated_at FROM future_messages WHERE profile = $1',
-      [profile]
+      'SELECT message, created_at, updated_at FROM future_messages WHERE profile = $1', [profile]
     );
     if (!rows[0]) return res.status(404).json({ message: null });
     res.json(rows[0]);
@@ -62,18 +70,14 @@ app.get('/api/future-message', async (req, res) => {
 app.put('/api/future-message', async (req, res) => {
   const profile = String(req.body?.profile || 'carla').trim().slice(0, 64);
   const message = String(req.body?.message || '').trim();
-
   if (!profile) return res.status(400).json({ error: 'Perfil inválido.' });
   if (!message) return res.status(400).json({ error: 'El mensaje no puede estar vacío.' });
   if (message.length > 4000) return res.status(400).json({ error: 'El mensaje no puede superar 4000 caracteres.' });
-
   try {
     const { rows } = await pool.query(
-      `INSERT INTO future_messages (profile, message)
-       VALUES ($1, $2)
+      `INSERT INTO future_messages (profile, message) VALUES ($1, $2)
        ON CONFLICT (profile) DO UPDATE SET message = EXCLUDED.message, updated_at = NOW()
-       RETURNING message, created_at, updated_at`,
-      [profile, message]
+       RETURNING message, created_at, updated_at`, [profile, message]
     );
     res.json({ ok: true, ...rows[0] });
   } catch {
@@ -91,15 +95,7 @@ app.delete('/api/future-message', async (req, res) => {
   }
 });
 
-const server = app.listen(port, '0.0.0.0', () => {
-  console.log(`Carla API listening on port ${port}`);
-});
-
-const shutdown = async () => {
-  server.close(async () => {
-    await pool.end();
-    process.exit(0);
-  });
-};
+const server = app.listen(port, '0.0.0.0', () => console.log(`Carla API listening on port ${port}`));
+const shutdown = async () => server.close(async () => { await pool.end(); process.exit(0); });
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
