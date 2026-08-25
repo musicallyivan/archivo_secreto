@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff8fc7">
+<title>El cumpleaños de Carla 💗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/cumple-carla.css">
+</head>
+<body>
+<div class="aurora"></div><div class="grain"></div>
+<div class="floating-stickers" aria-hidden="true"><span>💗</span><span>✨</span><span>🎀</span><span>🌸</span><span>💖</span><span>🦋</span><span>🎂</span></div>
+<header class="birthday-hero">
+  <div class="glass hero-card">
+    <p class="eyebrow">UN RINCÓN HECHO PARA TI</p>
+    <h1>Feliz cumpleaños,<br><em>Carla</em> 💗</h1>
+    <p class="hero-copy">Hoy esta página es completamente tuya. Fotos, vídeos, música, recuerdos y unas cuantas sorpresas esperándote.</p>
+    <a class="glow-button" href="#recuerdos">Entrar a tu regalo ✨</a>
+  </div>
+  <div class="hero-orb orb-one"></div><div class="hero-orb orb-two"></div>
+</header>
+<main>
+<section class="section reveal" id="recuerdos"><div class="section-title"><span>01</span><div><p class="eyebrow">TUS RECUERDOS</p><h2>Un poquito de Carla por todas partes.</h2></div></div>
+<div class="photo-wall">
+  <figure class="memory-card tall"><img src="assets/media/RETRATO 1.PNG" alt="Carla"><figcaption>La protagonista de hoy 💗</figcaption></figure>
+  <figure class="memory-card wide"><img src="assets/media/COMPARATIVA.JPEG" alt="Recuerdo de Carla"><figcaption>Un recuerdo que merecía su propio sitio.</figcaption></figure>
+  <figure class="memory-card"><img src="assets/media/ALINA_CARLA_FILTRO.JPEG" alt="Carla y Alina"><figcaption>Momentos que se quedan.</figcaption></figure>
+  <figure class="memory-card"><img src="assets/media/TIKTOK_LIVE_1.PNG" alt="Recuerdo"><figcaption>Los plátanos sensuales 🍌</figcaption></figure>
+  <figure class="memory-card wide"><img src="assets/media/IVAN_CARLA.PNG" alt="Ivan y Carla"><figcaption>Porque algunas fotos simplemente tienen que estar aquí.</figcaption></figure>
+</div></section>
+<section class="section reveal video-section"><div class="section-title"><span>02</span><div><p class="eyebrow">MOMENTOS EN MOVIMIENTO</p><h2>Ahora dale al play 🎬</h2></div></div>
+<div class="video-card glass"><video controls playsinline preload="metadata" poster="assets/media/COMPARATIVA.JPEG"><source src="assets/media/TOMAS FALSAS.MOV" type="video/quicktime">Tu navegador no puede reproducir este vídeo.</video><div class="video-caption"><strong>Tomas falsas</strong><span>Una pequeña dosis de caos para celebrar el día.</span></div></div></section>
+<section class="section reveal birthday-message"><div class="glass message-card"><p class="eyebrow">03 · PARA TI</p><h2>Que hoy todo gire un poquito a tu alrededor.</h2><p>Porque te mereces un día lleno de risas, gente que te quiere, momentos que se queden contigo y muchas cosas bonitas. Y sí, también había que hacerte una web entera. 😌</p><div class="signature">Con mucho cariño, Ivan 💗</div></div></section>
+<section class="section reveal"><div class="section-title"><span>04</span><div><p class="eyebrow">STICKERS</p><h2>El caos rosa estaba incluido.</h2></div></div><div class="sticker-board glass"><div class="sticker s1">💗</div><div class="sticker s2">🎀</div><div class="sticker s3">✨</div><div class="sticker s4">🌸</div><div class="sticker s5">🦋</div><div class="sticker s6">🎂</div><p>Un poquito de purpurina digital porque una página normal era demasiado aburrida.</p></div></section>
+<section class="section reveal"><div class="glass surprise-box"><p class="eyebrow">05 · UNA SORPRESA</p><h2>Hay cosas que aparecen cuando menos te lo esperas.</h2><button class="glow-button" id="surpriseBtn">Abrir sorpresa 💌</button><div id="surpriseText" class="surprise-text hidden">Espero que este pequeño rincón te saque una sonrisa. Feliz cumpleaños, Carla. 💗✨</div></div></section>
+<section class="section reveal music-section"><div class="glass music-player"><div class="disc" id="disc">♫</div><div><p class="eyebrow">06 · MÚSICA</p><h2>Esta página también tiene banda sonora.</h2><p id="musicState">Pulsa reproducir para empezar.</p></div><div class="music-actions"><button id="playBtn" class="glow-button">▶ Reproducir</button><button id="nextBtn" class="soft-button">Siguiente</button></div></div></section>
+<section class="section reveal final-section"><div class="glass final-card"><div class="confetti" aria-hidden="true">✨ 💗 🎀 🌸 💖 ✨</div><p class="eyebrow">07 · FINAL</p><h2>Feliz cumpleaños, Carla.</h2><p>Que este nuevo año venga cargado de momentos que den ganas de guardarlos para siempre.</p><strong>💗 Fin del recorrido... o quizá no.</strong></div></section>
+</main>
+<audio id="music" preload="auto"></audio>
+<script src="js/cumple-carla.js"></script>
+</body></html>
