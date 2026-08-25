@@ -122,14 +122,14 @@
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
+          entry.target.classList.add('visible'); // <-- CORREGIDO A 'visible'
           obs.unobserve(entry.target);
         }
       });
     }, { threshold: 0.12 });
     revealItems.forEach((item) => observer.observe(item));
   } else {
-    revealItems.forEach((item) => item.classList.add('is-visible'));
+    revealItems.forEach((item) => item.classList.add('visible')); // <-- CORREGIDO A 'visible'
   }
 
   document.querySelectorAll('.memory-card').forEach((card) => {
