@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/cumple-carla.css?v=3">
+<link rel="stylesheet" href="css/cumple-carla.css?v=4">
 </head>
 <body>
 <div class="aurora"></div><div class="grain"></div>
@@ -35,20 +35,27 @@
 <div class="video-card glass"><video controls playsinline preload="metadata" poster="assets/media/COMPARATIVA.JPEG"><source src="assets/media/TOMAS FALSAS.MOV" type="video/quicktime">Tu navegador no puede reproducir este vídeo.</video><div class="video-caption"><strong>Tomas falsas</strong><span>Una pequeña dosis de caos para celebrar el día.</span></div></div></section>
 <section class="section reveal birthday-message"><div class="glass message-card"><p class="eyebrow">03 · PARA TI</p><h2>Que hoy todo gire un poquito a tu alrededor.</h2><p>Porque te mereces un día lleno de risas, gente que te quiere, momentos que se queden contigo y muchas cosas bonitas. Y sí, también había que hacerte una web entera. 😌</p><div class="signature">Con mucho cariño, Ivan 💗</div></div></section>
 <section class="section reveal"><div class="section-title"><span>04</span><div><p class="eyebrow">STICKERS</p><h2>El caos rosa estaba incluido.</h2></div></div><div class="sticker-board glass"><div class="sticker s1">💗</div><div class="sticker s2">🎀</div><div class="sticker s3">✨</div><div class="sticker s4">🌸</div><div class="sticker s5">🦋</div><div class="sticker s6">🎂</div><p>Un poquito de purpurina digital porque una página normal era demasiado aburrida.</p></div></section>
-<section class="section reveal"><div class="glass surprise-box"><p class="eyebrow">05 · UNA SORPRESA</p><h2>Hay cosas que aparecen cuando menos te lo esperas.</h2><button class="glow-button" id="surpriseBtn">Abrir sorpresa 💌</button><div id="surpriseText" class="surprise-text hidden">Espero que este pequeño rincón te saque una sonrisa. Feliz cumpleaños, Carla. 💗✨</div></div></section>
-<section class="section reveal music-section"><div class="glass music-player"><div class="disc" id="disc">♫</div><div><p class="eyebrow">06 · MÚSICA</p><h2>Esta página también tiene banda sonora.</h2><p id="musicState">Pulsa reproducir para empezar.</p></div><div class="music-actions"><button id="playBtn" class="glow-button">▶ Reproducir</button><button id="nextBtn" class="soft-button">Siguiente</button></div></div></section>
+<section class="section reveal"><div class="glass surprise-box"><p class="eyebrow">05 · UNA SORPRESA</p><h2>Hay cosas que aparecen cuando menos te lo esperas.</h2><button class="glow-button" id="surpriseBtn" type="button">Abrir sorpresa 💌</button><div id="surpriseText" class="surprise-text hidden">Espero que este pequeño rincón te saque una sonrisa. Feliz cumpleaños, Carla. 💗✨</div></div></section>
+<section class="section reveal music-section"><div class="glass music-player"><div class="disc" id="disc">♫</div><div><p class="eyebrow">06 · MÚSICA</p><h2>Esta página también tiene banda sonora.</h2><p id="musicState">Pulsa reproducir para empezar.</p></div><div class="music-actions"><button id="playBtn" class="glow-button" type="button">▶ Reproducir</button><button id="nextBtn" class="soft-button" type="button">Siguiente</button></div></div></section>
 <section class="section reveal final-section"><div class="glass final-card"><div class="confetti" aria-hidden="true">✨ 💗 🎀 🌸 💖 ✨</div><p class="eyebrow">07 · FINAL</p><h2>Feliz cumpleaños, Carla.</h2><p>Que este nuevo año venga cargado de momentos que den ganas de guardarlos para siempre.</p><strong>💗 Fin del recorrido... o quizá no.</strong></div></section>
 </main>
-<audio id="music" preload="auto"></audio>
+<audio id="music" preload="metadata"></audio>
 <script>
-(function () {
-  const music = document.getElementById('music');
-  const playBtn = document.getElementById('playBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const musicState = document.getElementById('musicState');
-  const disc = document.getElementById('disc');
-  const surpriseBtn = document.getElementById('surpriseBtn');
-  const surpriseText = document.getElementById('surpriseText');
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const music = $('music');
+  const playBtn = $('playBtn');
+  const nextBtn = $('nextBtn');
+  const musicState = $('musicState');
+  const disc = $('disc');
+  const surpriseBtn = $('surpriseBtn');
+  const surpriseText = $('surpriseText');
+
+  if (!music || !playBtn || !nextBtn || !musicState || !disc || !surpriseBtn || !surpriseText) {
+    console.error('Cumple Carla: faltan elementos del DOM.');
+    return;
+  }
 
   const tracks = [
     { title: 'Blessings', file: 'assets/media/MUSICA 1.mp3' },
@@ -61,68 +68,76 @@
   function loadTrack(index) {
     trackIndex = (index + tracks.length) % tracks.length;
     music.src = tracks[trackIndex].file;
+    music.load();
     musicState.textContent = 'Pista: ' + tracks[trackIndex].title;
   }
 
-  async function toggleMusic() {
-    if (music.paused) {
-      try {
-        await music.play();
-        playBtn.textContent = 'Ⅱ Pausar';
-        musicState.textContent = 'Reproduciendo: ' + tracks[trackIndex].title;
-        disc.classList.add('playing');
-      } catch (error) {
-        musicState.textContent = 'Pulsa otra vez para iniciar la música.';
-        console.error('No se pudo reproducir la música:', error);
-      }
-    } else {
-      music.pause();
+  async function playMusic() {
+    try {
+      await music.play();
+      playBtn.textContent = 'Ⅱ Pausar';
+      musicState.textContent = 'Reproduciendo: ' + tracks[trackIndex].title;
+      disc.classList.add('playing');
+    } catch (error) {
       playBtn.textContent = '▶ Reproducir';
-      musicState.textContent = 'En pausa: ' + tracks[trackIndex].title;
-      disc.classList.remove('playing');
+      musicState.textContent = 'No se pudo reproducir esta pista. Comprueba que el archivo existe.';
+      console.error('Cumple Carla - audio:', error);
     }
   }
 
-  playBtn.addEventListener('click', toggleMusic);
-  nextBtn.addEventListener('click', async function () {
-    loadTrack(trackIndex + 1);
-    try {
-      await music.play();
-      disc.classList.add('playing');
-      playBtn.textContent = 'Ⅱ Pausar';
-    } catch (error) {
-      console.error('No se pudo reproducir la siguiente pista:', error);
-    }
-  });
-  music.addEventListener('ended', function () {
-    loadTrack(trackIndex + 1);
-    music.play().catch(function () {});
+  function pauseMusic() {
+    music.pause();
+    playBtn.textContent = '▶ Reproducir';
+    musicState.textContent = 'Pausado: ' + tracks[trackIndex].title;
+    disc.classList.remove('playing');
+  }
+
+  playBtn.addEventListener('click', () => {
+    if (music.paused) playMusic();
+    else pauseMusic();
   });
 
-  surpriseBtn.addEventListener('click', function () {
+  nextBtn.addEventListener('click', () => {
+    loadTrack(trackIndex + 1);
+    playMusic();
+  });
+
+  music.addEventListener('ended', () => {
+    loadTrack(trackIndex + 1);
+    playMusic();
+  });
+
+  music.addEventListener('error', () => {
+    musicState.textContent = 'No se encuentra la pista: ' + tracks[trackIndex].file;
+    disc.classList.remove('playing');
+  });
+
+  surpriseBtn.addEventListener('click', () => {
     surpriseText.classList.toggle('hidden');
-    surpriseBtn.textContent = surpriseText.classList.contains('hidden') ? 'Abrir sorpresa 💌' : 'Cerrar sorpresa';
+    surpriseBtn.textContent = surpriseText.classList.contains('hidden') ? 'Abrir sorpresa 💌' : 'Cerrar sorpresa 💗';
   });
 
+  const revealItems = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
         }
       });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(function (element) {
-      observer.observe(element);
-    });
+    revealItems.forEach((item) => observer.observe(item));
   } else {
-    document.querySelectorAll('.reveal').forEach(function (element) {
-      element.classList.add('visible');
-    });
+    revealItems.forEach((item) => item.classList.add('is-visible'));
   }
 
+  document.querySelectorAll('.memory-card').forEach((card) => {
+    card.addEventListener('click', () => card.classList.toggle('focus'));
+  });
+
   loadTrack(0);
+  console.log('Cumple Carla: JavaScript cargado correctamente.');
 })();
 </script>
 </body>
