@@ -1,17 +1,417 @@
-.countdown-screen{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:25px;overflow:hidden;background:rgba(20,7,18,.2);transition:opacity .8s ease,visibility .8s ease,transform .8s ease}.countdown-screen.countdown-finished{opacity:0;visibility:hidden;transform:scale(1.04)}.countdown-card-main{width:min(900px,100%);padding:55px 45px;text-align:center;position:relative;z-index:2;animation:countdownIn 1s cubic-bezier(.2,.8,.2,1)}.countdown-card-main h2{font-family:"Playfair Display",Georgia,serif;font-size:clamp(3rem,8vw,6rem);line-height:.92;letter-spacing:-.04em;margin:15px 0 12px}.countdown-card-main h2 em{font-style:normal;background:linear-gradient(90deg,#fff,#ffb5db,#ff63ac);-webkit-background-clip:text;background-clip:text;color:transparent}.countdown-cake{font-size:clamp(45px,7vw,75px);filter:drop-shadow(0 15px 30px rgba(255,84,166,.4));animation:cakeFloat 3s ease-in-out infinite}.countdown-copy{margin:15px 0 20px;color:#f7ddea;font-size:1.1rem}.countdown-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:720px;margin:0 auto}.countdown-unit{padding:20px 12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);border-radius:22px;box-shadow:inset 0 1px rgba(255,255,255,.18)}.countdown-unit strong{display:block;font-size:clamp(2rem,5vw,4rem);line-height:1;font-variant-numeric:tabular-nums}.countdown-unit span{display:block;margin-top:8px;font-size:.68rem;letter-spacing:.18em;color:#ffb2d6;font-weight:700}.countdown-date{margin:28px 0 8px;color:#fff;font-weight:700}.countdown-hint{margin:0;color:#dcb7ca;font-size:.85rem}.countdown-glow{position:absolute;border-radius:50%;filter:blur(8px);pointer-events:none}.glow-a{width:320px;height:320px;left:-80px;top:15%;background:#ff4e9e;opacity:.25;animation:float 8s ease-in-out infinite}.glow-b{width:400px;height:400px;right:-130px;bottom:-80px;background:#a94cff;opacity:.2;animation:float 9s ease-in-out infinite reverse}
+.countdown-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 25px;
+  overflow: hidden;
+  background: rgba(20, 7, 18, 0.2);
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease,
+    transform 0.8s ease;
+}
+.countdown-screen.countdown-finished {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.04);
+}
+.countdown-card-main {
+  width: min(900px, 100%);
+  padding: 55px 45px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: countdownIn 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.countdown-card-main h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  margin: 15px 0 12px;
+}
+.countdown-card-main h2 em {
+  font-style: normal;
+  background: linear-gradient(90deg, #fff, #ffb5db, #ff63ac);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.countdown-cake {
+  font-size: clamp(45px, 7vw, 75px);
+  filter: drop-shadow(0 15px 30px rgba(255, 84, 166, 0.4));
+  animation: cakeFloat 3s ease-in-out infinite;
+}
+.countdown-copy {
+  margin: 15px 0 20px;
+  color: #f7ddea;
+  font-size: 1.1rem;
+}
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.countdown-unit {
+  padding: 20px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.18);
+}
+.countdown-unit strong {
+  display: block;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.countdown-unit span {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: #ffb2d6;
+  font-weight: 700;
+}
+.countdown-date {
+  margin: 28px 0 8px;
+  color: #fff;
+  font-weight: 700;
+}
+.countdown-hint {
+  margin: 0;
+  color: #dcb7ca;
+  font-size: 0.85rem;
+}
+.countdown-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(8px);
+  pointer-events: none;
+}
+.glow-a {
+  width: 320px;
+  height: 320px;
+  left: -80px;
+  top: 15%;
+  background: #ff4e9e;
+  opacity: 0.25;
+  animation: float 8s ease-in-out infinite;
+}
+.glow-b {
+  width: 400px;
+  height: 400px;
+  right: -130px;
+  bottom: -80px;
+  background: #a94cff;
+  opacity: 0.2;
+  animation: float 9s ease-in-out infinite reverse;
+}
 /* Carla birthday: premium gallery */
-.photo-wall{perspective:1200px}.memory-card{cursor:pointer;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.2,.8,.2,1),box-shadow .65s,border-color .4s;isolation:isolate}.memory-card:nth-child(1){transform:rotate(-1.4deg)}.memory-card:nth-child(2){transform:rotate(1.2deg)}.memory-card:nth-child(3){transform:rotate(-.8deg)}.memory-card:nth-child(4){transform:rotate(1.5deg)}.memory-card:nth-child(5){transform:rotate(-.7deg)}.memory-card:hover{transform:translateY(-12px) rotate(0deg) scale(1.025);box-shadow:0 35px 90px rgba(255,77,166,.3),0 20px 55px rgba(0,0,0,.35);border-color:rgba(255,177,218,.6)}.memory-card.focus{position:relative;z-index:20;transform:scale(1.045) rotate(0deg);box-shadow:0 0 0 2px rgba(255,183,220,.7),0 35px 110px rgba(255,77,166,.45)}.memory-card img{animation:photoBreath 8s ease-in-out infinite alternate}.memory-card:nth-child(2) img{animation-delay:-2s}.memory-card:nth-child(3) img{animation-delay:-4s}.memory-card:nth-child(4) img{animation-delay:-6s}.memory-card:nth-child(5) img{animation-delay:-1s}.memory-card figcaption{transition:transform .45s,opacity .45s;text-shadow:0 3px 18px rgba(0,0,0,.65)}.memory-card:hover figcaption{transform:translateY(-5px)}
+.photo-wall {
+  perspective: 1200px;
+}
+.memory-card {
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition:
+    transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.65s,
+    border-color 0.4s;
+  isolation: isolate;
+}
+.memory-card:nth-child(1) {
+  transform: rotate(-1.4deg);
+}
+.memory-card:nth-child(2) {
+  transform: rotate(1.2deg);
+}
+.memory-card:nth-child(3) {
+  transform: rotate(-0.8deg);
+}
+.memory-card:nth-child(4) {
+  transform: rotate(1.5deg);
+}
+.memory-card:nth-child(5) {
+  transform: rotate(-0.7deg);
+}
+.memory-card:hover {
+  transform: translateY(-12px) rotate(0deg) scale(1.025);
+  box-shadow:
+    0 35px 90px rgba(255, 77, 166, 0.3),
+    0 20px 55px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 177, 218, 0.6);
+}
+.memory-card.focus {
+  position: relative;
+  z-index: 20;
+  transform: scale(1.045) rotate(0deg);
+  box-shadow:
+    0 0 0 2px rgba(255, 183, 220, 0.7),
+    0 35px 110px rgba(255, 77, 166, 0.45);
+}
+.memory-card img {
+  animation: photoBreath 8s ease-in-out infinite alternate;
+}
+.memory-card:nth-child(2) img {
+  animation-delay: -2s;
+}
+.memory-card:nth-child(3) img {
+  animation-delay: -4s;
+}
+.memory-card:nth-child(4) img {
+  animation-delay: -6s;
+}
+.memory-card:nth-child(5) img {
+  animation-delay: -1s;
+}
+.memory-card figcaption {
+  transition:
+    transform 0.45s,
+    opacity 0.45s;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.65);
+}
+.memory-card:hover figcaption {
+  transform: translateY(-5px);
+}
 /* Floating light streak over glass cards */
-.glass{position:relative;overflow:hidden}.glass:before{content:"";position:absolute;inset:-120% 45% auto -45%;height:160%;background:linear-gradient(110deg,transparent,rgba(255,255,255,.12),transparent);transform:rotate(12deg);animation:glassSweep 8s ease-in-out infinite;pointer-events:none}.glass>*{position:relative;z-index:1}
+.glass {
+  position: relative;
+  overflow: hidden;
+}
+.glass:before {
+  content: "";
+  position: absolute;
+  inset: -120% 45% auto -45%;
+  height: 160%;
+  background: linear-gradient(
+    110deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+  transform: rotate(12deg);
+  animation: glassSweep 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.glass > * {
+  position: relative;
+  z-index: 1;
+}
 /* Video */
-.video-card{border-color:rgba(255,183,220,.28);box-shadow:0 30px 100px rgba(255,60,160,.14),0 25px 70px rgba(0,0,0,.3);transition:transform .5s,box-shadow .5s}.video-card:hover{transform:translateY(-7px);box-shadow:0 40px 110px rgba(255,60,160,.25),0 25px 70px rgba(0,0,0,.35)}.video-card video{aspect-ratio:16/9;object-fit:cover}
+.video-card {
+  border-color: rgba(255, 183, 220, 0.28);
+  box-shadow:
+    0 30px 100px rgba(255, 60, 160, 0.14),
+    0 25px 70px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.5s,
+    box-shadow 0.5s;
+}
+.video-card:hover {
+  transform: translateY(-7px);
+  box-shadow:
+    0 40px 110px rgba(255, 60, 160, 0.25),
+    0 25px 70px rgba(0, 0, 0, 0.35);
+}
+.video-card video {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
 /* Surprise */
-.surprise-box{position:relative;text-align:center}.surprise-box:after{content:"💗  ✨  🎀  ✨  💗";position:absolute;inset:auto 0 10px;text-align:center;opacity:.15;font-size:1.2rem;pointer-events:none}.surprise-text{border:1px solid rgba(255,176,216,.35);box-shadow:0 15px 50px rgba(255,50,150,.16);background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,83,170,.08));transform-origin:top center}.surprise-text:not(.hidden){animation:surpriseReveal .7s cubic-bezier(.2,.8,.2,1)}
+.surprise-box {
+  position: relative;
+  text-align: center;
+}
+.surprise-box:after {
+  content: "💗  ✨  🎀  ✨  💗";
+  position: absolute;
+  inset: auto 0 10px;
+  text-align: center;
+  opacity: 0.15;
+  font-size: 1.2rem;
+  pointer-events: none;
+}
+.surprise-text {
+  border: 1px solid rgba(255, 176, 216, 0.35);
+  box-shadow: 0 15px 50px rgba(255, 50, 150, 0.16);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14),
+    rgba(255, 83, 170, 0.08)
+  );
+  transform-origin: top center;
+}
+.surprise-text:not(.hidden) {
+  animation: surpriseReveal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
 /* Music player */
-.music-player{border-color:rgba(255,183,220,.3);box-shadow:0 30px 100px rgba(255,60,160,.16),0 25px 70px rgba(0,0,0,.3)}.disc{position:relative;flex:none}.disc:after{content:"";position:absolute;inset:45%;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.35)}.music-actions button{min-width:130px}.music-actions .soft-button{color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)}.music-actions .soft-button:hover{background:rgba(255,255,255,.18);transform:translateY(-3px)}
+.music-player {
+  border-color: rgba(255, 183, 220, 0.3);
+  box-shadow:
+    0 30px 100px rgba(255, 60, 160, 0.16),
+    0 25px 70px rgba(0, 0, 0, 0.3);
+}
+.disc {
+  position: relative;
+  flex: none;
+}
+.disc:after {
+  content: "";
+  position: absolute;
+  inset: 45%;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+}
+.music-actions button {
+  min-width: 130px;
+}
+.music-actions .soft-button {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.music-actions .soft-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-3px);
+}
 /* Final celebration */
-.final-card{box-shadow:0 35px 120px rgba(255,55,160,.2),0 25px 70px rgba(0,0,0,.3)}.final-card:before,.final-card:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;filter:blur(45px);opacity:.18;pointer-events:none}.final-card:before{background:#ff4ea5;left:-70px;top:-70px}.final-card:after{background:#a94cff;right:-70px;bottom:-70px}.confetti{position:relative;z-index:2}
-@keyframes photoBreath{0%{transform:scale(1.01)}100%{transform:scale(1.055)}}@keyframes glassSweep{0%,45%{transform:translateX(-20%) rotate(12deg);opacity:0}55%{opacity:1}75%,100%{transform:translateX(190%) rotate(12deg);opacity:0}}@keyframes surpriseReveal{0%{opacity:0;transform:translateY(-12px) scale(.96)}60%{transform:translateY(3px) scale(1.01)}100%{opacity:1;transform:none}}
-@media(max-width:800px){.countdown-card-main{padding:45px 22px}.countdown-grid{grid-template-columns:repeat(2,1fr)}.memory-card:nth-child(n){transform:none}.memory-card:hover{transform:translateY(-7px) scale(1.01)}.memory-card.focus{transform:scale(1.015)}.glass:before{animation-duration:11s}}@media(max-width:520px){.countdown-card-main{border-radius:24px}.countdown-unit{padding:17px 8px}.countdown-unit strong{font-size:2.2rem}.memory-card:hover{transform:translateY(-4px)}.music-actions{width:100%}.music-actions button{flex:1;min-width:0}}
-@media(prefers-reduced-motion:reduce){.memory-card img,.glass:before,.memory-card,.surprise-text{animation:none!important;transition:none!important}.memory-card:hover{transform:none}}
-@keyframes countdownIn{from{opacity:0;transform:translateY(35px) scale(.96)}to{opacity:1;transform:none}}@keyframes cakeFloat{50%{transform:translateY(-12px) rotate(3deg)}}
+.final-card {
+  box-shadow:
+    0 35px 120px rgba(255, 55, 160, 0.2),
+    0 25px 70px rgba(0, 0, 0, 0.3);
+}
+.final-card:before,
+.final-card:after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  filter: blur(45px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+.final-card:before {
+  background: #ff4ea5;
+  left: -70px;
+  top: -70px;
+}
+.final-card:after {
+  background: #a94cff;
+  right: -70px;
+  bottom: -70px;
+}
+.confetti {
+  position: relative;
+  z-index: 2;
+}
+@keyframes photoBreath {
+  0% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1.055);
+  }
+}
+@keyframes glassSweep {
+  0%,
+  45% {
+    transform: translateX(-20%) rotate(12deg);
+    opacity: 0;
+  }
+  55% {
+    opacity: 1;
+  }
+  75%,
+  100% {
+    transform: translateX(190%) rotate(12deg);
+    opacity: 0;
+  }
+}
+@keyframes surpriseReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+  60% {
+    transform: translateY(3px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 800px) {
+  .countdown-card-main {
+    padding: 45px 22px;
+  }
+  .countdown-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .memory-card:nth-child(n) {
+    transform: none;
+  }
+  .memory-card:hover {
+    transform: translateY(-7px) scale(1.01);
+  }
+  .memory-card.focus {
+    transform: scale(1.015);
+  }
+  .glass:before {
+    animation-duration: 11s;
+  }
+}
+@media (max-width: 520px) {
+  .countdown-card-main {
+    border-radius: 24px;
+  }
+  .countdown-unit {
+    padding: 17px 8px;
+  }
+  .countdown-unit strong {
+    font-size: 2.2rem;
+  }
+  .memory-card:hover {
+    transform: translateY(-4px);
+  }
+  .music-actions {
+    width: 100%;
+  }
+  .music-actions button {
+    flex: 1;
+    min-width: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .memory-card img,
+  .glass:before,
+  .memory-card,
+  .surprise-text {
+    animation: none !important;
+    transition: none !important;
+  }
+  .memory-card:hover {
+    transform: none;
+  }
+}
+@keyframes countdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(35px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes cakeFloat {
+  50% {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
