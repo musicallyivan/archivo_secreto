@@ -1,19 +1,699 @@
-<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#ff8fc7"><title>El cumpleaños de Carla 💗</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/cumple-carla.css?v=7"><link rel="stylesheet" href="css/carla-countdown.css?v=1"><link rel="stylesheet" href="css/carla-gallery.css?v=2"><link rel="stylesheet" href="css/carla-video.css?v=1"><style>
-.letter-card{position:relative;overflow:hidden;padding:clamp(28px,5vw,56px);background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.055));border:1px solid rgba(255,255,255,.28);box-shadow:0 30px 90px rgba(130,25,90,.18)}.letter-card:before{content:"";position:absolute;inset:-50%;background:radial-gradient(circle,rgba(255,170,215,.18),transparent 45%);animation:letterGlow 8s ease-in-out infinite}.letter-content{position:relative;z-index:1;max-width:850px;margin:auto}.typed-letter{min-height:180px;font-family:"Playfair Display",serif;font-size:clamp(1.08rem,2.1vw,1.4rem);line-height:1.85;color:rgba(255,255,255,.92);white-space:pre-wrap}.letter-caret{display:inline-block;width:2px;height:1.15em;background:#ffb8db;vertical-align:-.15em;animation:blink .8s steps(1) infinite}.letter-signature{margin-top:22px;opacity:0;transform:translateY(10px);transition:.8s ease;font-family:"Playfair Display",serif;font-size:1.3rem}.letter-signature.show{opacity:1;transform:none}.sticker-board{position:relative;min-height:330px;display:flex;align-items:center;justify-content:center;overflow:hidden}.sticker-board p{max-width:470px;text-align:center;line-height:1.7;position:relative;z-index:2}.sticker{position:absolute;font-size:clamp(2rem,5vw,4rem);filter:drop-shadow(0 10px 18px rgba(120,20,80,.2));cursor:pointer;user-select:none;transition:transform .25s,filter .25s}.sticker:hover{transform:scale(1.25) rotate(8deg);filter:drop-shadow(0 0 20px rgba(255,140,200,.75))}.sticker.clicked{animation:stickerPop .65s ease}.s1{top:12%;left:10%;animation:float 5s ease-in-out infinite}.s2{top:20%;right:12%;animation:float 6s ease-in-out infinite reverse}.s3{bottom:14%;left:20%;animation:float 5.5s ease-in-out infinite}.s4{bottom:18%;right:19%;animation:float 6.5s ease-in-out infinite reverse}.s5{top:48%;left:4%;animation:float 7s ease-in-out infinite}.s6{top:48%;right:4%;animation:float 5.8s ease-in-out infinite reverse}.spark{position:fixed;pointer-events:none;z-index:9999;font-size:20px;animation:sparkFly .9s ease-out forwards}.surprise-text{margin:22px auto 0;max-width:650px;font-family:"Playfair Display",serif;font-size:1.35rem;line-height:1.7;animation:surpriseIn .65s ease}.hidden{display:none!important}@keyframes letterGlow{50%{transform:translate(5%,4%) scale(1.08);opacity:.75}}@keyframes blink{50%{opacity:0}}@keyframes stickerPop{50%{transform:scale(1.6) rotate(-12deg)}}@keyframes sparkFly{to{transform:translate(var(--x),var(--y)) scale(.2) rotate(180deg);opacity:0}}@keyframes surpriseIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}@media(max-width:700px){.typed-letter{min-height:240px;font-size:1.06rem;line-height:1.75}.sticker-board{min-height:280px}.s5,.s6{display:none}}
-</style></head><body><div class="aurora"></div><div class="grain"></div><div class="floating-stickers" aria-hidden="true"><span>💗</span><span>✨</span><span>🎀</span><span>🌸</span><span>💖</span><span>🦋</span><span>🎂</span></div>
-<header class="birthday-hero"><div class="glass hero-card"><p class="eyebrow">UN RINCÓN HECHO PARA TI</p><h1>Feliz cumpleaños,<br><em>Carla</em> 💗</h1><p class="hero-copy">Hoy esta página es completamente tuya. Fotos, vídeos, música, recuerdos y unas cuantas sorpresas esperándote.</p><a class="glow-button" id="enterBtn" href="#recuerdos">Entrar a tu regalo ✨</a></div><div class="hero-orb orb-one"></div><div class="hero-orb orb-two"></div></header>
-<main><section class="section reveal" id="recuerdos"><div class="section-title"><span>01</span><div><p class="eyebrow">TUS RECUERDOS</p><h2>Un poquito de Carla por todas partes.</h2></div></div><div class="photo-wall"><figure class="memory-card tall" data-gallery="0" role="button" tabindex="0"><img src="assets/media/RETRATO 1.PNG" alt="Carla"><figcaption>La protagonista de hoy 💗</figcaption></figure><figure class="memory-card wide" data-gallery="1" role="button" tabindex="0"><img src="assets/media/COMPARATIVA.JPEG" alt="Recuerdo de Carla"><figcaption>Un recuerdo que merecía su propio sitio.</figcaption></figure><figure class="memory-card" data-gallery="2" role="button" tabindex="0"><img src="assets/media/ALINA_CARLA_FILTRO.JPEG" alt="Carla y Alina"><figcaption>Momentos que se quedan.</figcaption></figure><figure class="memory-card" data-gallery="3" role="button" tabindex="0"><img src="assets/media/TIKTOK_LIVE_1.PNG" alt="Recuerdo"><figcaption>Los plátanos sensuales 🍌</figcaption></figure><figure class="memory-card wide" data-gallery="4" role="button" tabindex="0"><img src="assets/media/IVAN_CARLA.PNG" alt="Ivan y Carla"><figcaption>Porque algunas fotos simplemente tienen que estar aquí.</figcaption></figure></div></section>
-<section class="section reveal video-section"><div class="section-title"><span>02</span><div><p class="eyebrow">MOMENTOS EN MOVIMIENTO</p><h2>Ahora dale al play 🎬</h2></div></div><div class="video-card glass"><video controls playsinline preload="metadata" poster="assets/media/COMPARATIVA.JPEG"><source src="assets/media/TOMAS FALSAS.MOV" type="video/quicktime">Tu navegador no puede reproducir este vídeo.</video><div class="video-caption"><strong>Tomas falsas</strong><span>Una pequeña dosis de caos para celebrar el día.</span></div></div></section>
-<section class="section reveal"><div class="section-title"><span>03</span><div><p class="eyebrow">UNA CARTA</p><h2>Esto era demasiado importante para escribirlo normal. 💌</h2></div></div><div class="glass letter-card"><div class="letter-content"><p class="eyebrow">PARA CARLA</p><h2>Una pequeña carta para ti.</h2><div class="typed-letter" id="typedLetter" aria-live="polite"></div><div class="letter-signature" id="letterSignature">Con mucho cariño, Ivan 💗</div></div></div></section>
-<section class="section reveal birthday-message"><div class="glass message-card"><p class="eyebrow">04 · PARA TI</p><h2>Que hoy todo gire un poquito a tu alrededor.</h2><p>Porque te mereces un día lleno de risas, gente que te quiere, momentos que se queden contigo y muchas cosas bonitas. Y sí, también había que hacerte una web entera. 😌</p><div class="signature">Feliz cumpleaños, Carla 💗</div></div></section>
-<section class="section reveal"><div class="section-title"><span>05</span><div><p class="eyebrow">STICKERS</p><h2>El caos rosa estaba incluido.</h2></div></div><div class="sticker-board glass"><div class="sticker s1">💗</div><div class="sticker s2">🎀</div><div class="sticker s3">✨</div><div class="sticker s4">🌸</div><div class="sticker s5">🦋</div><div class="sticker s6">🎂</div><p>Haz clic en los stickers. Algunos tienen ganas de liarla. 👀</p></div></section>
-<section class="section reveal"><div class="glass surprise-box"><p class="eyebrow">06 · UNA SORPRESA</p><h2>Hay cosas que aparecen cuando menos te lo esperas.</h2><button class="glow-button" id="surpriseBtn" type="button">No pulses esto 👀</button><div id="surpriseText" class="surprise-text hidden">Espero que este pequeño rincón te saque una sonrisa. Feliz cumpleaños, Carla. 💗✨</div></div></section>
-<section class="section reveal music-section"><div class="glass music-player"><div class="disc" id="disc">♫</div><div><p class="eyebrow">07 · MÚSICA</p><h2>Esta página también tiene banda sonora.</h2><p id="musicState">Pulsa reproducir para empezar.</p></div><div class="music-actions"><button id="playBtn" class="glow-button" type="button">▶ Reproducir</button><button id="nextBtn" class="soft-button" type="button">Siguiente</button></div></div></section>
-<section class="section reveal final-section"><div class="glass final-card"><div class="confetti" aria-hidden="true">✨ 💗 🎀 🌸 💖 ✨</div><p class="eyebrow">08 · FINAL</p><h2>Feliz cumpleaños, Carla.</h2><p>Que este nuevo año venga cargado de momentos que den ganas de guardarlos para siempre.</p><strong>💗 Fin del recorrido... o quizá no.</strong></div></section></main>
-<div class="gallery-lightbox" id="galleryLightbox" role="dialog" aria-modal="true" aria-label="Galería de fotos"><div class="gallery-lightbox-inner"><button class="gallery-lightbox-nav" id="galleryPrev" type="button" aria-label="Foto anterior">‹</button><div class="gallery-lightbox-stage"><img id="galleryImage" src="" alt=""><div class="gallery-lightbox-caption"><div class="gallery-lightbox-title" id="galleryTitle"></div><div class="gallery-lightbox-counter" id="galleryCounter"></div></div></div><button class="gallery-lightbox-nav" id="galleryNext" type="button" aria-label="Foto siguiente">›</button><button class="gallery-lightbox-close" id="galleryClose" type="button" aria-label="Cerrar galería">×</button></div></div><audio id="music" preload="metadata"></audio>
-<script>(()=>{"use strict";const $=id=>document.getElementById(id),music=$("music"),playBtn=$("playBtn"),nextBtn=$("nextBtn"),musicState=$("musicState"),disc=$("disc"),surpriseBtn=$("surpriseBtn"),surpriseText=$("surpriseText");const tracks=[{title:"Blessings",file:"assets/media/MUSICA 1.mp3"},{title:"Tell Me",file:"assets/media/MUSICA 2.mp3"},{title:"Raindance",file:"assets/media/MUSICA 4.mp3"},{title:"Buenos Días",file:"assets/media/MUSICA 5.mp3"}];let trackIndex=0;function loadTrack(i){trackIndex=(i+tracks.length)%tracks.length;music.src=tracks[trackIndex].file;music.load();musicState.textContent="Pista: "+tracks[trackIndex].title}async function playMusic(){try{await music.play();playBtn.textContent="Ⅱ Pausar";musicState.textContent="Reproduciendo: "+tracks[trackIndex].title;disc.classList.add("playing")}catch(e){playBtn.textContent="▶ Reproducir";musicState.textContent="No se pudo reproducir esta pista."}}function pauseMusic(){music.pause();playBtn.textContent="▶ Reproducir";musicState.textContent="Pausado: "+tracks[trackIndex].title;disc.classList.remove("playing")}playBtn.addEventListener("click",()=>music.paused?playMusic():pauseMusic());nextBtn.addEventListener("click",()=>{loadTrack(trackIndex+1);playMusic()});music.addEventListener("ended",()=>{loadTrack(trackIndex+1);playMusic()});music.addEventListener("error",()=>{musicState.textContent="No se encuentra la pista: "+tracks[trackIndex].file;disc.classList.remove("playing")});
-const letter="Carla, hoy quería que tuvieras un rincón que fuera solamente tuyo. 💗\n\nEspero que este nuevo año te traiga muchísimas risas, momentos inesperados, personas que te hagan sentir bien y recuerdos que algún día mires y vuelvas a sonreír.\n\nGracias por todos esos momentos que, aunque parezcan pequeños, terminan siendo los que más se recuerdan. Y por supuesto, espero que disfrutes muchísimo de tu día.\n\nFeliz cumpleaños, Carla. 🎂✨";let typed=false;function typeLetter(){if(typed)return;typed=true;const el=$("typedLetter"),sig=$("letterSignature");let i=0;const tick=()=>{if(i<letter.length){el.textContent=letter.slice(0,++i);el.innerHTML+='<span class="letter-caret"></span>';setTimeout(tick,22)}else{el.innerHTML=letter.replaceAll("\n","<br>");sig.classList.add("show")}};tick()}const letterCard=document.querySelector(".letter-card");if(letterCard&&"IntersectionObserver"in window){const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){typeLetter();ob.unobserve(e.target)}}),{threshold:.25});ob.observe(letterCard)}else typeLetter();
-const revealItems=document.querySelectorAll(".reveal");if("IntersectionObserver"in window){const observer=new IntersectionObserver((es,obs)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");obs.unobserve(e.target)}}),{threshold:.12});revealItems.forEach(x=>observer.observe(x))}else revealItems.forEach(x=>x.classList.add("visible"));
-const stickerEmojis=["💗","🎀","✨","🌸","🦋","🎂"];document.querySelectorAll(".sticker").forEach(sticker=>sticker.addEventListener("click",e=>{sticker.classList.remove("clicked");void sticker.offsetWidth;sticker.classList.add("clicked");for(let i=0;i<6;i++){const s=document.createElement("span");s.className="spark";s.textContent=stickerEmojis[Math.floor(Math.random()*stickerEmojis.length)];s.style.left=e.clientX+"px";s.style.top=e.clientY+"px";s.style.setProperty("--x",(Math.random()*180-90)+"px");s.style.setProperty("--y",(Math.random()*-180-30)+"px");document.body.appendChild(s);setTimeout(()=>s.remove(),950)}}));
-surpriseBtn.addEventListener("click",()=>{const opening=surpriseText.classList.contains("hidden");surpriseText.classList.toggle("hidden");surpriseBtn.textContent=opening?"Cerrar sorpresa 💗":"No pulses esto 👀";if(opening)for(let i=0;i<24;i++){const s=document.createElement("span");s.className="spark";s.textContent=["💗","✨","🎀","🌸","💖"][Math.floor(Math.random()*5)];s.style.left=(35+Math.random()*30)+"%";s.style.top=(55+Math.random()*10)+"%";s.style.setProperty("--x",(Math.random()*600-300)+"px");s.style.setProperty("--y",(Math.random()*-450-30)+"px");document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}});
-const photos=[{src:"assets/media/RETRATO 1.PNG",title:"La protagonista de hoy 💗"},{src:"assets/media/COMPARATIVA.JPEG",title:"Un recuerdo que merecía su propio sitio."},{src:"assets/media/ALINA_CARLA_FILTRO.JPEG",title:"Momentos que se quedan."},{src:"assets/media/TIKTOK_LIVE_1.PNG",title:"Los plátanos sensuales 🍌"},{src:"assets/media/IVAN_CARLA.PNG",title:"Porque algunas fotos simplemente tienen que estar aquí."}];const lightbox=$("galleryLightbox"),image=$("galleryImage"),title=$("galleryTitle"),counter=$("galleryCounter"),prev=$("galleryPrev"),next=$("galleryNext"),close=$("galleryClose");let galleryIndex=0;function renderPhoto(i,animate=true){galleryIndex=(i+photos.length)%photos.length;if(animate)lightbox.classList.add("swapping");const update=()=>{image.src=photos[galleryIndex].src;image.alt=photos[galleryIndex].title;title.textContent=photos[galleryIndex].title;counter.textContent=`${galleryIndex+1} / ${photos.length}`;lightbox.classList.remove("swapping")};animate?setTimeout(update,160):update()}function openGallery(i){renderPhoto(i,false);lightbox.classList.add("open");document.body.style.overflow="hidden";close.focus()}function closeGallery(){lightbox.classList.remove("open");document.body.style.overflow=""}document.querySelectorAll(".memory-card[data-gallery]").forEach(card=>{card.addEventListener("click",()=>openGallery(Number(card.dataset.gallery)));card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openGallery(Number(card.dataset.gallery))}})});prev.addEventListener("click",()=>renderPhoto(galleryIndex-1));next.addEventListener("click",()=>renderPhoto(galleryIndex+1));close.addEventListener("click",closeGallery);lightbox.addEventListener("click",e=>{if(e.target===lightbox)closeGallery()});document.addEventListener("keydown",e=>{if(!lightbox.classList.contains("open"))return;if(e.key==="Escape")closeGallery();if(e.key==="ArrowLeft")renderPhoto(galleryIndex-1);if(e.key==="ArrowRight")renderPhoto(galleryIndex+1)});let touchStartX=0;image.addEventListener("touchstart",e=>touchStartX=e.changedTouches[0].clientX,{passive:true});image.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>45)renderPhoto(galleryIndex+(dx<0?1:-1))},{passive:true});$("enterBtn").addEventListener("click",e=>{e.preventDefault();$("recuerdos").scrollIntoView({behavior:"smooth",block:"start"})});loadTrack(0);console.log("Cumple Carla: JavaScript cargado correctamente.")})();</script></body></html>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#ff8fc7" />
+    <title>El cumpleaños de Carla 💗</title>
+    <link rel="icon" type="image/png" sizes="64x64" href="assets/media/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/cumple-carla.css?v=7" />
+    <link rel="stylesheet" href="css/carla-countdown.css?v=1" />
+    <link rel="stylesheet" href="css/carla-gallery.css?v=2" />
+    <link rel="stylesheet" href="css/carla-video.css?v=1" />
+    <style>
+      .letter-card {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(28px, 5vw, 56px);
+        background: linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.17),
+          rgba(255, 255, 255, 0.055)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        box-shadow: 0 30px 90px rgba(130, 25, 90, 0.18);
+      }
+      .letter-card:before {
+        content: "";
+        position: absolute;
+        inset: -50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 170, 215, 0.18),
+          transparent 45%
+        );
+        animation: letterGlow 8s ease-in-out infinite;
+      }
+      .letter-content {
+        position: relative;
+        z-index: 1;
+        max-width: 850px;
+        margin: auto;
+      }
+      .typed-letter {
+        min-height: 180px;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.08rem, 2.1vw, 1.4rem);
+        line-height: 1.85;
+        color: rgba(255, 255, 255, 0.92);
+        white-space: pre-wrap;
+      }
+      .letter-caret {
+        display: inline-block;
+        width: 2px;
+        height: 1.15em;
+        background: #ffb8db;
+        vertical-align: -0.15em;
+        animation: blink 0.8s steps(1) infinite;
+      }
+      .letter-signature {
+        margin-top: 22px;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: 0.8s ease;
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+      }
+      .letter-signature.show {
+        opacity: 1;
+        transform: none;
+      }
+      .sticker-board {
+        position: relative;
+        min-height: 330px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .sticker-board p {
+        max-width: 470px;
+        text-align: center;
+        line-height: 1.7;
+        position: relative;
+        z-index: 2;
+      }
+      .sticker {
+        position: absolute;
+        font-size: clamp(2rem, 5vw, 4rem);
+        filter: drop-shadow(0 10px 18px rgba(120, 20, 80, 0.2));
+        cursor: pointer;
+        user-select: none;
+        transition:
+          transform 0.25s,
+          filter 0.25s;
+      }
+      .sticker:hover {
+        transform: scale(1.25) rotate(8deg);
+        filter: drop-shadow(0 0 20px rgba(255, 140, 200, 0.75));
+      }
+      .sticker.clicked {
+        animation: stickerPop 0.65s ease;
+      }
+      .s1 {
+        top: 12%;
+        left: 10%;
+        animation: float 5s ease-in-out infinite;
+      }
+      .s2 {
+        top: 20%;
+        right: 12%;
+        animation: float 6s ease-in-out infinite reverse;
+      }
+      .s3 {
+        bottom: 14%;
+        left: 20%;
+        animation: float 5.5s ease-in-out infinite;
+      }
+      .s4 {
+        bottom: 18%;
+        right: 19%;
+        animation: float 6.5s ease-in-out infinite reverse;
+      }
+      .s5 {
+        top: 48%;
+        left: 4%;
+        animation: float 7s ease-in-out infinite;
+      }
+      .s6 {
+        top: 48%;
+        right: 4%;
+        animation: float 5.8s ease-in-out infinite reverse;
+      }
+      .spark {
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        font-size: 20px;
+        animation: sparkFly 0.9s ease-out forwards;
+      }
+      .surprise-text {
+        margin: 22px auto 0;
+        max-width: 650px;
+        font-family: "Playfair Display", serif;
+        font-size: 1.35rem;
+        line-height: 1.7;
+        animation: surpriseIn 0.65s ease;
+      }
+      .hidden {
+        display: none !important;
+      }
+      @keyframes letterGlow {
+        50% {
+          transform: translate(5%, 4%) scale(1.08);
+          opacity: 0.75;
+        }
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      @keyframes stickerPop {
+        50% {
+          transform: scale(1.6) rotate(-12deg);
+        }
+      }
+      @keyframes sparkFly {
+        to {
+          transform: translate(var(--x), var(--y)) scale(0.2) rotate(180deg);
+          opacity: 0;
+        }
+      }
+      @keyframes surpriseIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @media (max-width: 700px) {
+        .typed-letter {
+          min-height: 240px;
+          font-size: 1.06rem;
+          line-height: 1.75;
+        }
+        .sticker-board {
+          min-height: 280px;
+        }
+        .s5,
+        .s6 {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="aurora"></div>
+    <div class="grain"></div>
+    <div class="floating-stickers" aria-hidden="true">
+      <span>💗</span><span>✨</span><span>🎀</span><span>🌸</span><span>💖</span
+      ><span>🦋</span><span>🎂</span>
+    </div>
+    <header class="birthday-hero">
+      <div class="glass hero-card">
+        <p class="eyebrow">UN RINCÓN HECHO PARA TI</p>
+        <h1>Feliz cumpleaños,<br /><em>Carla</em> 💗</h1>
+        <p class="hero-copy">
+          Hoy esta página es completamente tuya. Fotos, vídeos, música,
+          recuerdos y unas cuantas sorpresas esperándote.
+        </p>
+        <a class="glow-button" id="enterBtn" href="#recuerdos"
+          >Entrar a tu regalo ✨</a
+        >
+      </div>
+      <div class="hero-orb orb-one"></div>
+      <div class="hero-orb orb-two"></div>
+    </header>
+    <main>
+      <section class="section reveal" id="recuerdos">
+        <div class="section-title">
+          <span>01</span>
+          <div>
+            <p class="eyebrow">TUS RECUERDOS</p>
+            <h2>Un poquito de Carla por todas partes.</h2>
+          </div>
+        </div>
+        <div class="photo-wall">
+          <figure
+            class="memory-card tall"
+            data-gallery="0"
+            role="button"
+            tabindex="0"
+          >
+            <img src="assets/media/RETRATO 1.PNG" alt="Carla" />
+            <figcaption>La protagonista de hoy 💗</figcaption>
+          </figure>
+          <figure
+            class="memory-card wide"
+            data-gallery="1"
+            role="button"
+            tabindex="0"
+          >
+            <img src="assets/media/COMPARATIVA.JPEG" alt="Recuerdo de Carla" />
+            <figcaption>Un recuerdo que merecía su propio sitio.</figcaption>
+          </figure>
+          <figure
+            class="memory-card"
+            data-gallery="2"
+            role="button"
+            tabindex="0"
+          >
+            <img
+              src="assets/media/ALINA_CARLA_FILTRO.JPEG"
+              alt="Carla y Alina"
+            />
+            <figcaption>Momentos que se quedan.</figcaption>
+          </figure>
+          <figure
+            class="memory-card"
+            data-gallery="3"
+            role="button"
+            tabindex="0"
+          >
+            <img src="assets/media/TIKTOK_LIVE_1.PNG" alt="Recuerdo" />
+            <figcaption>Los plátanos sensuales 🍌</figcaption>
+          </figure>
+          <figure
+            class="memory-card wide"
+            data-gallery="4"
+            role="button"
+            tabindex="0"
+          >
+            <img src="assets/media/IVAN_CARLA.PNG" alt="Ivan y Carla" />
+            <figcaption>
+              Porque algunas fotos simplemente tienen que estar aquí.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="section reveal video-section">
+        <div class="section-title">
+          <span>02</span>
+          <div>
+            <p class="eyebrow">MOMENTOS EN MOVIMIENTO</p>
+            <h2>Ahora dale al play 🎬</h2>
+          </div>
+        </div>
+        <div class="video-card glass">
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            poster="assets/media/COMPARATIVA.JPEG"
+          >
+            <source
+              src="assets/media/TOMAS FALSAS.MOV"
+              type="video/quicktime"
+            />
+            Tu navegador no puede reproducir este vídeo.
+          </video>
+          <div class="video-caption">
+            <strong>Tomas falsas</strong
+            ><span>Una pequeña dosis de caos para celebrar el día.</span>
+          </div>
+        </div>
+      </section>
+      <section class="section reveal">
+        <div class="section-title">
+          <span>03</span>
+          <div>
+            <p class="eyebrow">UNA CARTA</p>
+            <h2>Esto era demasiado importante para escribirlo normal. 💌</h2>
+          </div>
+        </div>
+        <div class="glass letter-card">
+          <div class="letter-content">
+            <p class="eyebrow">PARA CARLA</p>
+            <h2>Una pequeña carta para ti.</h2>
+            <div class="typed-letter" id="typedLetter" aria-live="polite"></div>
+            <div class="letter-signature" id="letterSignature">
+              Con mucho cariño, Ivan 💗
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section reveal birthday-message">
+        <div class="glass message-card">
+          <p class="eyebrow">04 · PARA TI</p>
+          <h2>Que hoy todo gire un poquito a tu alrededor.</h2>
+          <p>
+            Porque te mereces un día lleno de risas, gente que te quiere,
+            momentos que se queden contigo y muchas cosas bonitas. Y sí, también
+            había que hacerte una web entera. 😌
+          </p>
+          <div class="signature">Feliz cumpleaños, Carla 💗</div>
+        </div>
+      </section>
+      <section class="section reveal">
+        <div class="section-title">
+          <span>05</span>
+          <div>
+            <p class="eyebrow">STICKERS</p>
+            <h2>El caos rosa estaba incluido.</h2>
+          </div>
+        </div>
+        <div class="sticker-board glass">
+          <div class="sticker s1">💗</div>
+          <div class="sticker s2">🎀</div>
+          <div class="sticker s3">✨</div>
+          <div class="sticker s4">🌸</div>
+          <div class="sticker s5">🦋</div>
+          <div class="sticker s6">🎂</div>
+          <p>Haz clic en los stickers. Algunos tienen ganas de liarla. 👀</p>
+        </div>
+      </section>
+      <section class="section reveal">
+        <div class="glass surprise-box">
+          <p class="eyebrow">06 · UNA SORPRESA</p>
+          <h2>Hay cosas que aparecen cuando menos te lo esperas.</h2>
+          <button class="glow-button" id="surpriseBtn" type="button">
+            No pulses esto 👀
+          </button>
+          <div id="surpriseText" class="surprise-text hidden">
+            Espero que este pequeño rincón te saque una sonrisa. Feliz
+            cumpleaños, Carla. 💗✨
+          </div>
+        </div>
+      </section>
+      <section class="section reveal music-section">
+        <div class="glass music-player">
+          <div class="disc" id="disc">♫</div>
+          <div>
+            <p class="eyebrow">07 · MÚSICA</p>
+            <h2>Esta página también tiene banda sonora.</h2>
+            <p id="musicState">Pulsa reproducir para empezar.</p>
+          </div>
+          <div class="music-actions">
+            <button id="playBtn" class="glow-button" type="button">
+              ▶ Reproducir</button
+            ><button id="nextBtn" class="soft-button" type="button">
+              Siguiente
+            </button>
+          </div>
+        </div>
+      </section>
+      <section class="section reveal final-section">
+        <div class="glass final-card">
+          <div class="confetti" aria-hidden="true">✨ 💗 🎀 🌸 💖 ✨</div>
+          <p class="eyebrow">08 · FINAL</p>
+          <h2>Feliz cumpleaños, Carla.</h2>
+          <p>
+            Que este nuevo año venga cargado de momentos que den ganas de
+            guardarlos para siempre.
+          </p>
+          <strong>💗 Fin del recorrido... o quizá no.</strong>
+        </div>
+      </section>
+    </main>
+    <div
+      class="gallery-lightbox"
+      id="galleryLightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Galería de fotos"
+    >
+      <div class="gallery-lightbox-inner">
+        <button
+          class="gallery-lightbox-nav"
+          id="galleryPrev"
+          type="button"
+          aria-label="Foto anterior"
+        >
+          ‹
+        </button>
+        <div class="gallery-lightbox-stage">
+          <img id="galleryImage" src="" alt="" />
+          <div class="gallery-lightbox-caption">
+            <div class="gallery-lightbox-title" id="galleryTitle"></div>
+            <div class="gallery-lightbox-counter" id="galleryCounter"></div>
+          </div>
+        </div>
+        <button
+          class="gallery-lightbox-nav"
+          id="galleryNext"
+          type="button"
+          aria-label="Foto siguiente"
+        >
+          ›</button
+        ><button
+          class="gallery-lightbox-close"
+          id="galleryClose"
+          type="button"
+          aria-label="Cerrar galería"
+        >
+          ×
+        </button>
+      </div>
+    </div>
+    <audio id="music" preload="metadata"></audio>
+    <script>
+      (() => {
+        "use strict";
+        const $ = (id) => document.getElementById(id),
+          music = $("music"),
+          playBtn = $("playBtn"),
+          nextBtn = $("nextBtn"),
+          musicState = $("musicState"),
+          disc = $("disc"),
+          surpriseBtn = $("surpriseBtn"),
+          surpriseText = $("surpriseText");
+        const tracks = [
+          { title: "Blessings", file: "assets/media/MUSICA 1.mp3" },
+          { title: "Tell Me", file: "assets/media/MUSICA 2.mp3" },
+          { title: "Raindance", file: "assets/media/MUSICA 4.mp3" },
+          { title: "Buenos Días", file: "assets/media/MUSICA 5.mp3" },
+        ];
+        let trackIndex = 0;
+        function loadTrack(i) {
+          trackIndex = (i + tracks.length) % tracks.length;
+          music.src = tracks[trackIndex].file;
+          music.load();
+          musicState.textContent = "Pista: " + tracks[trackIndex].title;
+        }
+        async function playMusic() {
+          try {
+            await music.play();
+            playBtn.textContent = "Ⅱ Pausar";
+            musicState.textContent =
+              "Reproduciendo: " + tracks[trackIndex].title;
+            disc.classList.add("playing");
+          } catch (e) {
+            playBtn.textContent = "▶ Reproducir";
+            musicState.textContent = "No se pudo reproducir esta pista.";
+          }
+        }
+        function pauseMusic() {
+          music.pause();
+          playBtn.textContent = "▶ Reproducir";
+          musicState.textContent = "Pausado: " + tracks[trackIndex].title;
+          disc.classList.remove("playing");
+        }
+        playBtn.addEventListener("click", () =>
+          music.paused ? playMusic() : pauseMusic(),
+        );
+        nextBtn.addEventListener("click", () => {
+          loadTrack(trackIndex + 1);
+          playMusic();
+        });
+        music.addEventListener("ended", () => {
+          loadTrack(trackIndex + 1);
+          playMusic();
+        });
+        music.addEventListener("error", () => {
+          musicState.textContent =
+            "No se encuentra la pista: " + tracks[trackIndex].file;
+          disc.classList.remove("playing");
+        });
+        const letter =
+          "Carla, hoy quería que tuvieras un rincón que fuera solamente tuyo. 💗\n\nEspero que este nuevo año te traiga muchísimas risas, momentos inesperados, personas que te hagan sentir bien y recuerdos que algún día mires y vuelvas a sonreír.\n\nGracias por todos esos momentos que, aunque parezcan pequeños, terminan siendo los que más se recuerdan. Y por supuesto, espero que disfrutes muchísimo de tu día.\n\nFeliz cumpleaños, Carla. 🎂✨";
+        let typed = false;
+        function typeLetter() {
+          if (typed) return;
+          typed = true;
+          const el = $("typedLetter"),
+            sig = $("letterSignature");
+          let i = 0;
+          const tick = () => {
+            if (i < letter.length) {
+              el.textContent = letter.slice(0, ++i);
+              el.innerHTML += '<span class="letter-caret"></span>';
+              setTimeout(tick, 22);
+            } else {
+              el.innerHTML = letter.replaceAll("\n", "<br>");
+              sig.classList.add("show");
+            }
+          };
+          tick();
+        }
+        const letterCard = document.querySelector(".letter-card");
+        if (letterCard && "IntersectionObserver" in window) {
+          const ob = new IntersectionObserver(
+            (es) =>
+              es.forEach((e) => {
+                if (e.isIntersecting) {
+                  typeLetter();
+                  ob.unobserve(e.target);
+                }
+              }),
+            { threshold: 0.25 },
+          );
+          ob.observe(letterCard);
+        } else typeLetter();
+        const revealItems = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window) {
+          const observer = new IntersectionObserver(
+            (es, obs) =>
+              es.forEach((e) => {
+                if (e.isIntersecting) {
+                  e.target.classList.add("visible");
+                  obs.unobserve(e.target);
+                }
+              }),
+            { threshold: 0.12 },
+          );
+          revealItems.forEach((x) => observer.observe(x));
+        } else revealItems.forEach((x) => x.classList.add("visible"));
+        const stickerEmojis = ["💗", "🎀", "✨", "🌸", "🦋", "🎂"];
+        document.querySelectorAll(".sticker").forEach((sticker) =>
+          sticker.addEventListener("click", (e) => {
+            sticker.classList.remove("clicked");
+            void sticker.offsetWidth;
+            sticker.classList.add("clicked");
+            for (let i = 0; i < 6; i++) {
+              const s = document.createElement("span");
+              s.className = "spark";
+              s.textContent =
+                stickerEmojis[Math.floor(Math.random() * stickerEmojis.length)];
+              s.style.left = e.clientX + "px";
+              s.style.top = e.clientY + "px";
+              s.style.setProperty("--x", Math.random() * 180 - 90 + "px");
+              s.style.setProperty("--y", Math.random() * -180 - 30 + "px");
+              document.body.appendChild(s);
+              setTimeout(() => s.remove(), 950);
+            }
+          }),
+        );
+        surpriseBtn.addEventListener("click", () => {
+          const opening = surpriseText.classList.contains("hidden");
+          surpriseText.classList.toggle("hidden");
+          surpriseBtn.textContent = opening
+            ? "Cerrar sorpresa 💗"
+            : "No pulses esto 👀";
+          if (opening)
+            for (let i = 0; i < 24; i++) {
+              const s = document.createElement("span");
+              s.className = "spark";
+              s.textContent = ["💗", "✨", "🎀", "🌸", "💖"][
+                Math.floor(Math.random() * 5)
+              ];
+              s.style.left = 35 + Math.random() * 30 + "%";
+              s.style.top = 55 + Math.random() * 10 + "%";
+              s.style.setProperty("--x", Math.random() * 600 - 300 + "px");
+              s.style.setProperty("--y", Math.random() * -450 - 30 + "px");
+              document.body.appendChild(s);
+              setTimeout(() => s.remove(), 1000);
+            }
+        });
+        const photos = [
+          {
+            src: "assets/media/RETRATO 1.PNG",
+            title: "La protagonista de hoy 💗",
+          },
+          {
+            src: "assets/media/COMPARATIVA.JPEG",
+            title: "Un recuerdo que merecía su propio sitio.",
+          },
+          {
+            src: "assets/media/ALINA_CARLA_FILTRO.JPEG",
+            title: "Momentos que se quedan.",
+          },
+          {
+            src: "assets/media/TIKTOK_LIVE_1.PNG",
+            title: "Los plátanos sensuales 🍌",
+          },
+          {
+            src: "assets/media/IVAN_CARLA.PNG",
+            title: "Porque algunas fotos simplemente tienen que estar aquí.",
+          },
+        ];
+        const lightbox = $("galleryLightbox"),
+          image = $("galleryImage"),
+          title = $("galleryTitle"),
+          counter = $("galleryCounter"),
+          prev = $("galleryPrev"),
+          next = $("galleryNext"),
+          close = $("galleryClose");
+        let galleryIndex = 0;
+        function renderPhoto(i, animate = true) {
+          galleryIndex = (i + photos.length) % photos.length;
+          if (animate) lightbox.classList.add("swapping");
+          const update = () => {
+            image.src = photos[galleryIndex].src;
+            image.alt = photos[galleryIndex].title;
+            title.textContent = photos[galleryIndex].title;
+            counter.textContent = `${galleryIndex + 1} / ${photos.length}`;
+            lightbox.classList.remove("swapping");
+          };
+          animate ? setTimeout(update, 160) : update();
+        }
+        function openGallery(i) {
+          renderPhoto(i, false);
+          lightbox.classList.add("open");
+          document.body.style.overflow = "hidden";
+          close.focus();
+        }
+        function closeGallery() {
+          lightbox.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+        document
+          .querySelectorAll(".memory-card[data-gallery]")
+          .forEach((card) => {
+            card.addEventListener("click", () =>
+              openGallery(Number(card.dataset.gallery)),
+            );
+            card.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openGallery(Number(card.dataset.gallery));
+              }
+            });
+          });
+        prev.addEventListener("click", () => renderPhoto(galleryIndex - 1));
+        next.addEventListener("click", () => renderPhoto(galleryIndex + 1));
+        close.addEventListener("click", closeGallery);
+        lightbox.addEventListener("click", (e) => {
+          if (e.target === lightbox) closeGallery();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (!lightbox.classList.contains("open")) return;
+          if (e.key === "Escape") closeGallery();
+          if (e.key === "ArrowLeft") renderPhoto(galleryIndex - 1);
+          if (e.key === "ArrowRight") renderPhoto(galleryIndex + 1);
+        });
+        let touchStartX = 0;
+        image.addEventListener(
+          "touchstart",
+          (e) => (touchStartX = e.changedTouches[0].clientX),
+          { passive: true },
+        );
+        image.addEventListener(
+          "touchend",
+          (e) => {
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 45)
+              renderPhoto(galleryIndex + (dx < 0 ? 1 : -1));
+          },
+          { passive: true },
+        );
+        $("enterBtn").addEventListener("click", (e) => {
+          e.preventDefault();
+          document.body.classList.add("unlocked");
+          $("recuerdos").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        loadTrack(0);
+        console.log("Cumple Carla: JavaScript cargado correctamente.");
+      })();
+    </script>
+  </body>
+</html>
