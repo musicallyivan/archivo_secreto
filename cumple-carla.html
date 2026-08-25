@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/cumple-carla.css?v=4">
 </head>
-<body>
+<body class="locked">
 <div class="aurora"></div><div class="grain"></div>
 <div class="floating-stickers" aria-hidden="true"><span>💗</span><span>✨</span><span>🎀</span><span>🌸</span><span>💖</span><span>🦋</span><span>🎂</span></div>
 <header class="birthday-hero">
@@ -18,7 +18,7 @@
     <p class="eyebrow">UN RINCÓN HECHO PARA TI</p>
     <h1>Feliz cumpleaños,<br><em>Carla</em> 💗</h1>
     <p class="hero-copy">Hoy esta página es completamente tuya. Fotos, vídeos, música, recuerdos y unas cuantas sorpresas esperándote.</p>
-    <a class="glow-button" href="#recuerdos">Entrar a tu regalo ✨</a>
+    <a class="glow-button" id="enterBtn" href="#recuerdos">Entrar a tu regalo ✨</a>
   </div>
   <div class="hero-orb orb-one"></div><div class="hero-orb orb-two"></div>
 </header>
@@ -138,6 +138,32 @@
 
   loadTrack(0);
   console.log('Cumple Carla: JavaScript cargado correctamente.');
+
+  const enterBtn = document.getElementById('enterBtn');
+
+  if (enterBtn) {
+    enterBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // 1. Inicia la animación de desvanecimiento suave de la tarjeta de bienvenida
+      document.body.classList.add('unlocking');
+
+      // 2. Espera a que termine la animación visual para habilitar el contenido
+      setTimeout(() => {
+        document.body.classList.remove('locked');
+        document.body.classList.add('unlocked');
+
+        // 3. Desplazamiento ultra suave hasta la primera sección de recuerdos
+        const recuerdosSection = document.getElementById('recuerdos');
+        if (recuerdosSection) {
+          recuerdosSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 400); // 400ms de retardo para sincronizar con la animación de desvanecimiento
+    });
+  }
 })();
 </script>
 </body>
