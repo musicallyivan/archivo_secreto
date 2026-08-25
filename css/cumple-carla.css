@@ -142,9 +142,10 @@ h1 em {
 .floating-stickers span {
   position: fixed;
   font-size: clamp(20px, 3vw, 42px);
-  z-index: 3;
-  pointer-events: none;
+  z-index: 0; /* Lo enviamos al fondo (detrás de las tarjetas y secciones) */
+  pointer-events: none; /* Asegura que no bloquee los clics */
   animation: stickerFloat 9s ease-in-out infinite;
+  opacity: 0.4; /* (Opcional) Una ligera transparencia para que quede más sutil */
 }
 .floating-stickers span:nth-child(1) {
   left: 5%;
