@@ -27,20 +27,14 @@ await pool.query(`
   )
 `);
 
-const configuredOrigins = (process.env.ALLOWED_ORIGIN || 'https://musicallyivan.github.io')
-  .split(',').map(v => v.trim()).filter(Boolean);
-
-const corsOptions = {
-  origin(origin, callback) {
-    if (!origin || configuredOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error('Origin not allowed by CORS'));
-  },
+// CORS is a browser security policy, not API authentication. The API currently
+// has no private credentials in browser requests, so allow web clients to call it.
+app.use(cors({
+  origin: true,
   methods: ['GET', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
   optionsSuccessStatus: 204
-};
-
-app.use(cors(corsOptions));
+}));
 app.use(express.json({ limit: '8kb' }));
 
 app.get('/api/health', async (_req, res) => {
