@@ -1132,3 +1132,233 @@ body[data-profile="alina"] .playlist-card {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
+
+body:not([data-profile]) {
+    background: linear-gradient(180deg, #fcfaff 0%, #f0eafb 48%, #ded3f1 100%);
+}
+
+body[data-screen="login"] {
+    background: linear-gradient(180deg, #fcfaff 0%, #f0eafb 48%, #ded3f1 100%) !important;
+}
+
+.announcement-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    width: 100%;
+    overflow: hidden;
+    padding: 0.7rem 0;
+    color: #fff;
+    background: linear-gradient(90deg, #7552a8, #b56aaa, #7552a8);
+    box-shadow: 0 8px 24px rgba(86, 60, 124, 0.2);
+}
+
+.announcement-track {
+    display: flex;
+    width: max-content;
+    animation: announcementScroll 18s linear infinite;
+}
+
+.announcement-track span {
+    display: block;
+    min-width: 25vw;
+    padding: 0 2rem;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    white-space: nowrap;
+}
+
+.login-shell {
+    padding-top: 5.5rem;
+}
+
+@keyframes announcementScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .announcement-track { animation: none; justify-content: center; width: 100%; }
+    .announcement-track span:not(:first-child) { display: none; }
+}
+
+@media (max-width: 719px) {
+    .announcement-track span { min-width: 75vw; padding: 0 1rem; font-size: 0.68rem; letter-spacing: 0.16em; }
+    .login-shell { padding-top: 5rem; }
+}
+
+body:not([data-profile]) .login-shell::before {
+    display: none;
+}
+
+body:not([data-profile]) .login-shell::after {
+    display: none;
+}
+
+/* Portada del archivo */
+.login-shell {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 520px);
+    align-items: center;
+    gap: clamp(2rem, 7vw, 7rem);
+    max-width: 1180px;
+}
+
+.login-shell::before,
+.login-shell::after {
+    content: "";
+    position: fixed;
+    width: 22rem;
+    height: 22rem;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(12px);
+    opacity: 0.38;
+}
+
+.login-shell::before {
+    left: -12rem;
+    top: 8%;
+    background: #f6a1c8;
+}
+
+.login-shell::after {
+    right: -12rem;
+    bottom: 4%;
+    background: #9edbfa;
+}
+
+.login-atmosphere {
+    position: relative;
+    z-index: 1;
+    padding: 1rem 0;
+}
+
+.login-atmosphere h2 {
+    max-width: 11ch;
+    margin: 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(4rem, 8vw, 7.4rem);
+    line-height: 0.78;
+    letter-spacing: -0.04em;
+}
+
+.login-atmosphere h2 em {
+    font-style: normal;
+    color: #ad75c9;
+}
+
+.atmosphere-copy {
+    max-width: 28rem;
+    margin: 1.8rem 0 0;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.profile-preview {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2.2rem;
+}
+
+.preview-card {
+    display: grid;
+    gap: 0.35rem;
+    width: 9.5rem;
+    min-height: 8.5rem;
+    padding: 1rem;
+    border-radius: 1.3rem;
+    box-shadow: 0 18px 34px rgba(100, 75, 90, 0.12);
+    transform: rotate(-4deg);
+}
+
+.preview-card + .preview-card {
+    transform: translateY(1.1rem) rotate(5deg);
+}
+
+.preview-card span,
+.preview-card small {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.preview-card strong {
+    align-self: center;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2rem;
+}
+
+.preview-carla {
+    color: #7e3a59;
+    background: linear-gradient(145deg, #fff5fa, #ffcfe2);
+}
+
+.preview-alina {
+    color: #304d77;
+    background: linear-gradient(145deg, #f6fcff, #d7e1ff);
+}
+
+.atmosphere-note {
+    margin: 3.2rem 0 0;
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.login-card {
+    position: relative;
+    z-index: 2;
+    padding: clamp(1.5rem, 4vw, 2.3rem);
+    overflow: hidden;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16));
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    box-shadow: 0 28px 80px rgba(50, 111, 91, 0.2), 0 0 0 1px rgba(255,255,255,.28) inset, 0 1px 0 rgba(255,255,255,.7) inset;
+    backdrop-filter: blur(28px) saturate(135%);
+    -webkit-backdrop-filter: blur(28px) saturate(135%);
+}
+
+.login-card::before {
+    content: "";
+    position: absolute;
+    inset: -35% 35% 45% -25%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.28);
+    filter: blur(18px);
+    pointer-events: none;
+}
+
+.login-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.login-card h1 {
+    max-width: 8ch;
+}
+
+@media (max-width: 719px) {
+    .login-shell {
+        display: block;
+        padding: 2rem 0;
+    }
+
+    .login-atmosphere {
+        padding: 1rem 0 2.5rem;
+    }
+
+    .login-atmosphere h2 {
+        font-size: clamp(3.8rem, 17vw, 6rem);
+    }
+
+    .atmosphere-note {
+        margin-top: 2.5rem;
+    }
+}

@@ -50,6 +50,17 @@ surpriseBtn.addEventListener('click', () => {
   surpriseBtn.textContent = surpriseText.classList.contains('hidden') ? 'Abrir sorpresa 💌' : 'Cerrar sorpresa';
 });
 
+function buildLogoutButton() {
+  const section = document.createElement('section');
+  section.className = 'section logout-section';
+  section.innerHTML = '<div class="glass final-card"><button class="glow-button" type="button">Cerrar sesión y volver al inicio</button></div>';
+  section.querySelector('button').addEventListener('click', () => {
+    ['archivo-secreto-session', 'archivo-secreto-profile', 'archivo-secreto-access'].forEach((key) => localStorage.removeItem(key));
+    window.location.href = 'index.html';
+  });
+  document.querySelector('main')?.appendChild(section);
+}
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
@@ -61,3 +72,4 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
 
 loadTrack(0);
+buildLogoutButton();

@@ -1,0 +1,28 @@
+:root {
+  --alina-blue: #7c8cff;
+  --alina-pink: #ff8fca;
+  --alina-lilac: #c39bff;
+  --alina-accent: var(--alina-pink);
+  --alina-accent2: var(--alina-lilac);
+}
+
+body { transition: background 0.7s, color 0.5s; }
+.alina-controls { position: fixed; z-index: 1000; top: 18px; right: 18px; display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.12); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); box-shadow: 0 15px 45px rgba(20,20,90,.25); border-radius: 18px; }
+.alina-controls button { border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.1); color: inherit; border-radius: 12px; padding: 7px 9px; cursor: pointer; transition: 0.25s; }
+.alina-controls button:hover, .alina-controls button.active { background: color-mix(in srgb, var(--alina-accent) 35%, transparent); transform: translateY(-1px); }
+.alina-control-group { display: flex; align-items: center; gap: 6px; }
+.alina-control-group > span { font-size: .8rem; margin-right: 3px; }
+.alina-future-card { padding: clamp(24px, 5vw, 48px); }
+.alina-future-card textarea { width: 100%; min-height: 190px; resize: vertical; margin: 18px 0; padding: 18px; border-radius: 18px; border: 1px solid rgba(255,255,255,.22); background: rgba(15,20,60,.25); color: inherit; font: inherit; line-height: 1.65; outline: none; }
+.alina-future-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.alina-future-actions span { font-size: .9rem; opacity: .75; }
+html[data-alina-mode="party"] { --alina-accent: #ff75bd; --alina-accent2: #8e9dff; }
+html[data-alina-mode="party"] .aurora { filter: saturate(1.4) hue-rotate(-12deg); }
+html[data-alina-mode="relax"] { --alina-accent: #b9b6ff; --alina-accent2: #82cfff; }
+html[data-alina-mode="relax"] .floating-stickers { opacity: .65; }
+html[data-alina-mode="relax"] .aurora { opacity: .68; }
+html[data-alina-mode="party"] .glow-button, html[data-alina-mode="relax"] .glow-button { background: linear-gradient(135deg, #fff, var(--alina-accent)); }
+html[data-night="1"] body { background: #080d24 !important; color: #eef0ff; }
+html[data-night="1"] .glass { background: rgba(13,20,58,.58); }
+@media (max-width: 800px) { .alina-controls { left: 12px; right: 12px; top: 12px; justify-content: center; flex-wrap: wrap; } }
+@media (prefers-reduced-motion: reduce) { .alina-controls button { transition: none; } }

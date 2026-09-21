@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7c8cff">
+  <title>El cumpleaños de Alina</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cumple-alina.css">
+  <link rel="stylesheet" href="css/carla-gallery.css">
+  <link rel="stylesheet" href="css/alina-modes.css">
+</head>
+<body class="locked">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="floating-stickers" aria-hidden="true"><span>💙</span><span>✦</span><span>🌸</span><span>💜</span><span>🎂</span></div>
+
+  <section class="birthday-hero" id="welcome">
+    <div class="hero-orb orb-one" aria-hidden="true"></div>
+    <div class="hero-orb orb-two" aria-hidden="true"></div>
+    <div class="glass hero-card">
+      <p class="eyebrow">Una sorpresa para Alina</p>
+      <h1>Feliz cumple, <em>Alina</em></h1>
+      <p class="hero-copy">Un rincón hecho con azul, rosa y lila para celebrar tu día y guardar algunos recuerdos bonitos.</p>
+      <button class="glow-button" id="openButton" type="button">Abrir mi sorpresa ✨</button>
+    </div>
+  </section>
+
+  <main id="mainContent" aria-hidden="true">
+    <section class="section reveal">
+      <div class="section-title"><span>01</span><div><p class="eyebrow">El momento</p><h2>Tu día ya está aquí</h2></div></div>
+      <div class="glass countdown-card">
+        <p class="countdown-label">Cuenta atrás para el cumple de Alina</p>
+        <div class="countdown-grid" id="countdown"><div><strong id="days">--</strong><span>días</span></div><div><strong id="hours">--</strong><span>horas</span></div><div><strong id="minutes">--</strong><span>minutos</span></div></div>
+        <p id="countdownMessage">Preparando una fecha especial...</p>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-title"><span>02</span><div><p class="eyebrow">Nuestros recuerdos</p><h2>Pequeños momentos, gran historia</h2></div></div>
+      <div class="photo-wall">
+        <figure class="memory-card wide" data-gallery data-title="Recuerdo de Alina 1" tabindex="0" role="button"><img src="assets/media/ALINA1.JPEG" alt="Recuerdo de Alina 1"><figcaption>Una de tantas historias que merecen quedarse.</figcaption></figure>
+        <figure class="memory-card" data-gallery data-title="Recuerdo de Alina 2" tabindex="0" role="button"><img src="assets/media/ALINA2.JPEG" alt="Recuerdo de Alina 2"><figcaption>Tu energía lo cambia todo.</figcaption></figure>
+        <figure class="memory-card tall" data-gallery data-title="Recuerdo de Alina 3" tabindex="0" role="button"><img src="assets/media/ALINA3.JPEG" alt="Recuerdo de Alina 3"><figcaption>Momentos que hablan por sí solos.</figcaption></figure>
+        <figure class="memory-card" data-gallery data-title="Recuerdo de Alina 4" tabindex="0" role="button"><img src="assets/media/ALINA4.JPEG" alt="Recuerdo de Alina 4"><figcaption>Risas para volver a ellas.</figcaption></figure>
+        <figure class="memory-card wide" data-gallery data-title="Recuerdo de Alina 5" tabindex="0" role="button"><img src="assets/media/ALINA5.JPEG" alt="Recuerdo de Alina 5"><figcaption>Una celebración con tu propio color.</figcaption></figure>
+        <figure class="memory-card" data-gallery data-title="Recuerdo de Alina 6" tabindex="0" role="button"><img src="assets/media/ALINA6.JPEG" alt="Recuerdo de Alina 6"><figcaption>Que nunca falten los buenos planes.</figcaption></figure>
+        <figure class="memory-card" data-gallery data-title="Recuerdo de Alina 7" tabindex="0" role="button"><img src="assets/media/ALINA7.JPEG" alt="Recuerdo de Alina 7"><figcaption>Y que este año venga cargado de cosas bonitas.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="glass letter-card">
+        <p class="eyebrow">03 · Una carta para ti</p>
+        <div class="letter-content"><p class="typed-letter" id="typedLetter"></p><p class="signature" id="signature">Con mucho cariño, Ivan</p></div>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <div class="section-title"><span>04</span><div><p class="eyebrow">La banda sonora</p><h2>Una canción para este momento</h2></div></div>
+      <div class="glass music-player">
+        <div class="disc" id="disc" aria-hidden="true">♫</div>
+        <div><p class="eyebrow">Playlist de Alina</p><h3 id="trackTitle">Suelta Gatita Suelta</h3><p id="musicState">Lista para sonar</p></div>
+        <div class="music-actions"><button class="soft-button" id="playButton" type="button">▶ Reproducir</button><button class="soft-button" id="nextButton" type="button">Siguiente ♪</button></div>
+      </div>
+      <audio id="music" preload="metadata"></audio>
+    </section>
+
+    <section class="section reveal">
+      <div class="glass surprise-box"><p class="eyebrow">05 · Un último detalle</p><h2>Porque una sola sorpresa no era suficiente</h2><button class="glow-button" id="surpriseButton" type="button">Abrir sorpresa 💌</button><p class="surprise-text hidden" id="surpriseText">Que este nuevo año te traiga planes que ilusionen, gente que sume y muchos motivos para sonreír. Feliz cumpleaños, Alina 💙💗💜</p></div>
+    </section>
+
+    <section class="section final-section reveal"><div class="glass final-card"><p class="confetti">💙 ✦ 💗 ✦ 💜</p><h2>Feliz cumpleaños, <strong>Alina</strong></h2><p>Que nunca te falten motivos para celebrar quién eres.</p></div></section>
+  </main>
+  <dialog class="gallery-lightbox" id="galleryLightbox">
+    <div class="gallery-lightbox-inner">
+      <button class="gallery-lightbox-close" id="galleryClose" type="button" aria-label="Cerrar galería">×</button>
+      <button class="gallery-lightbox-nav" id="galleryPrevious" type="button" aria-label="Imagen anterior">‹</button>
+      <div class="gallery-lightbox-stage"><img id="galleryImage" alt=""><div class="gallery-lightbox-caption"><div class="gallery-lightbox-title" id="galleryTitle"></div><div class="gallery-lightbox-counter" id="galleryCounter"></div></div></div>
+      <button class="gallery-lightbox-nav" id="galleryNext" type="button" aria-label="Imagen siguiente">›</button>
+    </div>
+  </dialog>
+  <script src="js/cumple-alina.js"></script>
+</body>
+</html>
