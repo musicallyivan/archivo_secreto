@@ -16,6 +16,7 @@ function revealPage() {
   document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
   document.getElementById('typedLetter').textContent = '';
   typeLetter();
+  window.setTimeout(() => { if (typeof initAlinaScratch === 'function') initAlinaScratch(); }, 120);
   document.getElementById('welcome').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -406,6 +407,7 @@ function triggerAlinaScratchParticles() {
 function initAlinaScratch() {
   const canvas = document.getElementById('alinaScratchCanvas');
   const wrapper = document.getElementById('alinaScratchWrapper');
+  const quickBtn = document.getElementById('alinaRevealBtn');
   if (!canvas || !wrapper) return;
 
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -415,12 +417,24 @@ function initAlinaScratch() {
   let lastY = null;
   let strokeCount = 0;
 
+  function reveal() {
+    if (isRevealed) return;
+    isRevealed = true;
+    canvas.classList.add('revealed');
+    if (quickBtn) quickBtn.style.display = 'none';
+    triggerAlinaScratchParticles();
+  }
+
+  quickBtn?.addEventListener('click', reveal);
+
   function resizeCanvas() {
+    if (isRevealed) return;
     const rect = wrapper.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
     drawMetallicCover(rect.width, rect.height);
   }
@@ -451,16 +465,19 @@ function initAlinaScratch() {
     ctx.lineWidth = 4;
     ctx.strokeRect(8, 8, w - 16, h - 16);
 
-    // Text on scratch surface
+    // Responsive text on scratch surface
+    const titleSize = Math.max(12, Math.min(18, Math.round(w / 22)));
+    const subSize = Math.max(10, Math.min(14, Math.round(w / 28)));
+
     ctx.fillStyle = '#0f1638';
-    ctx.font = "bold 18px 'DM Sans', sans-serif";
+    ctx.font = `bold ${titleSize}px 'DM Sans', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('✨ RASCA AQUÍ CON EL DEDO ✨', w / 2, h / 2 - 14);
 
     ctx.fillStyle = '#261b4d';
-    ctx.font = "14px 'DM Sans', sans-serif";
-    ctx.fillText('Descubre tu regalo exclusivo de cumpleaños ✦', w / 2, h / 2 + 16);
+    ctx.font = `${subSize}px 'DM Sans', sans-serif`;
+    ctx.fillText('Descubre tu regalo exclusivo ✦', w / 2, h / 2 + 16);
   }
 
   function getPos(e) {
@@ -494,7 +511,7 @@ function initAlinaScratch() {
 
   function checkReveal() {
     strokeCount++;
-    if (strokeCount % 10 !== 0 || isRevealed) return;
+    if (strokeCount % 8 !== 0 || isRevealed) return;
 
     const w = canvas.width;
     const h = canvas.height;
@@ -511,10 +528,8 @@ function initAlinaScratch() {
       }
     }
 
-    if (transparent / totalSampled > 0.4) {
-      isRevealed = true;
-      canvas.classList.add('revealed');
-      triggerAlinaScratchParticles();
+    if (transparent / totalSampled > 0.38) {
+      reveal();
     }
   }
 
@@ -547,6 +562,15 @@ function initAlinaScratch() {
   window.addEventListener('resize', () => {
     if (!isRevealed) resizeCanvas();
   });
+
+  if ('IntersectionObserver' in window) {
+    const ob = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !isRevealed) resizeCanvas();
+      });
+    }, { threshold: 0.1 });
+    ob.observe(wrapper);
+  }
 
   requestAnimationFrame(resizeCanvas);
 }

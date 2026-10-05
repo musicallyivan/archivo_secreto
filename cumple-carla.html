@@ -379,7 +379,14 @@
           >
             <source
               src="assets/media/TOMAS FALSAS.MOV"
+              type="video/mp4"
+            />
+            <source
+              src="assets/media/TOMAS FALSAS.MOV"
               type="video/quicktime"
+            />
+            <source
+              src="assets/media/TOMAS FALSAS.MOV"
             />
             Tu navegador no puede reproducir este vídeo.
           </video>
@@ -534,6 +541,7 @@
             </div>
             <canvas id="carlaScratchCanvas" class="scratch-canvas"></canvas>
           </div>
+          <button type="button" class="soft-button scratch-quick-btn" id="carlaRevealBtn">🎁 O toca aquí para revelar directamente</button>
         </div>
       </section>
       <section class="section reveal music-section">
@@ -1074,6 +1082,7 @@
         function initCarlaScratch() {
           const canvas = $("carlaScratchCanvas");
           const wrapper = $("carlaScratchWrapper");
+          const quickBtn = $("carlaRevealBtn");
           if (!canvas || !wrapper) return;
 
           const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -1083,12 +1092,24 @@
           let lastY = null;
           let strokeCount = 0;
 
+          function reveal() {
+            if (isRevealed) return;
+            isRevealed = true;
+            canvas.classList.add("revealed");
+            if (quickBtn) quickBtn.style.display = "none";
+            triggerScratchSparks();
+          }
+
+          quickBtn?.addEventListener("click", reveal);
+
           function resizeCanvas() {
+            if (isRevealed) return;
             const rect = wrapper.getBoundingClientRect();
             if (!rect.width || !rect.height) return;
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
+            canvas.width = Math.round(rect.width * dpr);
+            canvas.height = Math.round(rect.height * dpr);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.scale(dpr, dpr);
             drawMetallicCover(rect.width, rect.height);
           }
@@ -1119,15 +1140,18 @@
             ctx.lineWidth = 4;
             ctx.strokeRect(8, 8, w - 16, h - 16);
 
-            // Text on scratch surface
+            // Responsive text on scratch surface
+            const titleSize = Math.max(12, Math.min(18, Math.round(w / 22)));
+            const subSize = Math.max(10, Math.min(14, Math.round(w / 28)));
+
             ctx.fillStyle = "#4a1936";
-            ctx.font = "bold 18px 'DM Sans', sans-serif";
+            ctx.font = `bold ${titleSize}px 'DM Sans', sans-serif`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText("✨ RASCA AQUÍ CON EL DEDO ✨", w / 2, h / 2 - 14);
 
             ctx.fillStyle = "#7a2858";
-            ctx.font = "14px 'DM Sans', sans-serif";
+            ctx.font = `${subSize}px 'DM Sans', sans-serif`;
             ctx.fillText("Descubre tu sorpresa de cumpleaños 🎁", w / 2, h / 2 + 16);
           }
 
@@ -1162,7 +1186,7 @@
 
           function checkReveal() {
             strokeCount++;
-            if (strokeCount % 10 !== 0 || isRevealed) return;
+            if (strokeCount % 8 !== 0 || isRevealed) return;
 
             const w = canvas.width;
             const h = canvas.height;
@@ -1179,10 +1203,8 @@
               }
             }
 
-            if (transparent / totalSampled > 0.4) {
-              isRevealed = true;
-              canvas.classList.add("revealed");
-              triggerScratchSparks();
+            if (transparent / totalSampled > 0.38) {
+              reveal();
             }
           }
 
@@ -1216,6 +1238,15 @@
             if (!isRevealed) resizeCanvas();
           });
 
+          if ("IntersectionObserver" in window) {
+            const ob = new IntersectionObserver((entries) => {
+              entries.forEach((e) => {
+                if (e.isIntersecting && !isRevealed) resizeCanvas();
+              });
+            }, { threshold: 0.1 });
+            ob.observe(wrapper);
+          }
+
           requestAnimationFrame(resizeCanvas);
         }
 
@@ -1225,12 +1256,6 @@
         loadTrack(0);
       })();
     </script>
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("sw.js").catch(() => {});
-        });
-      }
-    </script>
+    <script src="js/pwa-update.js" defer></script>
   </body>
 </html>

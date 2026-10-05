@@ -494,3 +494,284 @@
   opacity: 0.9;
   margin-top: 8px;
 }
+.scratch-quick-btn {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  padding: 8px 18px;
+  opacity: 0.85;
+}
+.scratch-quick-btn:hover {
+  opacity: 1;
+}
+
+/* ==========================================
+   Carla - Mobile Responsiveness & Polish
+   ========================================== */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  .section {
+    padding: 48px 16px !important;
+    max-width: 100% !important;
+  }
+
+  /* Hero */
+  .birthday-hero {
+    min-height: 85svh !important;
+    padding: 24px 14px !important;
+  }
+  .hero-card {
+    padding: 38px 20px !important;
+    border-radius: 22px !important;
+    max-width: 100% !important;
+  }
+  .hero-card h1 {
+    font-size: clamp(2.3rem, 9.5vw, 3.4rem) !important;
+    line-height: 1.05 !important;
+    margin: 14px 0 20px !important;
+    word-break: break-word !important;
+  }
+  .hero-copy {
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Section Titles */
+  .section-title {
+    gap: 12px !important;
+    margin-bottom: 24px !important;
+  }
+  .section-title > span {
+    font-size: 0.75rem !important;
+    padding-top: 4px !important;
+  }
+  .section-title h2 {
+    font-size: clamp(1.45rem, 5.5vw, 2rem) !important;
+    line-height: 1.2 !important;
+    margin-top: 4px !important;
+  }
+
+  /* 3D Polaroids on Mobile */
+  .photo-wall {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 22px !important;
+    perspective: 1200px !important;
+    width: 100% !important;
+  }
+  .memory-card,
+  .memory-card.wide,
+  .memory-card.tall {
+    width: 100% !important;
+    height: 410px !important;
+    min-height: 410px !important;
+    max-height: 410px !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    margin: 0 !important;
+    display: block !important;
+    position: relative !important;
+  }
+  .polaroid-inner {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 410px !important;
+  }
+  .polaroid-front,
+  .polaroid-back {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 20px !important;
+  }
+  .polaroid-front img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    object-fit: cover !important;
+  }
+  .polaroid-back {
+    padding: 22px 18px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .polaroid-back-date {
+    font-size: 0.72rem !important;
+  }
+  .polaroid-back-note {
+    font-size: 1.05rem !important;
+    line-height: 1.55 !important;
+    margin: 10px 0 !important;
+  }
+  .polaroid-back-actions {
+    margin-top: 8px !important;
+    gap: 8px !important;
+  }
+  .polaroid-back-actions button {
+    padding: 9px 16px !important;
+    font-size: 0.85rem !important;
+    min-height: 40px !important;
+  }
+  .flip-btn-badge {
+    padding: 7px 14px !important;
+    font-size: 0.8rem !important;
+    min-height: 36px !important;
+    top: 12px !important;
+    right: 12px !important;
+  }
+
+  /* Letter Card */
+  .letter-card {
+    padding: 26px 18px !important;
+    border-radius: 22px !important;
+  }
+  .typed-letter {
+    font-size: 1.05rem !important;
+    line-height: 1.75 !important;
+    min-height: 180px !important;
+  }
+  .letter-signature {
+    font-size: 1.25rem !important;
+    margin-top: 20px !important;
+  }
+
+  /* Video Card */
+  .video-card {
+    border-radius: 20px !important;
+  }
+  .video-card video {
+    aspect-ratio: 16/9 !important;
+    max-height: 280px !important;
+  }
+  .video-caption {
+    padding: 14px 16px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+  .video-caption strong {
+    font-size: 1rem !important;
+  }
+  .video-caption span {
+    font-size: 0.85rem !important;
+    text-align: left !important;
+  }
+
+  /* Trivia Card */
+  .carla-trivia-card {
+    padding: 22px 16px !important;
+    border-radius: 22px !important;
+  }
+  .carla-trivia-question {
+    font-size: clamp(1.2rem, 4.5vw, 1.5rem) !important;
+    line-height: 1.35 !important;
+    margin-bottom: 18px !important;
+  }
+  .carla-trivia-btn {
+    padding: 12px 14px !important;
+    font-size: 0.92rem !important;
+    border-radius: 14px !important;
+    gap: 10px !important;
+  }
+  .carla-trivia-letter {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Voice Notes */
+  .carla-voice-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .carla-voice-card {
+    padding: 18px 16px !important;
+    border-radius: 20px !important;
+  }
+  .carla-voice-bar {
+    padding: 8px 12px !important;
+    gap: 10px !important;
+  }
+  .carla-voice-btn {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+  }
+
+  /* Scratch Card on Mobile */
+  .scratch-card-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    border-radius: 20px !important;
+    margin: 18px 0 12px !important;
+  }
+  .scratch-prize-card {
+    padding: 28px 16px !important;
+    gap: 10px !important;
+  }
+  .scratch-prize-title {
+    font-size: clamp(1.35rem, 5vw, 1.8rem) !important;
+  }
+  .scratch-prize-desc {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+  }
+  .scratch-code-box {
+    padding: 6px 14px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Music Player */
+  .music-player {
+    padding: 24px 16px !important;
+    gap: 18px !important;
+  }
+  .disc {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 32px !important;
+  }
+  .music-actions {
+    display: flex !important;
+    width: 100% !important;
+    gap: 8px !important;
+  }
+  .music-actions button {
+    flex: 1 !important;
+    padding: 12px 14px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Stickers Board (Carla) */
+  .sticker-board {
+    min-height: 220px !important;
+    height: 220px !important;
+    padding: 16px !important;
+    border-radius: 20px !important;
+  }
+  .sticker-board p {
+    font-size: 0.95rem !important;
+    z-index: 10 !important;
+    position: relative !important;
+  }
+  .sticker {
+    font-size: 38px !important;
+    opacity: 0.7 !important;
+  }
+  .s1 { top: 8% !important; left: 8% !important; }
+  .s2 { top: 8% !important; right: 8% !important; }
+  .s3 { bottom: 8% !important; left: 10% !important; }
+  .s4 { bottom: 8% !important; right: 10% !important; }
+  .s5, .s6 { display: none !important; }
+
+  /* Message Card */
+  .message-card {
+    padding: 26px 18px !important;
+    border-radius: 22px !important;
+  }
+}

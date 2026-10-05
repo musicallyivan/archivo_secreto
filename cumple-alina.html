@@ -279,6 +279,7 @@
           </div>
           <canvas id="alinaScratchCanvas" class="scratch-canvas"></canvas>
         </div>
+        <button type="button" class="soft-button scratch-quick-btn" id="alinaRevealBtn">🎁 O toca aquí para revelar directamente</button>
       </div>
     </section>
 
@@ -293,12 +294,6 @@
     </div>
   </dialog>
   <script src="js/cumple-alina.js"></script>
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js").catch(() => {});
-      });
-    }
-  </script>
+  <script src="js/pwa-update.js" defer></script>
 </body>
 </html>
