@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: archivo-secreto-v3
+    name: archivo-secreto-api-v3
     runtime: docker
     rootDir: server
     plan: free
