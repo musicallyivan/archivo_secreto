@@ -654,9 +654,9 @@ html[data-night="1"] .glass { background: rgba(13,20,58,.58); }
   .memory-card.wide,
   .memory-card.tall {
     width: 100% !important;
-    height: 410px !important;
-    min-height: 410px !important;
-    max-height: 410px !important;
+    height: clamp(340px, 92vw, 420px) !important;
+    min-height: clamp(340px, 92vw, 420px) !important;
+    max-height: clamp(340px, 92vw, 420px) !important;
     grid-column: auto !important;
     grid-row: auto !important;
     margin: 0 !important;
@@ -666,7 +666,7 @@ html[data-night="1"] .glass { background: rgba(13,20,58,.58); }
   .polaroid-inner {
     width: 100% !important;
     height: 100% !important;
-    min-height: 410px !important;
+    min-height: clamp(340px, 92vw, 420px) !important;
   }
   .polaroid-front,
   .polaroid-back {

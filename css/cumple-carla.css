@@ -511,10 +511,10 @@ h1 em {
   .memory-card,
   .memory-card.wide {
     grid-column: auto;
-    min-height: 420px;
+    min-height: clamp(340px, 92vw, 420px);
   }
   .memory-card img {
-    min-height: 420px;
+    min-height: clamp(340px, 92vw, 420px);
   }
   .hero-card {
     border-radius: 24px;
