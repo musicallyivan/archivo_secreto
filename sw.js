@@ -1,4 +1,4 @@
-const CACHE_NAME = 'archivo-secreto-v12';
+const CACHE_NAME = 'archivo-secreto-v13';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -17,6 +17,7 @@ const STATIC_ASSETS = [
   './js/content.js',
   './js/app.js',
   './js/carla-extras.js',
+  './js/cumple-carla.js',
   './js/cumple-alina.js',
   './js/retro-camera.js',
   './js/mural.js',
@@ -49,6 +50,8 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  // Let the browser handle audio/video Range requests natively
+  if (event.request.headers.get('range')) return;
 
   // Network-first for HTML pages so user gets newest versions immediately
   if (event.request.mode === 'navigate' || event.request.destination === 'document') {
