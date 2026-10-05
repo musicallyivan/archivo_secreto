@@ -15,6 +15,7 @@ Pagina web privada para las cartas, recuerdos, fotos, audios y videos de Carla y
 - linea del tiempo por perfil
 - capsula del tiempo por perfil
 - sorpresa aleatoria dentro de cada archivo
+- cabina de fotos retro con marco polaroid descargable en HD y filtros en tiempo real
 - diferenciacion visual mas marcada entre Carla y Alina
 - bloque explicativo sobre el limite real de seguridad
 

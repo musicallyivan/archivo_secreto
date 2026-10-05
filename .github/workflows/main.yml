@@ -1,0 +1,25 @@
+name: Self-Hosted Workflow
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub
+
+jobs:
+  run-on-my-machine:
+    runs-on: self-hosted
+    steps:
+      - name: Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Comprobar entorno en tu máquina
+        run: |
+          Write-Host "¡Ejecutándose en tu propio runner self-hosted!"
+          node -v
+          git --version
+
+      - name: Validar scripts del proyecto
+        run: |
+          node -c js/retro-camera.js
+          node -c sw.js
+          Write-Host "Validación completada con éxito."

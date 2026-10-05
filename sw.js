@@ -1,4 +1,4 @@
-const CACHE_NAME = 'archivo-secreto-v6';
+const CACHE_NAME = 'archivo-secreto-v7';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -11,9 +11,11 @@ const STATIC_ASSETS = [
   './css/alina-modes.css',
   './css/carla-gallery.css',
   './css/carla-video.css',
+  './css/retro-camera.css',
   './js/content.js',
   './js/app.js',
   './js/cumple-alina.js',
+  './js/retro-camera.js',
   './js/pwa-update.js',
   './manifest.json',
   './assets/favicon.png'

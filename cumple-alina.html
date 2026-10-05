@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="css/cumple-alina.css">
   <link rel="stylesheet" href="css/carla-gallery.css">
   <link rel="stylesheet" href="css/alina-modes.css">
+  <link rel="stylesheet" href="css/retro-camera.css">
 </head>
 <body class="locked">
   <div class="aurora" aria-hidden="true"></div>
@@ -176,6 +177,123 @@
       </div>
     </section>
 
+    <!-- CABINA DE FOTOS RETRO & MARCO POLAROID -->
+    <section class="section reveal retro-camera-section" id="cabina-polaroid">
+      <div class="section-title">
+        <span>📸</span>
+        <div>
+          <p class="eyebrow">CABINA DE FOTOS RETRO</p>
+          <h2>Saca tu propia Polaroid de recuerdo ✦</h2>
+        </div>
+      </div>
+
+      <div class="glass retro-camera-card" id="retroCameraModule">
+        <div class="retro-camera-header">
+          <p>
+            Activa la cámara o sube una foto de tu carrete para revelarla en una auténtica tarjeta Polaroid con fecha de hoy y tu propia dedicatoria para guardar.
+          </p>
+        </div>
+
+        <div class="retro-camera-grid">
+          <!-- Lado izquierdo: Visor de la cámara -->
+          <div class="camera-viewfinder-pane">
+            <div class="camera-viewport-wrap">
+              <video id="cameraVideo" class="camera-video filter-chispa-rosa mirrored" playsinline muted autoplay></video>
+
+              <!-- Pantalla de inicio / permiso -->
+              <div class="camera-standby-overlay" id="cameraStandby">
+                <div class="camera-standby-icon">📸</div>
+                <h4>Cabina de Fotos Secreta</h4>
+                <p>Pulsa el botón para encender la cámara y probar los filtros retro en vivo.</p>
+                <button type="button" class="glow-button" id="cameraActivateBtn">✨ Encender cámara</button>
+              </div>
+
+              <!-- HUD superpuesto -->
+              <div class="camera-hud">
+                <div class="hud-live-tag">
+                  <span class="hud-live-dot"></span> EN DIRECTO
+                </div>
+                <div class="viewfinder-corner corner-tl"></div>
+                <div class="viewfinder-corner corner-tr"></div>
+                <div class="viewfinder-corner corner-bl"></div>
+                <div class="viewfinder-corner corner-br"></div>
+                <div class="viewfinder-center-cross"></div>
+              </div>
+
+              <!-- Flash visual -->
+              <div class="camera-flash" id="cameraFlash"></div>
+            </div>
+
+            <!-- Selector de filtros -->
+            <div class="camera-filters-section">
+              <p class="filters-label">✦ Filtros de revelado</p>
+              <div class="camera-filters-list">
+                <button type="button" class="filter-chip active" data-filter="chispa-rosa">🌸 Chispa Rosa</button>
+                <button type="button" class="filter-chip" data-filter="retro-90s">🎞️ Retro 90s</button>
+                <button type="button" class="filter-chip" data-filter="noir">🖤 Noir Clásico</button>
+                <button type="button" class="filter-chip" data-filter="golden">✨ Golden Hour</button>
+                <button type="button" class="filter-chip" data-filter="pastel">🌿 Pastel Dream</button>
+                <button type="button" class="filter-chip" data-filter="natural">📷 Natural</button>
+              </div>
+            </div>
+
+            <!-- Controles del disparador -->
+            <div class="camera-controls-bar">
+              <button type="button" class="camera-action-icon-btn" id="cameraSwitchBtn" title="Cambiar cámara (delantera/trasera)" aria-label="Cambiar cámara">
+                🔄
+              </button>
+              <button type="button" class="shutter-btn" id="cameraShutterBtn" disabled>
+                <span>📸</span> Capturar Polaroid
+              </button>
+              <button type="button" class="camera-action-icon-btn" id="cameraUploadBtn" title="Elegir foto de tu galería" aria-label="Subir foto de galería">
+                📁
+              </button>
+              <input type="file" id="cameraFileInput" accept="image/*" class="visually-hidden">
+            </div>
+          </div>
+
+          <!-- Lado derecho: Tarjeta Polaroid -->
+          <div class="camera-result-pane">
+            <div class="polaroid-frame-card">
+              <div class="polaroid-frame-tape"></div>
+
+              <div class="polaroid-photo-box" id="polaroidPhotoBox">
+                <div class="polaroid-empty-state" id="polaroidEmpty">
+                  <span>🎞️</span>
+                  <p>Enciende la cámara a la izquierda y pulsa <strong>Capturar Polaroid</strong> para revelar aquí tu foto.</p>
+                </div>
+                <img id="polaroidImg" class="polaroid-captured-img filter-chispa-rosa" alt="Tu foto polaroid" style="display: none;">
+              </div>
+
+              <div class="polaroid-chin">
+                <input
+                  type="text"
+                  id="polaroidCaptionInput"
+                  class="polaroid-caption-input"
+                  value="Un recuerdo para siempre ✦"
+                  placeholder="Escribe tu dedicatoria aquí..."
+                  maxlength="50"
+                />
+                <div class="polaroid-date-badge" id="polaroidDateBadge">✦ 05 OCT 2026 · ARCHIVO SECRETO ✦</div>
+              </div>
+            </div>
+
+            <!-- Botones de la Polaroid -->
+            <div class="polaroid-actions">
+              <button type="button" class="glow-button download-polaroid-btn" id="downloadPolaroidBtn" disabled>
+                💾 Descargar Polaroid (HD)
+              </button>
+              <button type="button" class="soft-button" id="retakePolaroidBtn" style="display: none;">
+                ↺ Otra foto
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="camera-status-toast" id="cameraToast">Mensaje</div>
+    </section>
+
     <section class="section reveal">
       <div class="glass letter-card">
         <p class="eyebrow">03 · Una carta para ti</p>
@@ -294,6 +412,7 @@
     </div>
   </dialog>
   <script src="js/cumple-alina.js"></script>
+  <script src="js/retro-camera.js" defer></script>
   <script src="js/pwa-update.js" defer></script>
 </body>
 </html>
