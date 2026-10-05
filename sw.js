@@ -1,4 +1,4 @@
-const CACHE_NAME = 'archivo-secreto-v11';
+const CACHE_NAME = 'archivo-secreto-v12';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -16,6 +16,7 @@ const STATIC_ASSETS = [
   './css/mural.css',
   './js/content.js',
   './js/app.js',
+  './js/carla-extras.js',
   './js/cumple-alina.js',
   './js/retro-camera.js',
   './js/mural.js',

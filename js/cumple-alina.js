@@ -78,7 +78,7 @@ function buildControls() {
   setNight(localStorage.getItem('alina-night') === '1');
 }
 
-const API = (window.ALINA_API_URL || window.CARLA_API_URL || 'https://archivo-secreto-v3.onrender.com').replace(/\/$/, '');
+const API = (window.ALINA_API_URL || window.CARLA_API_URL || 'https://archivo-secreto-api-v3.onrender.com').replace(/\/$/, '');
 
 function buildFutureMessage() {
   const section = document.createElement('section');
