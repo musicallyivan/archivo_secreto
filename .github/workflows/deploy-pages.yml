@@ -1,0 +1,50 @@
+name: Desplegar en GitHub Pages (Self-Hosted)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Permite desplegar manualmente desde GitHub
+
+# Permisos requeridos para publicar en GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Permite solo un despliegue simultáneo para evitar colisiones
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Validar archivos JavaScript
+        run: |
+          Write-Host "Comprobando archivos antes del empaquetado..."
+          node -c js/retro-camera.js
+          node -c sw.js
+          Write-Host "Validación correcta."
+
+      - name: Configurar entorno Pages
+        uses: actions/configure-pages@v5
+
+      - name: Empaquetar y subir artefacto de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
