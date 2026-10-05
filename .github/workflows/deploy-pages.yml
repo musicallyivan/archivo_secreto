@@ -21,7 +21,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Añadir Bash y GNU tar al PATH de Windows
-        shell: pwsh
+        shell: powershell
         run: |
           Add-Content $env:GITHUB_PATH "C:\Program Files\Git\bin"
           Add-Content $env:GITHUB_PATH "C:\Program Files\Git\usr\bin"
@@ -52,7 +52,7 @@ jobs:
     needs: build
     steps:
       - name: Añadir Bash y herramientas al PATH de Windows
-        shell: pwsh
+        shell: powershell
         run: |
           Add-Content $env:GITHUB_PATH "C:\Program Files\Git\bin"
           Add-Content $env:GITHUB_PATH "C:\Program Files\Git\usr\bin"
