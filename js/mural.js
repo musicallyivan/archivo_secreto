@@ -8,7 +8,7 @@
 (() => {
   'use strict';
 
-  const API = (window.CARLA_API_URL || 'https://archivo-secreto-api.onrender.com').replace(/\/$/, '');
+  const API = (window.CARLA_API_URL || 'https://archivo-secreto-v3.onrender.com').replace(/\/$/, '');
   const DB_NAME = 'archivo_secreto_mural_db';
   const DB_VERSION = 1;
   const STORE_NAME = 'photos';
