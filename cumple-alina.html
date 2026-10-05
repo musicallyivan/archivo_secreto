@@ -6,6 +6,11 @@
   <meta name="theme-color" content="#7c8cff">
   <title>El cumpleaños de Alina</title>
   <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Archivo">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
@@ -42,13 +47,132 @@
     <section class="section reveal">
       <div class="section-title"><span>02</span><div><p class="eyebrow">Nuestros recuerdos</p><h2>Pequeños momentos, gran historia</h2></div></div>
       <div class="photo-wall">
-        <figure class="memory-card wide" data-gallery data-title="Recuerdo de Alina 1" tabindex="0" role="button"><img src="assets/media/ALINA1.JPEG" alt="Recuerdo de Alina 1"><figcaption>Una de tantas historias que merecen quedarse.</figcaption></figure>
-        <figure class="memory-card" data-gallery data-title="Recuerdo de Alina 2" tabindex="0" role="button"><img src="assets/media/ALINA2.JPEG" alt="Recuerdo de Alina 2"><figcaption>Tu energía lo cambia todo.</figcaption></figure>
-        <figure class="memory-card tall" data-gallery data-title="Recuerdo de Alina 3" tabindex="0" role="button"><img src="assets/media/ALINA3.JPEG" alt="Recuerdo de Alina 3"><figcaption>Momentos que hablan por sí solos.</figcaption></figure>
-        <figure class="memory-card" data-gallery data-title="Recuerdo de Alina 4" tabindex="0" role="button"><img src="assets/media/ALINA4.JPEG" alt="Recuerdo de Alina 4"><figcaption>Risas para volver a ellas.</figcaption></figure>
-        <figure class="memory-card wide" data-gallery data-title="Recuerdo de Alina 5" tabindex="0" role="button"><img src="assets/media/ALINA5.JPEG" alt="Recuerdo de Alina 5"><figcaption>Una celebración con tu propio color.</figcaption></figure>
-        <figure class="memory-card" data-gallery data-title="Recuerdo de Alina 6" tabindex="0" role="button"><img src="assets/media/ALINA6.JPEG" alt="Recuerdo de Alina 6"><figcaption>Que nunca falten los buenos planes.</figcaption></figure>
-        <figure class="memory-card" data-gallery data-title="Recuerdo de Alina 7" tabindex="0" role="button"><img src="assets/media/ALINA7.JPEG" alt="Recuerdo de Alina 7"><figcaption>Y que este año venga cargado de cosas bonitas.</figcaption></figure>
+        <div class="memory-card wide" data-gallery-idx="0" tabindex="0" aria-label="Polaroid de Alina 1">
+          <div class="polaroid-inner">
+            <figure class="polaroid-front">
+              <div class="polaroid-tape"></div>
+              <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+              <img src="assets/media/ALINA1.JPEG" alt="Recuerdo de Alina 1">
+              <figcaption>Una de tantas historias que merecen quedarse.</figcaption>
+            </figure>
+            <div class="polaroid-back">
+              <span class="polaroid-back-date">✦ Recuerdo 01</span>
+              <p class="polaroid-back-note">"Hay fotos que no necesitan explicación: solo verlas y recordar el momento exacto y lo bien que lo pasamos."</p>
+              <div class="polaroid-back-actions">
+                <button type="button" class="polaroid-gallery-btn" data-gallery-idx="0">🔍 Ver foto</button>
+                <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="memory-card" data-gallery-idx="1" tabindex="0" aria-label="Polaroid de Alina 2">
+          <div class="polaroid-inner">
+            <figure class="polaroid-front">
+              <div class="polaroid-tape"></div>
+              <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+              <img src="assets/media/ALINA2.JPEG" alt="Recuerdo de Alina 2">
+              <figcaption>Tu energía lo cambia todo.</figcaption>
+            </figure>
+            <div class="polaroid-back">
+              <span class="polaroid-back-date">✦ Pura Buena Vibra</span>
+              <p class="polaroid-back-note">"De esas personas que llegan a cualquier sitio y automáticamente el ambiente se vuelve más divertido y ligero."</p>
+              <div class="polaroid-back-actions">
+                <button type="button" class="polaroid-gallery-btn" data-gallery-idx="1">🔍 Ver foto</button>
+                <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="memory-card tall" data-gallery-idx="2" tabindex="0" aria-label="Polaroid de Alina 3">
+          <div class="polaroid-inner">
+            <figure class="polaroid-front">
+              <div class="polaroid-tape"></div>
+              <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+              <img src="assets/media/ALINA3.JPEG" alt="Recuerdo de Alina 3">
+              <figcaption>Momentos que hablan por sí solos.</figcaption>
+            </figure>
+            <div class="polaroid-back">
+              <span class="polaroid-back-date">✦ Inmortalizado</span>
+              <p class="polaroid-back-note">"Cada conversación improvisada y cada plan que empezó sin saber cómo acabaría se convirtió en anécdota."</p>
+              <div class="polaroid-back-actions">
+                <button type="button" class="polaroid-gallery-btn" data-gallery-idx="2">🔍 Ver foto</button>
+                <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="memory-card" data-gallery-idx="3" tabindex="0" aria-label="Polaroid de Alina 4">
+          <div class="polaroid-inner">
+            <figure class="polaroid-front">
+              <div class="polaroid-tape"></div>
+              <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+              <img src="assets/media/ALINA4.JPEG" alt="Recuerdo de Alina 4">
+              <figcaption>Risas para volver a ellas.</figcaption>
+            </figure>
+            <div class="polaroid-back">
+              <span class="polaroid-back-date">✦ Terapia de Risa</span>
+              <p class="polaroid-back-note">"Para los días en los que hace falta recordar que lo mejor de todo es no tomarse nada demasiado en serio."</p>
+              <div class="polaroid-back-actions">
+                <button type="button" class="polaroid-gallery-btn" data-gallery-idx="3">🔍 Ver foto</button>
+                <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="memory-card wide" data-gallery-idx="4" tabindex="0" aria-label="Polaroid de Alina 5">
+          <div class="polaroid-inner">
+            <figure class="polaroid-front">
+              <div class="polaroid-tape"></div>
+              <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+              <img src="assets/media/ALINA5.JPEG" alt="Recuerdo de Alina 5">
+              <figcaption>Una celebración con tu propio color.</figcaption>
+            </figure>
+            <div class="polaroid-back">
+              <span class="polaroid-back-date">✦ En Tu Onda</span>
+              <p class="polaroid-back-note">"Brillando siempre con luz propia. Que este año no baje ni un solo decibelio esa chispa."</p>
+              <div class="polaroid-back-actions">
+                <button type="button" class="polaroid-gallery-btn" data-gallery-idx="4">🔍 Ver foto</button>
+                <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="memory-card" data-gallery-idx="5" tabindex="0" aria-label="Polaroid de Alina 6">
+          <div class="polaroid-inner">
+            <figure class="polaroid-front">
+              <div class="polaroid-tape"></div>
+              <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+              <img src="assets/media/ALINA6.JPEG" alt="Recuerdo de Alina 6">
+              <figcaption>Que nunca falten los buenos planes.</figcaption>
+            </figure>
+            <div class="polaroid-back">
+              <span class="polaroid-back-date">✦ Próxima Aventura</span>
+              <p class="polaroid-back-note">"Por todas las quedadas que aún faltan por organizar y las noches que terminan haciéndose de día."</p>
+              <div class="polaroid-back-actions">
+                <button type="button" class="polaroid-gallery-btn" data-gallery-idx="5">🔍 Ver foto</button>
+                <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="memory-card" data-gallery-idx="6" tabindex="0" aria-label="Polaroid de Alina 7">
+          <div class="polaroid-inner">
+            <figure class="polaroid-front">
+              <div class="polaroid-tape"></div>
+              <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+              <img src="assets/media/ALINA7.JPEG" alt="Recuerdo de Alina 7">
+              <figcaption>Y que este año venga cargado de cosas bonitas.</figcaption>
+            </figure>
+            <div class="polaroid-back">
+              <span class="polaroid-back-date">✦ Deseo de Cumple</span>
+              <p class="polaroid-back-note">"Todo lo bueno que deseas para los demás, multiplicado por diez para ti en este nuevo ciclo."</p>
+              <div class="polaroid-back-actions">
+                <button type="button" class="polaroid-gallery-btn" data-gallery-idx="6">🔍 Ver foto</button>
+                <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -59,8 +183,77 @@
       </div>
     </section>
 
+    <section class="section reveal voice-section">
+      <div class="section-title"><span>04</span><div><p class="eyebrow">Audios privados</p><h2>Notas de voz para ti 🎙️</h2></div></div>
+      <div class="alina-voice-grid" id="alinaVoiceGrid">
+        <article class="alina-voice-card">
+          <div class="alina-voice-top">
+            <span class="alina-voice-badge">🎙️ Iván</span>
+            <span class="alina-voice-date">Directo al archivo</span>
+          </div>
+          <h3>Audio con ritmo: Suelta Gatita</h3>
+          <p>Para esos días en los que hace falta subir el volumen y reírse de todo con ganas.</p>
+          <div class="alina-voice-bar">
+            <button type="button" class="alina-voice-btn" aria-label="Reproducir audio">
+              <span>▶</span>
+            </button>
+            <div class="alina-voice-track">
+              <div class="alina-waveform">
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+              </div>
+              <div class="alina-progress-line"><div class="alina-progress-fill"></div></div>
+            </div>
+            <span class="alina-voice-time">0:48</span>
+          </div>
+          <audio preload="none" src="assets/media/MUSICA 3.mp3"></audio>
+        </article>
+        <article class="alina-voice-card">
+          <div class="alina-voice-top">
+            <span class="alina-voice-badge">🎙️ Iván</span>
+            <span class="alina-voice-date">Nota reservada</span>
+          </div>
+          <h3>Mensaje nocturno: Buen rollo puro</h3>
+          <p>Porque la confianza natural y las charlas de verdad son las que se quedan.</p>
+          <div class="alina-voice-bar">
+            <button type="button" class="alina-voice-btn" aria-label="Reproducir audio">
+              <span>▶</span>
+            </button>
+            <div class="alina-voice-track">
+              <div class="alina-waveform">
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+                <span class="alina-bar"></span>
+              </div>
+              <div class="alina-progress-line"><div class="alina-progress-fill"></div></div>
+            </div>
+            <span class="alina-voice-time">0:36</span>
+          </div>
+          <audio preload="none" src="assets/media/MUSICA 6.mp3"></audio>
+        </article>
+      </div>
+    </section>
+
+    <section class="section reveal trivia-section">
+      <div class="section-title"><span>05</span><div><p class="eyebrow">Juego interactivo</p><h2>¿Cuánto nos conocemos de verdad? ✦</h2></div></div>
+      <div class="alina-trivia-card glass" id="alinaTriviaCard">
+        <div id="alinaTriviaContent"></div>
+      </div>
+    </section>
+
     <section class="section reveal">
-      <div class="section-title"><span>04</span><div><p class="eyebrow">La banda sonora</p><h2>Una canción para este momento</h2></div></div>
+      <div class="section-title"><span>06</span><div><p class="eyebrow">La banda sonora</p><h2>Una canción para este momento</h2></div></div>
       <div class="glass music-player">
         <div class="disc" id="disc" aria-hidden="true">♫</div>
         <div><p class="eyebrow">Playlist de Alina</p><h3 id="trackTitle">Suelta Gatita Suelta</h3><p id="musicState">Lista para sonar</p></div>
@@ -69,8 +262,24 @@
       <audio id="music" preload="metadata"></audio>
     </section>
 
-    <section class="section reveal">
-      <div class="glass surprise-box"><p class="eyebrow">05 · Un último detalle</p><h2>Porque una sola sorpresa no era suficiente</h2><button class="glow-button" id="surpriseButton" type="button">Abrir sorpresa 💌</button><p class="surprise-text hidden" id="surpriseText">Que este nuevo año te traiga planes que ilusionen, gente que sume y muchos motivos para sonreír. Feliz cumpleaños, Alina 💙💗💜</p></div>
+    <section class="section reveal scratch-section">
+      <div class="glass scratch-section-card">
+        <p class="eyebrow">07 · RASCA Y GANA</p>
+        <h2>Rasca tu regalo especial ✦</h2>
+        <p class="scratch-hint">Usa el dedo o el ratón para rascar la tarjeta holográfica y revelar tu premio de cumpleaños.</p>
+        <div class="scratch-card-wrapper" id="alinaScratchWrapper">
+          <div class="scratch-prize-card">
+            <span class="scratch-prize-badge">🎟️ Cupón de Cumpleaños Exclusivo</span>
+            <h3 class="scratch-prize-title">Planazo + Risas + Cuenta Pagada</h3>
+            <p class="scratch-prize-desc">Válido para una tarde o cena con risas, cotilleos y postres sin mirar la cuenta ni una sola vez. 🍰✨</p>
+            <div class="scratch-code-box">
+              <span>CÓDIGO:</span> <strong>ALINA-VIP-2026</strong>
+            </div>
+            <span class="scratch-validity">Válido durante todo 2026 · Edición Alina ✦</span>
+          </div>
+          <canvas id="alinaScratchCanvas" class="scratch-canvas"></canvas>
+        </div>
+      </div>
     </section>
 
     <section class="section final-section reveal"><div class="glass final-card"><p class="confetti">💙 ✦ 💗 ✦ 💜</p><h2>Feliz cumpleaños, <strong>Alina</strong></h2><p>Que nunca te falten motivos para celebrar quién eres.</p></div></section>
@@ -84,5 +293,12 @@
     </div>
   </dialog>
   <script src="js/cumple-alina.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>

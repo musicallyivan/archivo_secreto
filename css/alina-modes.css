@@ -26,3 +26,505 @@ html[data-night="1"] body { background: #080d24 !important; color: #eef0ff; }
 html[data-night="1"] .glass { background: rgba(13,20,58,.58); }
 @media (max-width: 800px) { .alina-controls { left: 12px; right: 12px; top: 12px; justify-content: center; flex-wrap: wrap; } }
 @media (prefers-reduced-motion: reduce) { .alina-controls button { transition: none; } }
+
+/* Alina Voice Notes & Trivia */
+.alina-voice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.alina-voice-card {
+  padding: 24px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 20px 50px rgba(10, 15, 60, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.alina-voice-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(124, 140, 255, 0.5);
+}
+.alina-voice-card.is-playing {
+  border-color: var(--alina-blue);
+  box-shadow: 0 20px 60px rgba(124, 140, 255, 0.35);
+}
+.alina-voice-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.alina-voice-badge {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(124, 140, 255, 0.25);
+  color: #c9d2ff;
+}
+.alina-voice-date {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+.alina-voice-card h3 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.4rem;
+  color: #fff;
+}
+.alina-voice-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+.alina-voice-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.alina-voice-btn {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #fff, var(--alina-blue));
+  color: #0b112c;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(124, 140, 255, 0.4);
+}
+.alina-voice-btn:hover {
+  transform: scale(1.1);
+}
+.alina-voice-track {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.alina-waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 22px;
+}
+.alina-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  transition: height 0.2s ease, background 0.2s ease;
+}
+.alina-voice-card.is-playing .alina-bar {
+  background: var(--alina-blue);
+  animation: alinaWave 1s ease-in-out infinite alternate;
+}
+.alina-voice-card.is-playing .alina-bar:nth-child(2) { animation-delay: 0.15s; }
+.alina-voice-card.is-playing .alina-bar:nth-child(3) { animation-delay: 0.3s; }
+.alina-voice-card.is-playing .alina-bar:nth-child(4) { animation-delay: 0.1s; }
+.alina-voice-card.is-playing .alina-bar:nth-child(5) { animation-delay: 0.4s; }
+.alina-voice-card.is-playing .alina-bar:nth-child(6) { animation-delay: 0.25s; }
+.alina-voice-card.is-playing .alina-bar:nth-child(7) { animation-delay: 0.35s; }
+.alina-voice-card.is-playing .alina-bar:nth-child(8) { animation-delay: 0.05s; }
+@keyframes alinaWave {
+  0% { height: 4px; }
+  100% { height: 20px; }
+}
+.alina-progress-line {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+.alina-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: var(--alina-blue);
+  transition: width 0.1s linear;
+}
+.alina-voice-time {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Alina Trivia */
+.alina-trivia-card {
+  padding: clamp(28px, 5vw, 56px);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 25px 80px rgba(4, 5, 30, 0.38);
+}
+.alina-trivia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c9d2ff;
+}
+.alina-trivia-score-badge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(124, 140, 255, 0.25);
+  font-weight: 700;
+}
+.alina-trivia-question {
+  margin: 0 0 24px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  line-height: 1.25;
+}
+.alina-trivia-options {
+  display: grid;
+  gap: 12px;
+}
+.alina-trivia-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+.alina-trivia-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: rgba(124, 140, 255, 0.22);
+  border-color: rgba(124, 140, 255, 0.6);
+}
+.alina-trivia-letter {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.alina-trivia-btn.is-correct {
+  background: rgba(46, 213, 115, 0.25) !important;
+  border-color: #2ed573 !important;
+}
+.alina-trivia-btn.is-correct .alina-trivia-letter {
+  background: #2ed573;
+}
+.alina-trivia-btn.is-wrong {
+  background: rgba(255, 71, 87, 0.25) !important;
+  border-color: #ff4757 !important;
+  opacity: 0.85;
+}
+.alina-trivia-btn.is-wrong .alina-trivia-letter {
+  background: #ff4757;
+}
+.alina-trivia-feedback {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.alina-trivia-feedback p {
+  margin: 0;
+  line-height: 1.6;
+}
+.alina-trivia-result {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.alina-trivia-result h3 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+}
+.alina-trivia-result p {
+  max-width: 500px;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   Alina - 3D Flip Polaroids
+   ========================================== */
+.photo-wall {
+  perspective: 1200px;
+}
+.memory-card {
+  perspective: 1200px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: default;
+  overflow: visible !important;
+}
+.memory-card:after {
+  display: none !important;
+}
+.polaroid-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 22px;
+}
+.memory-card.is-flipped .polaroid-inner {
+  transform: rotateY(180deg);
+}
+.polaroid-front,
+.polaroid-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+.polaroid-front {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+.polaroid-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.polaroid-front:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 45%, rgba(10, 12, 35, 0.88));
+  pointer-events: none;
+}
+.polaroid-tape {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 75px;
+  height: 22px;
+  background: rgba(124, 140, 255, 0.28);
+  backdrop-filter: blur(4px);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 6;
+  pointer-events: none;
+}
+.flip-btn-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  background: rgba(14, 18, 48, 0.65);
+  backdrop-filter: blur(8px);
+  color: #c9d2ff;
+  border: 1px solid rgba(124, 140, 255, 0.4);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.2s, background 0.2s;
+}
+.flip-btn-badge:hover {
+  transform: scale(1.08);
+  background: rgba(124, 140, 255, 0.35);
+}
+.polaroid-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(145deg, rgba(16, 21, 58, 0.96), rgba(11, 14, 40, 0.98));
+  border: 1px solid rgba(124, 140, 255, 0.35);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+  padding: 26px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+.polaroid-back-date {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c9d2ff;
+  font-weight: 700;
+}
+.polaroid-back-note {
+  margin: 12px 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.65;
+  color: #f2f5ff;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+.polaroid-back-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.polaroid-back-actions button {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: transform 0.2s, background 0.2s;
+}
+.polaroid-back-actions button:hover {
+  transform: translateY(-2px);
+  background: rgba(124, 140, 255, 0.3);
+}
+
+/* ==========================================
+   Alina - Rasca y Gana (Scratch to Reveal)
+   ========================================== */
+.scratch-section-card {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+}
+.scratch-card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  min-height: 260px;
+  margin: 24px auto 16px;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(124, 140, 255, 0.4);
+}
+.scratch-prize-card {
+  padding: 36px 24px;
+  background: linear-gradient(135deg, rgba(20, 26, 70, 0.95), rgba(12, 16, 45, 0.98));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 260px;
+}
+.scratch-prize-badge {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(124, 140, 255, 0.25);
+  color: #c9d2ff;
+}
+.scratch-prize-title {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  color: #fff;
+}
+.scratch-prize-desc {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #e8ecff;
+  max-width: 400px;
+}
+.scratch-code-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px dashed rgba(124, 140, 255, 0.6);
+  font-size: 0.9rem;
+}
+.scratch-code-box strong {
+  letter-spacing: 0.1em;
+  color: #c9d2ff;
+}
+.scratch-validity {
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
+.scratch-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  border-radius: 26px;
+  transition: opacity 0.5s ease;
+}
+.scratch-canvas:active {
+  cursor: grabbing;
+}
+.scratch-canvas.revealed {
+  opacity: 0;
+  pointer-events: none;
+}
+.scratch-hint {
+  font-size: 0.88rem;
+  color: #c9d2ff;
+  opacity: 0.9;
+  margin-top: 8px;
+}
+
+@keyframes sparkFly {
+  to {
+    transform: translate(var(--x), var(--y)) scale(0.2) rotate(180deg);
+    opacity: 0;
+  }
+}

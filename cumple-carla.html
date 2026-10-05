@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="theme-color" content="#ff8fc7" />
     <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Archivo" />
+    <link rel="apple-touch-icon" href="assets/favicon.png" />
     <title>El cumpleaños de Carla 💗</title>
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="64x64"
-      href="assets/media/favicon.png"
-    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -241,56 +240,126 @@
           </div>
         </div>
         <div class="photo-wall">
-          <figure
+          <div
             class="memory-card tall"
-            data-gallery="0"
-            role="button"
+            data-index="0"
             tabindex="0"
+            aria-label="Polaroid de Carla: La protagonista de hoy"
           >
-            <img src="assets/media/RETRATO 1.PNG" alt="Carla" />
-            <figcaption>La protagonista de hoy 💗</figcaption>
-          </figure>
-          <figure
+            <div class="polaroid-inner">
+              <figure class="polaroid-front">
+                <div class="polaroid-tape"></div>
+                <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+                <img src="assets/media/RETRATO 1.PNG" alt="Carla" />
+                <figcaption>La protagonista de hoy 💗</figcaption>
+              </figure>
+              <div class="polaroid-back">
+                <span class="polaroid-back-date">✦ Retrato de honor</span>
+                <p class="polaroid-back-note">"La protagonista indiscutible de este rincón y de cada día. No pierdas nunca esa forma única y chispeante de ser tú misma."</p>
+                <div class="polaroid-back-actions">
+                  <button type="button" class="polaroid-gallery-btn" data-gallery="0">🔍 Ver foto</button>
+                  <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
             class="memory-card wide"
-            data-gallery="1"
-            role="button"
+            data-index="1"
             tabindex="0"
+            aria-label="Polaroid: Un recuerdo que merecía su propio sitio"
           >
-            <img src="assets/media/COMPARATIVA.JPEG" alt="Recuerdo de Carla" />
-            <figcaption>Un recuerdo que merecía su propio sitio.</figcaption>
-          </figure>
-          <figure
+            <div class="polaroid-inner">
+              <figure class="polaroid-front">
+                <div class="polaroid-tape"></div>
+                <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+                <img src="assets/media/COMPARATIVA.JPEG" alt="Recuerdo de Carla" />
+                <figcaption>Un recuerdo que merecía su propio sitio.</figcaption>
+              </figure>
+              <div class="polaroid-back">
+                <span class="polaroid-back-date">✦ Antes & Después</span>
+                <p class="polaroid-back-note">"Los años pasan pero las risas compartidas, las bromas internas y las anécdotas siguen intactas (o incluso a más nivel 😂)."</p>
+                <div class="polaroid-back-actions">
+                  <button type="button" class="polaroid-gallery-btn" data-gallery="1">🔍 Ver foto</button>
+                  <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
             class="memory-card"
-            data-gallery="2"
-            role="button"
+            data-index="2"
             tabindex="0"
+            aria-label="Polaroid: Momentos que se quedan"
           >
-            <img
-              src="assets/media/ALINA_CARLA_FILTRO.JPEG"
-              alt="Carla y Alina"
-            />
-            <figcaption>Momentos que se quedan.</figcaption>
-          </figure>
-          <figure
+            <div class="polaroid-inner">
+              <figure class="polaroid-front">
+                <div class="polaroid-tape"></div>
+                <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+                <img
+                  src="assets/media/ALINA_CARLA_FILTRO.JPEG"
+                  alt="Carla y Alina"
+                />
+                <figcaption>Momentos que se quedan.</figcaption>
+              </figure>
+              <div class="polaroid-back">
+                <span class="polaroid-back-date">✦ Dúo Dinámico</span>
+                <p class="polaroid-back-note">"Fotos que resumen tardes enteras de complicidad, filtros absurdos y momentos auténticos que alegran cualquier día."</p>
+                <div class="polaroid-back-actions">
+                  <button type="button" class="polaroid-gallery-btn" data-gallery="2">🔍 Ver foto</button>
+                  <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
             class="memory-card"
-            data-gallery="3"
-            role="button"
+            data-index="3"
             tabindex="0"
+            aria-label="Polaroid: Los plátanos sensuales"
           >
-            <img src="assets/media/TIKTOK_LIVE_1.PNG" alt="Recuerdo" />
-            <figcaption>Los plátanos sensuales 🍌</figcaption>
-          </figure>
-          <figure
+            <div class="polaroid-inner">
+              <figure class="polaroid-front">
+                <div class="polaroid-tape"></div>
+                <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+                <img src="assets/media/TIKTOK_LIVE_1.PNG" alt="Recuerdo" />
+                <figcaption>Los plátanos sensuales 🍌</figcaption>
+              </figure>
+              <div class="polaroid-back">
+                <span class="polaroid-back-date">✦ Momento Legendario</span>
+                <p class="polaroid-back-note">"El directo que quedó para la historia. Solo nosotros entendemos el nivel de risas descontroladas de ese directo."</p>
+                <div class="polaroid-back-actions">
+                  <button type="button" class="polaroid-gallery-btn" data-gallery="3">🔍 Ver foto</button>
+                  <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
             class="memory-card wide"
-            data-gallery="4"
-            role="button"
+            data-index="4"
             tabindex="0"
+            aria-label="Polaroid: Ivan y Carla"
           >
-            <img src="assets/media/IVAN_CARLA.PNG" alt="Ivan y Carla" />
-            <figcaption>
-              Porque algunas fotos simplemente tienen que estar aquí.
-            </figcaption>
-          </figure>
+            <div class="polaroid-inner">
+              <figure class="polaroid-front">
+                <div class="polaroid-tape"></div>
+                <button type="button" class="flip-btn-badge" aria-label="Girar polaroid">↺ Girar</button>
+                <img src="assets/media/IVAN_CARLA.PNG" alt="Ivan y Carla" />
+                <figcaption>
+                  Porque algunas fotos simplemente tienen que estar aquí.
+                </figcaption>
+              </figure>
+              <div class="polaroid-back">
+                <span class="polaroid-back-date">✦ Guardado para siempre</span>
+                <p class="polaroid-back-note">"De esas fotos que transmiten paz, complicidad y buen rollo con solo mirarlas. Por mil historias más juntos."</p>
+                <div class="polaroid-back-actions">
+                  <button type="button" class="polaroid-gallery-btn" data-gallery="4">🔍 Ver foto</button>
+                  <button type="button" class="polaroid-flip-btn">↺ Volver</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       <section class="section reveal video-section">
@@ -369,16 +438,101 @@
           <p>Haz clic en los stickers. Algunos tienen ganas de liarla. 👀</p>
         </div>
       </section>
-      <section class="section reveal">
-        <div class="glass surprise-box">
-          <p class="eyebrow">06 · UNA SORPRESA</p>
-          <h2>Hay cosas que aparecen cuando menos te lo esperas.</h2>
-          <button class="glow-button" id="surpriseBtn" type="button">
-            No pulses esto 👀
-          </button>
-          <div id="surpriseText" class="surprise-text hidden">
-            Espero que este pequeño rincón te saque una sonrisa. Feliz
-            cumpleaños, Carla. 💗✨
+      <section class="section reveal voice-section">
+        <div class="section-title">
+          <span>06</span>
+          <div>
+            <p class="eyebrow">AUDIOS PRIVADOS</p>
+            <h2>Dale al play para escuchar esto. 🎙️</h2>
+          </div>
+        </div>
+        <div class="carla-voice-grid" id="carlaVoiceGrid">
+          <article class="carla-voice-card">
+            <div class="carla-voice-top">
+              <span class="carla-voice-badge">🎙️ Iván</span>
+              <span class="carla-voice-date">Recuerdo grabado</span>
+            </div>
+            <h3>Audio improvisado: La chispa</h3>
+            <p>Un audio espontáneo para recordar que esta complicidad no se planea, simplemente sale.</p>
+            <div class="carla-voice-bar">
+              <button type="button" class="carla-voice-btn" aria-label="Reproducir audio">
+                <span>▶</span>
+              </button>
+              <div class="carla-voice-track">
+                <div class="carla-waveform">
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                </div>
+                <div class="carla-progress-line"><div class="carla-progress-fill"></div></div>
+              </div>
+              <span class="carla-voice-time">0:42</span>
+            </div>
+            <audio preload="none" src="assets/media/MUSICA 1.mp3"></audio>
+          </article>
+          <article class="carla-voice-card">
+            <div class="carla-voice-top">
+              <span class="carla-voice-badge">🎙️ Iván</span>
+              <span class="carla-voice-date">Mensaje privado</span>
+            </div>
+            <h3>Nota rápida: Buenos días y risas</h3>
+            <p>Dedicado a esos días en los que nos reímos de lo absurdo hasta que duele la mandíbula.</p>
+            <div class="carla-voice-bar">
+              <button type="button" class="carla-voice-btn" aria-label="Reproducir audio">
+                <span>▶</span>
+              </button>
+              <div class="carla-voice-track">
+                <div class="carla-waveform">
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                  <span class="carla-bar"></span>
+                </div>
+                <div class="carla-progress-line"><div class="carla-progress-fill"></div></div>
+              </div>
+              <span class="carla-voice-time">0:35</span>
+            </div>
+            <audio preload="none" src="assets/media/MUSICA 5.mp3"></audio>
+          </article>
+        </div>
+      </section>
+      <section class="section reveal trivia-section">
+        <div class="section-title">
+          <span>07</span>
+          <div>
+            <p class="eyebrow">¿CUÁNTO NOS CONOCEMOS?</p>
+            <h2>A ver si apruebas este examen sorpresa. 🧐</h2>
+          </div>
+        </div>
+        <div class="carla-trivia-card glass" id="carlaTriviaCard">
+          <div id="carlaTriviaContent"></div>
+        </div>
+      </section>
+      <section class="section reveal scratch-section">
+        <div class="glass scratch-section-card">
+          <p class="eyebrow">08 · RASCA Y GANA</p>
+          <h2>Rasca tu regalo de cumpleaños 🎁</h2>
+          <p class="scratch-hint">Usa el dedo o el ratón para rascar la tarjeta plateada y descubrir tu premio especial.</p>
+          <div class="scratch-card-wrapper" id="carlaScratchWrapper">
+            <div class="scratch-prize-card">
+              <span class="scratch-prize-badge">🎟️ Vale Regalo Oficial</span>
+              <h3 class="scratch-prize-title">Cena & Tarde de Risas</h3>
+              <p class="scratch-prize-desc">Canjeable por una cena donde tú elijas + charla sin prisas + ronda de postres pagada. 🍰</p>
+              <div class="scratch-code-box">
+                <span>CÓDIGO:</span> <strong>CARLA-VIP-2026</strong>
+              </div>
+              <span class="scratch-validity">Válido durante todo 2026 · Sin fecha de caducidad</span>
+            </div>
+            <canvas id="carlaScratchCanvas" class="scratch-canvas"></canvas>
           </div>
         </div>
       </section>
@@ -386,7 +540,7 @@
         <div class="glass music-player">
           <div class="disc" id="disc">♫</div>
           <div>
-            <p class="eyebrow">07 · MÚSICA</p>
+            <p class="eyebrow">09 · MÚSICA</p>
             <h2>Esta página también tiene banda sonora.</h2>
             <p id="musicState">Pulsa reproducir para empezar.</p>
           </div>
@@ -402,7 +556,7 @@
       <section class="section reveal final-section">
         <div class="glass final-card">
           <div class="confetti" aria-hidden="true">✨ 💗 🎀 🌸 💖 ✨</div>
-          <p class="eyebrow">08 · FINAL</p>
+          <p class="eyebrow">10 · FINAL</p>
           <h2>Feliz cumpleaños, Carla.</h2>
           <p>
             Que este nuevo año venga cargado de momentos que den ganas de
@@ -583,7 +737,7 @@
             }
           }),
         );
-        surpriseBtn.addEventListener("click", () => {
+        surpriseBtn?.addEventListener("click", () => {
           const opening = surpriseText.classList.contains("hidden");
           surpriseText.classList.toggle("hidden");
           surpriseBtn.textContent = opening
@@ -656,19 +810,45 @@
           lightbox.classList.remove("open");
           document.body.style.overflow = "";
         }
-        document
-          .querySelectorAll(".memory-card[data-gallery]")
-          .forEach((card) => {
-            card.addEventListener("click", () =>
-              openGallery(Number(card.dataset.gallery)),
-            );
+        function initCarlaPolaroids() {
+          document.querySelectorAll(".memory-card").forEach((card) => {
+            const idx = Number(card.dataset.index);
+
+            // Flip button badges (front "↺ Girar" and back "↺ Volver")
+            card.querySelectorAll(".flip-btn-badge, .polaroid-flip-btn").forEach((btn) => {
+              btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                card.classList.toggle("is-flipped");
+              });
+            });
+
+            // Open gallery button on back
+            card.querySelectorAll(".polaroid-gallery-btn").forEach((btn) => {
+              btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                openGallery(idx);
+              });
+            });
+
+            // Front image click opens lightbox directly
+            const frontImg = card.querySelector(".polaroid-front img");
+            if (frontImg) {
+              frontImg.addEventListener("click", (e) => {
+                openGallery(idx);
+              });
+            }
+
+            // Keyboard navigation
             card.addEventListener("keydown", (e) => {
               if (e.key === "Enter" || e.key === " ") {
+                if (e.target.tagName === "BUTTON") return;
                 e.preventDefault();
-                openGallery(Number(card.dataset.gallery));
+                card.classList.toggle("is-flipped");
               }
             });
           });
+        }
+        initCarlaPolaroids();
         prev.addEventListener("click", () => renderPhoto(galleryIndex - 1));
         next.addEventListener("click", () => renderPhoto(galleryIndex + 1));
         close.addEventListener("click", closeGallery);
@@ -709,15 +889,348 @@
           window.location.href = "index.html";
         });
         document.querySelector("main")?.appendChild(logoutSection);
-        document.addEventListener("DOMContentLoaded", () => {
-          const futureSection = document.querySelector(".future-section");
-          const currentLogoutSection = document.querySelector(".logout-section");
-          if (futureSection && currentLogoutSection) {
-            futureSection.insertAdjacentElement("afterend", currentLogoutSection);
+        let currentVoiceAudio = null;
+        let currentVoiceBtn = null;
+        function initCarlaVoiceNotes() {
+          document.querySelectorAll(".carla-voice-card").forEach((card) => {
+            const btn = card.querySelector(".carla-voice-btn");
+            const audio = card.querySelector("audio");
+            const icon = btn.querySelector("span");
+            const progressFill = card.querySelector(".carla-progress-fill");
+            const timeDisplay = card.querySelector(".carla-voice-time");
+            const defaultDuration = timeDisplay.textContent;
+
+            btn.addEventListener("click", async () => {
+              if (currentVoiceAudio && currentVoiceAudio !== audio) {
+                currentVoiceAudio.pause();
+                currentVoiceAudio.currentTime = 0;
+                if (currentVoiceBtn) {
+                  currentVoiceBtn.closest(".carla-voice-card")?.classList.remove("is-playing");
+                  currentVoiceBtn.querySelector("span").textContent = "▶";
+                }
+              }
+
+              if (audio.paused) {
+                pauseMusic();
+                try {
+                  await audio.play();
+                  currentVoiceAudio = audio;
+                  currentVoiceBtn = btn;
+                  card.classList.add("is-playing");
+                  icon.textContent = "❚❚";
+                } catch {
+                  timeDisplay.textContent = "Error";
+                }
+              } else {
+                audio.pause();
+                card.classList.remove("is-playing");
+                icon.textContent = "▶";
+              }
+            });
+
+            audio.addEventListener("timeupdate", () => {
+              if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + "%";
+                const mins = Math.floor(audio.currentTime / 60);
+                const secs = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
+                timeDisplay.textContent = mins + ":" + secs;
+              }
+            });
+
+            audio.addEventListener("ended", () => {
+              card.classList.remove("is-playing");
+              icon.textContent = "▶";
+              progressFill.style.width = "0%";
+              timeDisplay.textContent = defaultDuration;
+            });
+          });
+        }
+
+        function initCarlaTrivia() {
+          const container = $("carlaTriviaContent");
+          if (!container) return;
+          const questions = [
+            {
+              q: "¿Cuál es la palabra o concepto clave que define toda nuestra complicidad?",
+              opts: ["El caos absoluto", "La chispa ✨", "Los audios de 10 minutos", "Las conversaciones formales"],
+              correct: 1,
+              fb: "¡Exacto! Esa chispa que solo nosotros entendemos y que lo hace todo más fácil. 💗"
+            },
+            {
+              q: "¿Qué pasa habitualmente cuando nos ponemos a hablar sin ningún filtro?",
+              opts: ["Nos aburrimos en 2 minutos", "Salen ideas absurdas, risas y proyectos como este 🚀", "Nos quedamos serios en silencio", "Se nos olvida contestar durante un mes"],
+              correct: 1,
+              fb: "100% verídico. De esas charlas y bromas improvisadas nació este refugio."
+            },
+            {
+              q: "¿Qué representa principalmente este rincón secreto?",
+              opts: ["Una web normal y corriente", "Un examen sorpresa de programación", "Un refugio íntimo con recuerdos al que volver cuando quieras 💗", "Un misterio sin resolver"],
+              correct: 2,
+              fb: "¡Justo eso! Un rincón cálido guardado para siempre, pase lo que pase."
+            }
+          ];
+
+          let current = 0;
+          let score = 0;
+          let answered = false;
+
+          function render() {
+            if (current >= questions.length) {
+              let msg = "";
+              if (score === questions.length) msg = "¡Puntuación perfecta! 🌟 Conexión al 100%, nos conocemos los detalles al milímetro.";
+              else if (score >= 2) msg = "¡Casi perfecto! 👏 Te sabes prácticamente todo sobre nosotros.";
+              else msg = "¡Buen intento! 😂 Toca repasar recuerdos y volver a leer la carta.";
+
+              container.innerHTML = `
+                <div class="carla-trivia-result">
+                  <span class="carla-voice-badge">Resultado final</span>
+                  <h3>${score} de ${questions.length} acertadas</h3>
+                  <p>${msg}</p>
+                  <button type="button" class="glow-button" id="restartCarlaTrivia">Repetir test ↺</button>
+                </div>
+              `;
+              $("restartCarlaTrivia")?.addEventListener("click", () => {
+                current = 0; score = 0; answered = false; render();
+              });
+              return;
+            }
+
+            const item = questions[current];
+            answered = false;
+            container.innerHTML = `
+              <div class="carla-trivia-header">
+                <span>Pregunta ${current + 1} de ${questions.length}</span>
+                <span class="carla-trivia-score-badge">Aciertos: ${score}</span>
+              </div>
+              <h3 class="carla-trivia-question">${item.q}</h3>
+              <div class="carla-trivia-options">
+                ${item.opts.map((opt, i) => `
+                  <button type="button" class="carla-trivia-btn" data-idx="${i}">
+                    <span class="carla-trivia-letter">${String.fromCharCode(65 + i)}</span>
+                    <span>${opt}</span>
+                  </button>
+                `).join("")}
+              </div>
+              <div class="carla-trivia-feedback hidden" id="carlaFb">
+                <p id="carlaFbText"></p>
+                <button type="button" class="glow-button" id="carlaNextBtn" style="align-self:flex-start">
+                  ${current + 1 < questions.length ? "Siguiente pregunta →" : "Ver resultado final ✦"}
+                </button>
+              </div>
+            `;
+
+            const fb = $("carlaFb");
+            const fbText = $("carlaFbText");
+            const nextBtn = $("carlaNextBtn");
+            const btns = container.querySelectorAll(".carla-trivia-btn");
+
+            btns.forEach((btn) => {
+              btn.addEventListener("click", () => {
+                if (answered) return;
+                answered = true;
+                const chosen = Number(btn.dataset.idx);
+                const ok = chosen === item.correct;
+                if (ok) {
+                  score++;
+                  btn.classList.add("is-correct");
+                  fbText.innerHTML = "<strong>✨ ¡Correcto!</strong> " + item.fb;
+                } else {
+                  btn.classList.add("is-wrong");
+                  btns[item.correct]?.classList.add("is-correct");
+                  fbText.innerHTML = "<strong>Oops!</strong> " + item.fb;
+                }
+                btns.forEach((b) => (b.disabled = true));
+                fb.classList.remove("hidden");
+              });
+            });
+
+            nextBtn?.addEventListener("click", () => {
+              current++;
+              render();
+            });
           }
-        });
+
+          render();
+        }
+
+        function triggerScratchSparks() {
+          const wrapper = $("carlaScratchWrapper");
+          const rect = wrapper ? wrapper.getBoundingClientRect() : { left: window.innerWidth / 2, top: window.innerHeight / 2, width: 200, height: 100 };
+          const icons = ["🎁", "✨", "💗", "🎉", "🎀", "💖", "🌸", "⭐"];
+          for (let i = 0; i < 36; i++) {
+            const s = document.createElement("span");
+            s.className = "spark";
+            s.textContent = icons[Math.floor(Math.random() * icons.length)];
+            s.style.left = (rect.left + rect.width * (0.2 + Math.random() * 0.6)) + "px";
+            s.style.top = (rect.top + rect.height * (0.2 + Math.random() * 0.6)) + "px";
+            s.style.setProperty("--x", (Math.random() * 500 - 250) + "px");
+            s.style.setProperty("--y", (Math.random() * -400 - 40) + "px");
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 1000);
+          }
+        }
+
+        function initCarlaScratch() {
+          const canvas = $("carlaScratchCanvas");
+          const wrapper = $("carlaScratchWrapper");
+          if (!canvas || !wrapper) return;
+
+          const ctx = canvas.getContext("2d", { willReadFrequently: true });
+          let isScratching = false;
+          let isRevealed = false;
+          let lastX = null;
+          let lastY = null;
+          let strokeCount = 0;
+
+          function resizeCanvas() {
+            const rect = wrapper.getBoundingClientRect();
+            if (!rect.width || !rect.height) return;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            drawMetallicCover(rect.width, rect.height);
+          }
+
+          function drawMetallicCover(w, h) {
+            const grad = ctx.createLinearGradient(0, 0, w, h);
+            grad.addColorStop(0, "#d8b4e2");
+            grad.addColorStop(0.25, "#f7d6e6");
+            grad.addColorStop(0.5, "#ffffff");
+            grad.addColorStop(0.75, "#f5c2dd");
+            grad.addColorStop(1, "#c084b0");
+
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+
+            // Shimmer sparkles
+            ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+            for (let i = 0; i < 45; i++) {
+              const rx = (Math.sin(i * 77 + 3) * 0.5 + 0.5) * w;
+              const ry = (Math.cos(i * 41 + 5) * 0.5 + 0.5) * h;
+              ctx.beginPath();
+              ctx.arc(rx, ry, (i % 3) + 1.2, 0, Math.PI * 2);
+              ctx.fill();
+            }
+
+            // Outer decorative frame
+            ctx.strokeStyle = "rgba(255, 143, 199, 0.55)";
+            ctx.lineWidth = 4;
+            ctx.strokeRect(8, 8, w - 16, h - 16);
+
+            // Text on scratch surface
+            ctx.fillStyle = "#4a1936";
+            ctx.font = "bold 18px 'DM Sans', sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("✨ RASCA AQUÍ CON EL DEDO ✨", w / 2, h / 2 - 14);
+
+            ctx.fillStyle = "#7a2858";
+            ctx.font = "14px 'DM Sans', sans-serif";
+            ctx.fillText("Descubre tu sorpresa de cumpleaños 🎁", w / 2, h / 2 + 16);
+          }
+
+          function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+            const clientY = e.clientY ?? (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+            return {
+              x: clientX - rect.left,
+              y: clientY - rect.top,
+            };
+          }
+
+          function scratch(x, y) {
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.lineWidth = 42;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+
+            ctx.beginPath();
+            if (lastX === null || lastY === null) {
+              ctx.arc(x, y, 21, 0, Math.PI * 2);
+              ctx.fill();
+            } else {
+              ctx.moveTo(lastX, lastY);
+              ctx.lineTo(x, y);
+              ctx.stroke();
+            }
+            lastX = x;
+            lastY = y;
+          }
+
+          function checkReveal() {
+            strokeCount++;
+            if (strokeCount % 10 !== 0 || isRevealed) return;
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const imgData = ctx.getImageData(0, 0, w, h);
+            const data = imgData.data;
+            let transparent = 0;
+            const step = 32;
+            let totalSampled = 0;
+
+            for (let i = 3; i < data.length; i += 4 * step) {
+              totalSampled++;
+              if (data[i] < 128) {
+                transparent++;
+              }
+            }
+
+            if (transparent / totalSampled > 0.4) {
+              isRevealed = true;
+              canvas.classList.add("revealed");
+              triggerScratchSparks();
+            }
+          }
+
+          canvas.addEventListener("pointerdown", (e) => {
+            isScratching = true;
+            canvas.setPointerCapture?.(e.pointerId);
+            const pos = getPos(e);
+            scratch(pos.x, pos.y);
+          });
+
+          canvas.addEventListener("pointermove", (e) => {
+            if (!isScratching) return;
+            const pos = getPos(e);
+            scratch(pos.x, pos.y);
+            checkReveal();
+          });
+
+          const stopScratch = (e) => {
+            isScratching = false;
+            lastX = null;
+            lastY = null;
+            if (e && e.pointerId && canvas.releasePointerCapture) {
+              try { canvas.releasePointerCapture(e.pointerId); } catch {}
+            }
+          };
+
+          canvas.addEventListener("pointerup", stopScratch);
+          canvas.addEventListener("pointercancel", stopScratch);
+
+          window.addEventListener("resize", () => {
+            if (!isRevealed) resizeCanvas();
+          });
+
+          requestAnimationFrame(resizeCanvas);
+        }
+
+        initCarlaVoiceNotes();
+        initCarlaTrivia();
+        initCarlaScratch();
         loadTrack(0);
       })();
+    </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("sw.js").catch(() => {});
+        });
+      }
     </script>
   </body>
 </html>

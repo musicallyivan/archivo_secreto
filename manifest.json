@@ -1,0 +1,19 @@
+{
+  "name": "Archivo Secreto",
+  "short_name": "Archivo",
+  "description": "Recuerdos, cartas y momentos privados",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#160c18",
+  "theme_color": "#ff8fc7",
+  "icons": [
+    {
+      "src": "assets/favicon.png",
+      "sizes": "64x64 192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

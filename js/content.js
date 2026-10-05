@@ -109,6 +109,63 @@ window.ARCHIVO_CONTENT = {
                 }
             ],
             ratingTitle: "¿Que nota le das a tu archivo?",
+            voiceNotesTitle: "Notas de voz y audios privados",
+            voiceNotes: [
+                {
+                    id: "carla-vn-1",
+                    title: "Audio improvisado: La chispa",
+                    sender: "Iván",
+                    date: "Recuerdo grabado",
+                    duration: "0:42",
+                    file: "assets/media/MUSICA 1.mp3",
+                    description: "Un audio espontáneo para recordar que esta complicidad no se planea, simplemente sale."
+                },
+                {
+                    id: "carla-vn-2",
+                    title: "Nota rápida: Buenos días y risas",
+                    sender: "Iván",
+                    date: "Mensaje privado",
+                    duration: "0:35",
+                    file: "assets/media/MUSICA 5.mp3",
+                    description: "Dedicado a esos días en los que nos reímos de lo absurdo hasta que duele la mandíbula."
+                }
+            ],
+            triviaTitle: "¿Cuánto conoces nuestro archivo?",
+            trivia: [
+                {
+                    question: "¿Cuál es la palabra o concepto clave que define toda nuestra complicidad?",
+                    options: [
+                        "El caos absoluto",
+                        "La chispa ✨",
+                        "Los audios de 10 minutos",
+                        "Las conversaciones formales"
+                    ],
+                    correct: 1,
+                    feedback: "¡Exacto! Esa chispa que solo nosotros entendemos y que lo hace todo más fácil."
+                },
+                {
+                    question: "¿Qué pasa habitualmente cuando nos ponemos a hablar sin ningún filtro?",
+                    options: [
+                        "Nos aburrimos en 2 minutos",
+                        "Salen ideas absurdas, risas y proyectos como este 🚀",
+                        "Nos quedamos serios en silencio",
+                        "Se nos olvida contestar durante un mes"
+                    ],
+                    correct: 1,
+                    feedback: "100% verídico. De esas charlas y bromas improvisadas nació este refugio."
+                },
+                {
+                    question: "¿Qué representa principalmente este archivo secreto?",
+                    options: [
+                        "Una web normal y corriente",
+                        "Un examen sorpresa de programación",
+                        "Un refugio íntimo con recuerdos al que volver cuando quieras 💗",
+                        "Un misterio sin resolver"
+                    ],
+                    correct: 2,
+                    feedback: "¡Justo eso! Un rincón cálido guardado para siempre, pase lo que pase."
+                }
+            ],
             featured: [
                 {
                     type: "video",
@@ -133,6 +190,10 @@ window.ARCHIVO_CONTENT = {
                 {
                     title: "Buenos Días",
                     file: "assets/media/MUSICA 5.mp3"
+                },
+                {
+                    title: "Suelta Gatita Suelta (Bonus Track)",
+                    file: "assets/media/MUSICA 3.mp3"
                 }
             ],
             photos: [
@@ -165,6 +226,16 @@ window.ARCHIVO_CONTENT = {
                     title: "Los platanos sensuales",
                     description: "Otro recuerdo especial de nuestro tiempo juntos.",
                     file: "assets/media/TIKTOK_LIVE_1.PNG"
+                },
+                {
+                    title: "Sonrisas y complicidad",
+                    description: "Una imagen llena de buena energía para la galería.",
+                    file: "assets/media/ALINA1.JPEG"
+                },
+                {
+                    title: "Momentos para recordar",
+                    description: "De esas fotos que transmiten calma y buenos ratos compartidos.",
+                    file: "assets/media/ALINA5.JPEG"
                 }
             ]
         },
@@ -276,6 +347,63 @@ window.ARCHIVO_CONTENT = {
                 }
             ],
             ratingTitle: "¿Como valoras la version de Alina?",
+            voiceNotesTitle: "Notas de audio para Alina",
+            voiceNotes: [
+                {
+                    id: "alina-vn-1",
+                    title: "Audio con ritmo: Suelta Gatita",
+                    sender: "Iván",
+                    date: "Directo al archivo",
+                    duration: "0:48",
+                    file: "assets/media/MUSICA 3.mp3",
+                    description: "Para esos días en los que hace falta subir el volumen y reírse de todo con ganas."
+                },
+                {
+                    id: "alina-vn-2",
+                    title: "Mensaje nocturno: Buen rollo puro",
+                    sender: "Iván",
+                    date: "Nota reservada",
+                    duration: "0:36",
+                    file: "assets/media/MUSICA 6.mp3",
+                    description: "Porque la confianza natural y las charlas de verdad son las que se quedan."
+                }
+            ],
+            triviaTitle: "Test de Recuerdos de Alina",
+            trivia: [
+                {
+                    question: "¿Cuál es el temazo insignia que abre con fuerza tu lista musical?",
+                    options: [
+                        "Choque",
+                        "Suelta Gatita Suelta 🐱",
+                        "Tussi Channel",
+                        "Un verano sin ti"
+                    ],
+                    correct: 1,
+                    feedback: "¡Claro que sí! Con ritmo y buena vibra desde el segundo uno."
+                },
+                {
+                    question: "¿Qué colores y atmósfera definen tu versión exclusiva del archivo?",
+                    options: [
+                        "Verde bosque y dorado",
+                        "Azul aurora, lila y rosa 🌌",
+                        "Gris marengo y blanco",
+                        "Rojo pasión"
+                    ],
+                    correct: 1,
+                    feedback: "¡Exacto! Una atmósfera cinematográfica, relajante y hecha a tu medida."
+                },
+                {
+                    question: "¿Qué es lo que mejor describe nuestra confianza y charlas?",
+                    options: [
+                        "Buen rollo natural, risas sinceras y cero fingir 💙",
+                        "Debates interminables de física cuántica",
+                        "Hablar solo en cumpleaños",
+                        "Conversaciones protocolares y serias"
+                    ],
+                    correct: 0,
+                    feedback: "¡Tal cual! Amistad sana, sin filtros y con la mejor de las energías."
+                }
+            ],
             featured: [
                 {
                     type: "video",
@@ -296,6 +424,14 @@ window.ARCHIVO_CONTENT = {
                 {
                     title: "Tussi Channel",
                     file: "assets/media/MUSICA 7.mp3"
+                },
+                {
+                    title: "Blessings (Chill Mix)",
+                    file: "assets/media/MUSICA 1.mp3"
+                },
+                {
+                    title: "Raindance (Nocturno)",
+                    file: "assets/media/MUSICA 4.mp3"
                 }
             ],
             photos: [

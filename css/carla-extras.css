@@ -1,1 +1,496 @@
 :root{--carla-accent:#ff8fc7;--carla-accent2:#d98cff}body{transition:background .7s,color .5s}.carla-controls{position:fixed;z-index:1000;top:18px;right:18px;display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 15px 45px rgba(90,10,60,.18);border-radius:18px}.control-group{display:flex;align-items:center;gap:6px}.control-group>span{font-size:.8rem;margin-right:3px}.carla-controls button{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:inherit;border-radius:12px;padding:7px 9px;cursor:pointer;transition:.25s}.carla-controls button:hover,.carla-controls button.active{background:rgba(255,143,199,.3);transform:translateY(-1px)}.night-toggle{white-space:nowrap}.future-card{padding:clamp(24px,5vw,48px);border:1px solid rgba(255,255,255,.24);background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.055))}.future-card textarea{width:100%;min-height:190px;resize:vertical;margin:18px 0;padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.22);background:rgba(20,8,18,.16);color:inherit;font:inherit;line-height:1.65;outline:none}.future-card textarea:focus{border-color:rgba(255,143,199,.75);box-shadow:0 0 0 4px rgba(255,143,199,.1)}.future-actions{display:flex;align-items:center;justify-content:space-between;gap:16px}.future-actions span{font-size:.9rem;opacity:.75}.future-actions button:disabled{opacity:.6;cursor:wait}html[data-carla-mode=party]{--carla-accent:#ff4fa3;--carla-accent2:#ffb84d}html[data-carla-mode=party] .aurora{filter:saturate(1.35) hue-rotate(-10deg)}html[data-carla-mode=relax]{--carla-accent:#f0a9e8;--carla-accent2:#9e9bff}html[data-carla-mode=relax] .floating-stickers{opacity:.65}html[data-carla-mode=relax] .aurora{opacity:.65}html[data-night='1'] body{background:#110914!important;color:#fcecf6}html[data-night='1'] .glass{background:rgba(35,13,31,.48);border-color:rgba(255,190,225,.16)}html[data-night='1'] .aurora{opacity:.55;filter:saturate(.8)}html[data-night='1'] .carla-controls{background:rgba(24,8,22,.68)}html[data-night='1'] .future-card textarea{background:rgba(0,0,0,.25)}html[data-night='1'] .hero-copy,html[data-night='1'] .message-card p{color:rgba(255,235,247,.78)}@media(max-width:800px){.carla-controls{top:10px;left:10px;right:10px;justify-content:center;flex-wrap:wrap}.control-group{flex-wrap:wrap;justify-content:center}.control-group>span{display:none}.future-actions{align-items:stretch;flex-direction:column}.future-actions button{width:100%}}@media(prefers-reduced-motion:reduce){body{transition:none}.carla-controls button{transition:none}}
+
+/* Carla Voice Notes & Trivia */
+.carla-voice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.carla-voice-card {
+  padding: 24px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 20px 50px rgba(100, 15, 60, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.carla-voice-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 143, 199, 0.5);
+}
+.carla-voice-card.is-playing {
+  border-color: #ff8fc7;
+  box-shadow: 0 20px 60px rgba(255, 111, 192, 0.35);
+}
+.carla-voice-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.carla-voice-badge {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 143, 199, 0.25);
+  color: #ffb8db;
+}
+.carla-voice-date {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+.carla-voice-card h3 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.4rem;
+  color: #fff;
+}
+.carla-voice-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+.carla-voice-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.carla-voice-btn {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #fff, #ff8fc7);
+  color: #2b0c20;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(255, 111, 192, 0.4);
+}
+.carla-voice-btn:hover {
+  transform: scale(1.1);
+}
+.carla-voice-track {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.carla-waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 22px;
+}
+.carla-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  transition: height 0.2s ease, background 0.2s ease;
+}
+.carla-voice-card.is-playing .carla-bar {
+  background: #ff8fc7;
+  animation: carlaWave 1s ease-in-out infinite alternate;
+}
+.carla-voice-card.is-playing .carla-bar:nth-child(2) { animation-delay: 0.15s; }
+.carla-voice-card.is-playing .carla-bar:nth-child(3) { animation-delay: 0.3s; }
+.carla-voice-card.is-playing .carla-bar:nth-child(4) { animation-delay: 0.1s; }
+.carla-voice-card.is-playing .carla-bar:nth-child(5) { animation-delay: 0.4s; }
+.carla-voice-card.is-playing .carla-bar:nth-child(6) { animation-delay: 0.25s; }
+.carla-voice-card.is-playing .carla-bar:nth-child(7) { animation-delay: 0.35s; }
+.carla-voice-card.is-playing .carla-bar:nth-child(8) { animation-delay: 0.05s; }
+@keyframes carlaWave {
+  0% { height: 4px; }
+  100% { height: 20px; }
+}
+.carla-progress-line {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+.carla-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #ff8fc7;
+  transition: width 0.1s linear;
+}
+.carla-voice-time {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Carla Trivia */
+.carla-trivia-card {
+  padding: clamp(28px, 5vw, 56px);
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+}
+.carla-trivia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffb8db;
+}
+.carla-trivia-score-badge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 143, 199, 0.25);
+  font-weight: 700;
+}
+.carla-trivia-question {
+  margin: 0 0 24px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  line-height: 1.25;
+}
+.carla-trivia-options {
+  display: grid;
+  gap: 12px;
+}
+.carla-trivia-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+.carla-trivia-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: rgba(255, 143, 199, 0.22);
+  border-color: rgba(255, 143, 199, 0.6);
+}
+.carla-trivia-letter {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.carla-trivia-btn.is-correct {
+  background: rgba(46, 213, 115, 0.25) !important;
+  border-color: #2ed573 !important;
+}
+.carla-trivia-btn.is-correct .carla-trivia-letter {
+  background: #2ed573;
+}
+.carla-trivia-btn.is-wrong {
+  background: rgba(255, 71, 87, 0.25) !important;
+  border-color: #ff4757 !important;
+  opacity: 0.85;
+}
+.carla-trivia-btn.is-wrong .carla-trivia-letter {
+  background: #ff4757;
+}
+.carla-trivia-feedback {
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.carla-trivia-feedback p {
+  margin: 0;
+  line-height: 1.6;
+}
+.carla-trivia-result {
+  text-align: center;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.carla-trivia-result h3 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+}
+.carla-trivia-result p {
+  max-width: 500px;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   Carla - 3D Flip Polaroids
+   ========================================== */
+.photo-wall {
+  perspective: 1200px;
+}
+.memory-card {
+  perspective: 1200px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: default;
+  overflow: visible !important;
+}
+.memory-card:after {
+  display: none !important;
+}
+.polaroid-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 22px;
+}
+.memory-card.is-flipped .polaroid-inner {
+  transform: rotateY(180deg);
+}
+.polaroid-front,
+.polaroid-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+.polaroid-front {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+.polaroid-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.polaroid-front:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 45%, rgba(15, 6, 17, 0.88));
+  pointer-events: none;
+}
+.polaroid-tape {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 75px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(4px);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 6;
+  pointer-events: none;
+}
+.flip-btn-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  background: rgba(20, 8, 20, 0.65);
+  backdrop-filter: blur(8px);
+  color: #ffb8db;
+  border: 1px solid rgba(255, 143, 199, 0.4);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.2s, background 0.2s;
+}
+.flip-btn-badge:hover {
+  transform: scale(1.08);
+  background: rgba(255, 143, 199, 0.35);
+}
+.polaroid-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(145deg, rgba(38, 14, 34, 0.96), rgba(20, 8, 22, 0.98));
+  border: 1px solid rgba(255, 143, 199, 0.35);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+  padding: 26px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+.polaroid-back-date {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffb8db;
+  font-weight: 700;
+}
+.polaroid-back-note {
+  margin: 12px 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.65;
+  color: #fff2f9;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+.polaroid-back-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.polaroid-back-actions button {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: transform 0.2s, background 0.2s;
+}
+.polaroid-back-actions button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 143, 199, 0.3);
+}
+
+/* ==========================================
+   Carla - Rasca y Gana (Scratch to Reveal)
+   ========================================== */
+.scratch-section-card {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+}
+.scratch-card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  min-height: 260px;
+  margin: 24px auto 16px;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 143, 199, 0.4);
+}
+.scratch-prize-card {
+  padding: 36px 24px;
+  background: linear-gradient(135deg, rgba(45, 14, 38, 0.95), rgba(22, 6, 22, 0.98));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 260px;
+}
+.scratch-prize-badge {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 143, 199, 0.25);
+  color: #ffb8db;
+}
+.scratch-prize-title {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  color: #fff;
+}
+.scratch-prize-desc {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #ffe6f3;
+  max-width: 400px;
+}
+.scratch-code-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px dashed rgba(255, 143, 199, 0.6);
+  font-size: 0.9rem;
+}
+.scratch-code-box strong {
+  letter-spacing: 0.1em;
+  color: #ffb8db;
+}
+.scratch-validity {
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
+.scratch-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  border-radius: 26px;
+  transition: opacity 0.5s ease;
+}
+.scratch-canvas:active {
+  cursor: grabbing;
+}
+.scratch-canvas.revealed {
+  opacity: 0;
+  pointer-events: none;
+}
+.scratch-hint {
+  font-size: 0.88rem;
+  color: #ffb8db;
+  opacity: 0.9;
+  margin-top: 8px;
+}
