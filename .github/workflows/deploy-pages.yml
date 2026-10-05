@@ -21,20 +21,21 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Añadir Bash y GNU tar al PATH de Windows
-        shell: powershell
+        shell: cmd
         run: |
-          Add-Content $env:GITHUB_PATH "C:\Program Files\Git\bin"
-          Add-Content $env:GITHUB_PATH "C:\Program Files\Git\usr\bin"
+          echo C:\Program Files\Git\bin>>%GITHUB_PATH%
+          echo C:\Program Files\Git\usr\bin>>%GITHUB_PATH%
 
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
       - name: Validar archivos JavaScript
+        shell: cmd
         run: |
-          Write-Host "Comprobando archivos antes del empaquetado..."
+          echo Comprobando archivos antes del empaquetado...
           node -c js/retro-camera.js
           node -c sw.js
-          Write-Host "Validación correcta."
+          echo Validación correcta.
 
       - name: Configurar entorno Pages
         uses: actions/configure-pages@v5
@@ -52,10 +53,10 @@ jobs:
     needs: build
     steps:
       - name: Añadir Bash y herramientas al PATH de Windows
-        shell: powershell
+        shell: cmd
         run: |
-          Add-Content $env:GITHUB_PATH "C:\Program Files\Git\bin"
-          Add-Content $env:GITHUB_PATH "C:\Program Files\Git\usr\bin"
+          echo C:\Program Files\Git\bin>>%GITHUB_PATH%
+          echo C:\Program Files\Git\usr\bin>>%GITHUB_PATH%
 
       - name: Desplegar en GitHub Pages
         id: deployment
