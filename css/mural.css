@@ -1,0 +1,818 @@
+/* ==========================================================================
+   MURAL DE FOTOS SECRETO
+   Archivo Secreto · Estilos del Mural Compartido
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #140a17;
+  color: #fff7fb;
+  font-family: "DM Sans", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Aurora & Grain background */
+.aurora {
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 15% 25%, #ff5ca8 0, transparent 32%),
+    radial-gradient(circle at 85% 15%, #7c8cff 0, transparent 30%),
+    radial-gradient(circle at 65% 85%, #ff9bd0 0, transparent 28%),
+    linear-gradient(135deg, #17081c, #2b0e27 45%, #0f0714);
+  filter: blur(28px);
+  animation: aurora 16s ease-in-out infinite alternate;
+}
+
+@keyframes aurora {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.08) translate(-2%, 2%); }
+  100% { transform: scale(1) translate(1%, -1%); }
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.06;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-radius: 28px;
+}
+
+/* Top Navigation Bar */
+.mural-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(18, 7, 21, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  gap: 16px;
+}
+
+.nav-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffb8db;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 143, 199, 0.3);
+  transition: all 0.25s ease;
+}
+
+.nav-back-link:hover {
+  background: rgba(255, 143, 199, 0.25);
+  transform: translateX(-3px);
+  color: #fff;
+}
+
+.mural-nav-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.25rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mural-nav-title span {
+  font-size: 1.3rem;
+}
+
+.mural-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f7dce9;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #38ef7d;
+  box-shadow: 0 0 8px #38ef7d;
+}
+
+.status-dot.syncing {
+  background: #ffb300;
+  box-shadow: 0 0 8px #ffb300;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.4; }
+}
+
+/* Header Hero */
+.mural-hero {
+  max-width: 900px;
+  margin: 32px auto 20px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  font-weight: 700;
+  color: #ffb2d6;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.mural-hero h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  margin: 0 0 14px;
+  line-height: 1.05;
+}
+
+.mural-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, #fff, #ffb5db, #a5b4fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.mural-hero p {
+  color: #f6dce9;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  max-width: 660px;
+  margin: 0 auto 24px;
+}
+
+/* Author Selector Pill Bar */
+.author-selector-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  margin-bottom: 24px;
+}
+
+.author-selector-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffb8db;
+  letter-spacing: 0.06em;
+  margin-right: 4px;
+}
+
+.author-chip {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #f6dce9;
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.author-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.author-chip.active {
+  background: linear-gradient(135deg, #ff63ac, #a94cff);
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 99, 172, 0.4);
+}
+
+/* Camera Booth Card */
+.booth-card {
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  padding: clamp(20px, 4vw, 40px);
+}
+
+.booth-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.booth-heading h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.booth-toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffb8db;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.booth-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Grid within booth: Camera on Left, Preview on Right */
+.booth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 4vw, 40px);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .booth-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Viewfinder */
+.viewfinder-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #0d0610;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5), inset 0 0 35px rgba(0, 0, 0, 0.8);
+}
+
+.viewfinder-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.viewfinder-video.mirrored {
+  transform: scaleX(-1);
+}
+
+.viewfinder-standby {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  background: radial-gradient(circle at center, rgba(38, 14, 34, 0.95), rgba(13, 5, 15, 0.98));
+  color: #f7dce9;
+  z-index: 5;
+  transition: opacity 0.3s;
+}
+
+.viewfinder-standby.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.standby-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.glow-btn {
+  background: linear-gradient(135deg, #fff, #ffb6dc, #ff63ac);
+  color: #351025;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(255, 99, 172, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.glow-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 40px rgba(255, 99, 172, 0.6);
+}
+
+.glow-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Flash overlay */
+.shutter-flash {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.3s ease-out;
+}
+
+.shutter-flash.active {
+  opacity: 1;
+  transition: none;
+}
+
+/* Booth filters */
+.booth-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 2px 6px;
+  scrollbar-width: thin;
+}
+
+.filter-pill {
+  flex: none;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill.active {
+  background: linear-gradient(135deg, #ff5ca8, #7c8cff);
+  border-color: #fff;
+  box-shadow: 0 3px 12px rgba(255, 92, 168, 0.5);
+}
+
+/* Booth Controls */
+.booth-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.icon-round-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.15rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s, background 0.2s;
+  flex: none;
+}
+
+.icon-round-btn:hover {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Right pane: Snapshot preview before hang */
+.booth-preview-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Polaroid Card Component */
+.polaroid-card {
+  position: relative;
+  background: #faf8f5;
+  color: #2b1825;
+  border-radius: 12px;
+  padding: 16px 16px 22px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 3px 12px rgba(255, 143, 199, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.polaroid-card.preview {
+  width: min(340px, 100%);
+  transform: rotate(-1.5deg);
+}
+
+/* Washi tape on top */
+.polaroid-tape {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(1deg);
+  width: 75px;
+  height: 22px;
+  background: rgba(255, 215, 235, 0.72);
+  backdrop-filter: blur(4px);
+  border-radius: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 5;
+  border: 1px dashed rgba(255, 155, 205, 0.45);
+}
+
+/* Photo window inside card */
+.polaroid-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #180e1a;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.polaroid-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.polaroid-photo-empty {
+  text-align: center;
+  padding: 20px;
+  color: #d1b4c6;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.polaroid-photo-empty span {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Polaroid details */
+.polaroid-footer {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.polaroid-caption {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2b1825;
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.polaroid-caption-edit {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed rgba(255, 110, 180, 0.4);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: center;
+  color: #2b1825;
+  outline: none;
+}
+
+.polaroid-meta {
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #8c6a7e;
+  text-transform: uppercase;
+}
+
+.polaroid-author-badge {
+  color: #ff5ca8;
+  font-weight: 700;
+}
+
+/* Action button to hang on the wall */
+.hang-btn {
+  background: linear-gradient(135deg, #ff5ca8, #a94cff);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 28px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(255, 92, 168, 0.45);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hang-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 40px rgba(255, 92, 168, 0.65);
+}
+
+.hang-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   EL MURAL DE FOTOS (THE PHOTO WALL)
+   ========================================================================== */
+.mural-section {
+  max-width: 1280px;
+  margin: 0 auto 80px;
+  padding: 0 20px;
+}
+
+.mural-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  padding-bottom: 18px;
+}
+
+.mural-section-header h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.photo-count-pill {
+  font-size: 0.8rem;
+  font-family: "DM Sans", Arial, sans-serif;
+  background: rgba(255, 143, 199, 0.25);
+  color: #ffb8db;
+  border: 1px solid rgba(255, 143, 199, 0.4);
+  padding: 4px 12px;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* Filter buttons on the wall */
+.wall-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wall-filter-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f6dce9;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wall-filter-btn.active {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border-color: #ffb8db;
+}
+
+/* Mural Board (Cork / Pinboard style layout) */
+.mural-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px 24px;
+  padding: 20px 0;
+  min-height: 250px;
+}
+
+/* Individual Polaroid item on the board */
+.mural-item {
+  position: relative;
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, z-index 0s;
+  animation: photoHangIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.mural-item:hover {
+  transform: scale(1.05) rotate(0deg) !important;
+  z-index: 20;
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.65), 0 0 30px rgba(255, 143, 199, 0.35);
+}
+
+@keyframes photoHangIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(var(--rot, 0deg));
+  }
+}
+
+/* Polaroid Actions Toolbar on hover */
+.mural-item-toolbar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 10;
+}
+
+.mural-item:hover .mural-item-toolbar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toolbar-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(18, 6, 20, 0.85);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 0.85rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.toolbar-btn:hover {
+  transform: scale(1.15);
+  background: #ff5ca8;
+}
+
+.toolbar-btn.delete-btn:hover {
+  background: #ff4757;
+}
+
+/* Empty State on Wall */
+.mural-empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+}
+
+.mural-empty-state span {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 12px;
+  animation: float 4s ease-in-out infinite;
+}
+
+.mural-empty-state h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  margin: 0 0 8px;
+}
+
+.mural-empty-state p {
+  color: #e5c3d7;
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Lightbox Modal */
+.mural-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 4, 12, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.mural-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1.4rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+/* Toast */
+.mural-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  background: rgba(25, 8, 26, 0.95);
+  backdrop-filter: blur(14px);
+  color: #fff;
+  border: 1px solid rgba(255, 143, 199, 0.5);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.mural-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

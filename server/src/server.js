@@ -27,15 +27,26 @@ await pool.query(`
   )
 `);
 
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS mural_photos (
+    id BIGSERIAL PRIMARY KEY,
+    author VARCHAR(64) NOT NULL DEFAULT 'Anónimo',
+    caption TEXT NOT NULL DEFAULT '',
+    filter VARCHAR(32) NOT NULL DEFAULT 'natural',
+    image_data TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  )
+`);
+
 // CORS is a browser security policy, not API authentication. The API currently
 // has no private credentials in browser requests, so allow web clients to call it.
 app.use(cors({
   origin: true,
-  methods: ['GET', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
   optionsSuccessStatus: 204
 }));
-app.use(express.json({ limit: '8kb' }));
+app.use(express.json({ limit: '15mb' }));
 
 app.get('/api/health', async (_req, res) => {
   try {
@@ -85,6 +96,63 @@ app.delete('/api/future-message', async (req, res) => {
     res.status(204).end();
   } catch {
     res.status(500).json({ error: 'No se pudo eliminar el mensaje.' });
+  }
+});
+
+// ============================================================================
+// MURAL DE FOTOS - REST API
+// ============================================================================
+app.get('/api/mural-photos', async (_req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, author, caption, filter, image_data, created_at FROM mural_photos ORDER BY created_at DESC LIMIT 150'
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('Error al recuperar fotos del mural:', err);
+    res.status(500).json({ error: 'No se pudieron recuperar las fotos del mural.' });
+  }
+});
+
+app.post('/api/mural-photos', async (req, res) => {
+  const author = String(req.body?.author || 'Anónimo').trim().slice(0, 64);
+  const caption = String(req.body?.caption || '').trim().slice(0, 300);
+  const filter = String(req.body?.filter || 'natural').trim().slice(0, 32);
+  const imageData = String(req.body?.image_data || '').trim();
+
+  if (!imageData) {
+    return res.status(400).json({ error: 'La imagen es obligatoria.' });
+  }
+
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO mural_photos (author, caption, filter, image_data)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, author, caption, filter, image_data, created_at`,
+      [author, caption, filter, imageData]
+    );
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error('Error al guardar foto en el mural:', err);
+    res.status(500).json({ error: 'No se pudo guardar la foto en el mural.' });
+  }
+});
+
+app.delete('/api/mural-photos/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  if (!id || Number.isNaN(id)) {
+    return res.status(400).json({ error: 'ID de foto inválido.' });
+  }
+
+  try {
+    const result = await pool.query('DELETE FROM mural_photos WHERE id = $1', [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Foto no encontrada.' });
+    }
+    res.status(204).end();
+  } catch (err) {
+    console.error('Error al eliminar foto del mural:', err);
+    res.status(500).json({ error: 'No se pudo eliminar la foto del mural.' });
   }
 });
 

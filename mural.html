@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ff8fc7" />
+    <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Mural" />
+    <link rel="apple-touch-icon" href="assets/favicon.png" />
+    <title>Mural de Fotos Secreto 📸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/retro-camera.css?v=2" />
+    <link rel="stylesheet" href="css/mural.css?v=1" />
+  </head>
+  <body>
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- Barra de navegación superior -->
+    <header class="mural-nav">
+      <a href="index.html" class="nav-back-link">
+        ← Volver al Archivo
+      </a>
+      <h1 class="mural-nav-title">
+        <span>📸</span> Mural de Fotos
+      </h1>
+      <div class="mural-status-badge">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Cargando fotos...</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero de bienvenida -->
+      <section class="mural-hero">
+        <p class="eyebrow">NUESTRO RINCÓN COMPARTIDO</p>
+        <h1>Mural de Fotos <em>Secreto</em></h1>
+        <p>
+          Hazte fotos con nuestra cámara Polaroid retro o sube una desde tu galería.
+          Cada foto se revelará con tu nombre, fecha y dedicatoria, y <strong>se guardará automáticamente</strong> en este mural para siempre.
+        </p>
+
+        <!-- Selector de autor -->
+        <div class="author-selector-bar">
+          <span class="author-selector-label">Foto de:</span>
+          <button type="button" class="author-chip active" data-author="Carla">🌸 Carla</button>
+          <button type="button" class="author-chip" data-author="Alina">💙 Alina</button>
+          <button type="button" class="author-chip" data-author="Iván">✨ Iván</button>
+        </div>
+      </section>
+
+      <!-- Cabina de captura Polaroid -->
+      <section class="glass booth-card">
+        <div class="booth-heading">
+          <h2>📸 Cabina Polaroid de Revelado</h2>
+          <span class="eyebrow">Captura & Autoguardado</span>
+        </div>
+
+        <div class="booth-grid">
+          <!-- Columna Izquierda: Visor de Cámara -->
+          <div class="booth-camera-pane">
+            <div class="viewfinder-wrap">
+              <video id="boothVideo" class="viewfinder-video filter-chispa-rosa mirrored" playsinline muted autoplay></video>
+
+              <!-- Pantalla de inicio -->
+              <div class="viewfinder-standby" id="boothStandby">
+                <div class="standby-icon">📷</div>
+                <h3 style="margin: 0 0 8px; font-family: 'Playfair Display', serif;">Cabina Lista</h3>
+                <p style="margin: 0 0 16px; font-size: 0.9rem; color: #f6dce9;">
+                  Enciende la cámara para probar los filtros y tomar una foto.
+                </p>
+                <button type="button" class="glow-btn" id="activateBoothBtn">
+                  ✨ Encender cámara
+                </button>
+              </div>
+
+              <!-- Destello de flash -->
+              <div class="shutter-flash" id="boothFlash"></div>
+            </div>
+
+            <!-- Filtros retro -->
+            <div class="booth-filters">
+              <button type="button" class="filter-pill active" data-filter="chispa-rosa">🌸 Chispa Rosa</button>
+              <button type="button" class="filter-pill" data-filter="retro-90s">🎞️ Retro 90s</button>
+              <button type="button" class="filter-pill" data-filter="noir">🖤 Noir Clásico</button>
+              <button type="button" class="filter-pill" data-filter="golden">✨ Golden Hour</button>
+              <button type="button" class="filter-pill" data-filter="pastel">🌿 Pastel Dream</button>
+              <button type="button" class="filter-pill" data-filter="natural">📷 Natural</button>
+            </div>
+
+            <!-- Botones de control del visor -->
+            <div class="booth-controls-row">
+              <button type="button" class="icon-round-btn" id="switchCameraBtn" title="Cambiar cámara" aria-label="Cambiar cámara">
+                🔄
+              </button>
+              <button type="button" class="glow-btn" id="boothShutterBtn" style="flex: 1; justify-content: center;" disabled>
+                <span>📸</span> Tomar foto
+              </button>
+              <button type="button" class="icon-round-btn" id="uploadPhotoBtn" title="Elegir foto de galería" aria-label="Subir foto de galería">
+                📁
+              </button>
+              <input type="file" id="fileInput" accept="image/*" class="visually-hidden" />
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Previsualización de Polaroid y Botón Colgar -->
+          <div class="booth-preview-pane">
+            <div class="polaroid-card preview" id="previewPolaroidCard">
+              <div class="polaroid-tape"></div>
+              <div class="polaroid-photo" id="previewPhotoBox">
+                <div class="polaroid-photo-empty" id="previewEmpty">
+                  <span>🎞️</span>
+                  <p>Toma una foto a la izquierda o sube una imagen de tu carrete.</p>
+                </div>
+                <img id="previewImg" alt="Previsualización" style="display: none;" />
+              </div>
+              <div class="polaroid-footer">
+                <input
+                  type="text"
+                  id="boothCaptionInput"
+                  class="polaroid-caption-edit"
+                  value="Un recuerdo para siempre 💗"
+                  placeholder="Escribe tu dedicatoria..."
+                  maxlength="55"
+                />
+                <span class="polaroid-meta" id="previewMeta">
+                  ✦ FECHA DE HOY · POR CARLA ✦
+                </span>
+              </div>
+            </div>
+
+            <!-- Botón de Colgar / Autoguardado -->
+            <button type="button" class="hang-btn" id="hangOnWallBtn" disabled>
+              📌 ¡Colgar en el mural!
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN DEL MURAL DE FOTOS -->
+      <section class="mural-section" id="muralSection">
+        <div class="mural-section-header">
+          <h2>
+            ✦ Fotos en el Mural
+            <span class="photo-count-pill" id="photoCountPill">0 recuerdos</span>
+          </h2>
+
+          <div class="wall-filters">
+            <button type="button" class="wall-filter-btn active" data-wall-filter="todos">Todas</button>
+            <button type="button" class="wall-filter-btn" data-wall-filter="Carla">🌸 Carla</button>
+            <button type="button" class="wall-filter-btn" data-wall-filter="Alina">💙 Alina</button>
+            <button type="button" class="wall-filter-btn" data-wall-filter="Iván">✨ Iván</button>
+          </div>
+        </div>
+
+        <!-- Tablón de Polaroids -->
+        <div class="mural-board" id="muralBoard">
+          <div class="mural-empty-state">
+            <span>📷</span>
+            <h3>Cargando recuerdos del mural...</h3>
+            <p>Conectando con la base de datos para recuperar todas las fotos.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal Lightbox para ver foto grande -->
+    <div class="mural-lightbox" id="muralLightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+      <div class="lightbox-content">
+        <button type="button" class="lightbox-close-btn" id="lightboxClose" aria-label="Cerrar">×</button>
+        <div class="polaroid-card" style="width: 100%; transform: none;">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-photo">
+            <img id="lightboxImg" src="" alt="Polaroid ampliada" />
+          </div>
+          <div class="polaroid-footer" style="margin-top: 18px;">
+            <p class="polaroid-caption" id="lightboxCaption" style="font-size: 1.3rem;"></p>
+            <span class="polaroid-meta" id="lightboxMeta" style="font-size: 0.85rem;"></span>
+            <div style="margin-top: 14px; display: flex; justify-content: center;">
+              <button type="button" class="glow-btn" id="lightboxDownload">💾 Descargar foto</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notificación Toast -->
+    <div class="mural-toast" id="muralToast">Notificación</div>
+
+    <script src="js/mural.js?v=1" defer></script>
+    <script src="js/pwa-update.js" defer></script>
+  </body>
+</html>

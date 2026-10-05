@@ -1,9 +1,10 @@
-const CACHE_NAME = 'archivo-secreto-v7';
+const CACHE_NAME = 'archivo-secreto-v8';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './cumple-carla.html',
   './cumple-alina.html',
+  './mural.html',
   './css/styles.css',
   './css/cumple-carla.css',
   './css/cumple-alina.css',
@@ -12,10 +13,12 @@ const STATIC_ASSETS = [
   './css/carla-gallery.css',
   './css/carla-video.css',
   './css/retro-camera.css',
+  './css/mural.css',
   './js/content.js',
   './js/app.js',
   './js/cumple-alina.js',
   './js/retro-camera.js',
+  './js/mural.js',
   './js/pwa-update.js',
   './manifest.json',
   './assets/favicon.png'
