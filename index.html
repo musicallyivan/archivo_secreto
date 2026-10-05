@@ -25,18 +25,18 @@
     </script>
 </head>
 <body>
-    <div class="announcement-banner" role="status" aria-label="Nuevo contenido pronto">
+    <a href="mural.html" class="announcement-banner" role="status" aria-label="Nuevo mural de fotos" style="text-decoration: none; display: block; cursor: pointer;">
         <div class="announcement-track">
-            <span>NUEVO CONTENIDO PRONTO...</span>
-            <span aria-hidden="true">NUEVO CONTENIDO PRONTO...</span>
-            <span aria-hidden="true">NUEVO CONTENIDO PRONTO...</span>
-            <span aria-hidden="true">NUEVO CONTENIDO PRONTO...</span>
-            <span aria-hidden="true">NUEVO CONTENIDO PRONTO...</span>
-            <span aria-hidden="true">NUEVO CONTENIDO PRONTO...</span>
-            <span aria-hidden="true">NUEVO CONTENIDO PRONTO...</span>
-            <span aria-hidden="true">NUEVO CONTENIDO PRONTO...</span>
+            <span>📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
+            <span aria-hidden="true">📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
+            <span aria-hidden="true">📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
+            <span aria-hidden="true">📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
+            <span aria-hidden="true">📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
+            <span aria-hidden="true">📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
+            <span aria-hidden="true">📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
+            <span aria-hidden="true">📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
         </div>
-    </div>
+    </a>
     <div class="login-shell" id="loginShell">
         <aside class="login-atmosphere" aria-label="Presentación del archivo">
             <p class="eyebrow">Un lugar para volver</p>
@@ -69,8 +69,14 @@
                 </label>
 
                 <button type="submit" id="submitButton">Entrar al archivo</button>
-                <p class="hint">La sesión queda abierta en este dispositivo hasta que pulses "Cerrar acceso".</p>
                 <p class="feedback" id="loginFeedback" aria-live="polite"></p>
+
+                <div class="direct-mural-access" style="margin-top: 18px; padding-top: 16px; border-top: 1px dashed rgba(255,255,255,0.18); text-align: center;">
+                    <p style="font-size: 0.88rem; color: #f6dce9; margin: 0 0 10px;">¿Quieres ir directamente a las fotos?</p>
+                    <a href="mural.html" class="secondary-button" style="text-decoration: none; display: flex; align-items: center; justify-content: center; width: 100%; gap: 8px;">
+                        <span>📸</span> Abrir Mural de Fotos Secreto
+                    </a>
+                </div>
             </form>
 
             <section class="profile-step hidden" id="profileStep" aria-labelledby="profileTitle">
