@@ -36,7 +36,7 @@
   </section>
 
   <main id="mainContent" aria-hidden="true">
-    <section class="section reveal">
+    <section class="section reveal" id="primer-seccion">
       <div class="section-title"><span>01</span><div><p class="eyebrow">El momento</p><h2>Tu día ya está aquí</h2></div></div>
       <div class="glass countdown-card">
         <p class="countdown-label">Cuenta atrás para el cumple de Alina</p>
@@ -406,14 +406,14 @@
 
     <section class="section final-section reveal"><div class="glass final-card"><p class="confetti">💙 ✦ 💗 ✦ 💜</p><h2>Feliz cumpleaños, <strong>Alina</strong></h2><p>Que nunca te falten motivos para celebrar quién eres.</p></div></section>
   </main>
-  <dialog class="gallery-lightbox" id="galleryLightbox">
+  <div class="gallery-lightbox" id="galleryLightbox" role="dialog" aria-modal="true" aria-label="Galería de recuerdos">
     <div class="gallery-lightbox-inner">
       <button class="gallery-lightbox-close" id="galleryClose" type="button" aria-label="Cerrar galería">×</button>
       <button class="gallery-lightbox-nav" id="galleryPrevious" type="button" aria-label="Imagen anterior">‹</button>
       <div class="gallery-lightbox-stage"><img id="galleryImage" alt=""><div class="gallery-lightbox-caption"><div class="gallery-lightbox-title" id="galleryTitle"></div><div class="gallery-lightbox-counter" id="galleryCounter"></div></div></div>
       <button class="gallery-lightbox-nav" id="galleryNext" type="button" aria-label="Imagen siguiente">›</button>
     </div>
-  </dialog>
+  </div>
   <script src="js/cumple-alina.js" defer></script>
   <script src="js/retro-camera.js" defer></script>
   <script src="js/pwa-update.js" defer></script>

@@ -8,25 +8,38 @@ const tracks = [
   { title: 'Tussi Channel', file: 'assets/media/MUSICA 7.mp3' }
 ];
 let trackIndex = 0;
+let letterTyped = false;
+let resizeScratchCanvas = null;
 
 function revealPage() {
   body.classList.remove('locked');
   body.classList.add('unlocked');
-  main.setAttribute('aria-hidden', 'false');
+  if (main) main.setAttribute('aria-hidden', 'false');
   document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
-  document.getElementById('typedLetter').textContent = '';
   typeLetter();
-  window.setTimeout(() => { if (typeof initAlinaScratch === 'function') initAlinaScratch(); }, 120);
-  document.getElementById('welcome').scrollIntoView({ behavior: 'smooth' });
+  if (typeof resizeScratchCanvas === 'function') {
+    window.setTimeout(resizeScratchCanvas, 150);
+  }
+  const firstSection = document.getElementById('primer-seccion') || document.querySelector('#mainContent .section');
+  if (firstSection) {
+    firstSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 function typeLetter() {
+  if (letterTyped) return;
+  letterTyped = true;
   const target = document.getElementById('typedLetter');
+  if (!target) return;
   let index = 0;
   const write = () => {
     target.textContent = letter.slice(0, index);
-    if (index < letter.length) { index += 1; window.setTimeout(write, 18); }
-    else document.getElementById('signature').classList.add('show');
+    if (index < letter.length) {
+      index += 1;
+      window.setTimeout(write, 18);
+    } else {
+      document.getElementById('signature')?.classList.add('show');
+    }
   };
   write();
 }
@@ -34,27 +47,54 @@ function typeLetter() {
 function updateCountdown() {
   const target = new Date('2026-10-10T00:00:00+02:00').getTime();
   const difference = target - Date.now();
-  if (difference <= 0) { document.getElementById('countdownMessage').textContent = 'Hoy es tu día. Feliz cumpleaños, Alina 💙💗💜'; return; }
+  const msgEl = document.getElementById('countdownMessage');
+  if (difference <= 0) {
+    if (msgEl) msgEl.textContent = 'Hoy es tu día. Feliz cumpleaños, Alina 💙💗💜';
+    return;
+  }
   const days = Math.floor(difference / 86400000);
   const hours = Math.floor((difference % 86400000) / 3600000);
   const minutes = Math.floor((difference % 3600000) / 60000);
-  document.getElementById('days').textContent = days;
-  document.getElementById('hours').textContent = hours;
-  document.getElementById('minutes').textContent = minutes;
+  const d = document.getElementById('days');
+  const h = document.getElementById('hours');
+  const m = document.getElementById('minutes');
+  if (d) d.textContent = days;
+  if (h) h.textContent = hours;
+  if (m) m.textContent = minutes;
 }
 
 function loadTrack() {
   const track = tracks[trackIndex];
-  document.getElementById('music').src = track.file;
-  document.getElementById('trackTitle').textContent = track.title;
-  document.getElementById('musicState').textContent = `Lista para sonar: ${track.title}`;
+  const music = document.getElementById('music');
+  const title = document.getElementById('trackTitle');
+  const state = document.getElementById('musicState');
+  if (music && track) music.src = track.file;
+  if (title && track) title.textContent = track.title;
+  if (state && track) state.textContent = `Lista para sonar: ${track.title}`;
 }
 
 async function toggleMusic() {
   const music = document.getElementById('music');
   const button = document.getElementById('playButton');
-  if (music.paused) { try { await music.play(); button.textContent = 'Ⅱ Pausar'; document.getElementById('musicState').textContent = `Reproduciendo: ${tracks[trackIndex].title}`; document.getElementById('disc').classList.add('playing'); } catch { document.getElementById('musicState').textContent = 'Pulsa otra vez para iniciar la música.'; } }
-  else { music.pause(); button.textContent = '▶ Reproducir'; document.getElementById('musicState').textContent = `En pausa: ${tracks[trackIndex].title}`; document.getElementById('disc').classList.remove('playing'); }
+  const state = document.getElementById('musicState');
+  const disc = document.getElementById('disc');
+  if (!music || !button) return;
+
+  if (music.paused) {
+    try {
+      await music.play();
+      button.textContent = 'Ⅱ Pausar';
+      if (state) state.textContent = `Reproduciendo: ${tracks[trackIndex].title}`;
+      if (disc) disc.classList.add('playing');
+    } catch {
+      if (state) state.textContent = 'Pulsa otra vez para iniciar la música.';
+    }
+  } else {
+    music.pause();
+    button.textContent = '▶ Reproducir';
+    if (state) state.textContent = `En pausa: ${tracks[trackIndex].title}`;
+    if (disc) disc.classList.remove('playing');
+  }
 }
 
 function applyMode(mode) {
@@ -70,10 +110,20 @@ function buildControls() {
   controls.className = 'alina-controls glass';
   controls.innerHTML = '<div class="alina-control-group"><span>✦ Ambiente</span><button type="button" data-alina-mode="cute">🌸 Cute</button><button type="button" data-alina-mode="party">🎉 Party</button><button type="button" data-alina-mode="relax">🌙 Relax</button></div><button type="button" id="nightToggle">🌙 Modo noche</button>';
   document.body.appendChild(controls);
-  controls.querySelectorAll('[data-alina-mode]').forEach((button) => button.addEventListener('click', () => applyMode(button.dataset.alinaMode)));
+  controls.querySelectorAll('[data-alina-mode]').forEach((button) => button.addEventListener('click', (e) => {
+    e.stopPropagation();
+    applyMode(button.dataset.alinaMode);
+  }));
   const nightButton = document.getElementById('nightToggle');
-  const setNight = (enabled) => { document.documentElement.dataset.night = enabled ? '1' : '0'; nightButton.textContent = enabled ? '☀️ Modo día' : '🌙 Modo noche'; localStorage.setItem('alina-night', enabled ? '1' : '0'); };
-  nightButton.addEventListener('click', () => setNight(document.documentElement.dataset.night !== '1'));
+  const setNight = (enabled) => {
+    document.documentElement.dataset.night = enabled ? '1' : '0';
+    if (nightButton) nightButton.textContent = enabled ? '☀️ Modo día' : '🌙 Modo noche';
+    localStorage.setItem('alina-night', enabled ? '1' : '0');
+  };
+  nightButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setNight(document.documentElement.dataset.night !== '1');
+  });
   applyMode(localStorage.getItem('alina-theme') || 'cute');
   setNight(localStorage.getItem('alina-night') === '1');
 }
@@ -84,14 +134,14 @@ function buildFutureMessage() {
   const section = document.createElement('section');
   section.className = 'section reveal';
   section.innerHTML = '<div class="section-title"><span>08</span><div><p class="eyebrow">Para tu yo del futuro</p><h2>Un mensaje para tu próximo cumpleaños 💌</h2></div></div><div class="glass alina-future-card"><p>Escribe algo que quieras recordar, conseguir o decirte más adelante. Se guardará online.</p><textarea id="futureMessage" maxlength="4000" placeholder="Querida Alina del futuro..."></textarea><div class="alina-future-actions"><span id="futureStatus">Todavía no hay ningún mensaje guardado.</span><button class="glow-button" id="saveFuture" type="button">Guardar para el futuro ✨</button></div></div>';
-  main.appendChild(section);
+  if (main) main.appendChild(section);
   const message = document.getElementById('futureMessage');
   const status = document.getElementById('futureStatus');
   const saveBtn = document.getElementById('saveFuture');
 
   async function loadFuture() {
     const local = localStorage.getItem('alina-future-message') || '';
-    if (local) {
+    if (local && message && status) {
       message.value = local;
       status.textContent = '💙 Tu mensaje está guardado en este dispositivo.';
     }
@@ -100,20 +150,22 @@ function buildFutureMessage() {
       const res = await fetch(`${API}/api/future-message?profile=alina`);
       if (res.ok) {
         const data = await res.json();
-        if (data.message) {
+        if (data.message && message && status) {
           message.value = data.message;
           localStorage.setItem('alina-future-message', data.message);
           status.textContent = '💙 Tu mensaje está guardado online.';
         }
-      } else if (res.status === 404 && !local) {
+      } else if (res.status === 404 && !local && status) {
         status.textContent = 'Todavía no hay ningún mensaje guardado.';
       }
     } catch {
-      if (!local) status.textContent = 'No se pudo conectar con el servidor.';
+      if (!local && status) status.textContent = 'No se pudo conectar con el servidor.';
     }
   }
 
-  saveBtn.addEventListener('click', async () => {
+  saveBtn?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if (!message || !status) return;
     const value = message.value.trim();
     if (!value) {
       status.textContent = 'Escribe algo antes de guardarlo ✨';
@@ -147,19 +199,48 @@ function buildGallery() {
   const image = document.getElementById('galleryImage');
   const title = document.getElementById('galleryTitle');
   const counter = document.getElementById('galleryCounter');
+  const closeBtn = document.getElementById('galleryClose');
+  const prevBtn = document.getElementById('galleryPrevious');
+  const nextBtn = document.getElementById('galleryNext');
+  if (!lightbox || !image) return;
+
   let currentIndex = 0;
 
-  const show = (index) => {
+  function renderPhoto(index, animate = true) {
     currentIndex = (index + cards.length) % cards.length;
     const card = cards[currentIndex];
     const imgEl = card.querySelector('img');
     const capEl = card.querySelector('figcaption');
-    image.src = imgEl.src;
-    image.alt = imgEl.alt || 'Recuerdo de Alina';
-    title.textContent = capEl ? capEl.textContent : (card.dataset.title || 'Recuerdo de Alina');
-    counter.textContent = `${currentIndex + 1} / ${cards.length}`;
-    lightbox.showModal();
-  };
+    const src = card.dataset.src || imgEl?.src || '';
+    const alt = imgEl?.alt || card.dataset.title || 'Recuerdo de Alina';
+    const captionText = capEl ? capEl.textContent : (card.dataset.title || 'Recuerdo de Alina');
+
+    const applyData = () => {
+      image.src = src;
+      image.alt = alt;
+      if (title) title.textContent = captionText;
+      if (counter) counter.textContent = `${currentIndex + 1} / ${cards.length}`;
+      if (animate) lightbox.classList.remove('swapping');
+    };
+
+    if (animate) {
+      lightbox.classList.add('swapping');
+      window.setTimeout(applyData, 140);
+    } else {
+      applyData();
+    }
+  }
+
+  function openGallery(index) {
+    renderPhoto(index, false);
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGallery() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
 
   cards.forEach((card, index) => {
     // Flip buttons (front "↺ Girar" and back "↺ Volver")
@@ -174,15 +255,16 @@ function buildGallery() {
     card.querySelectorAll('.polaroid-gallery-btn').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        show(index);
+        openGallery(index);
       });
     });
 
     // Front image directly opens gallery
     const frontImg = card.querySelector('.polaroid-front img');
     if (frontImg) {
-      frontImg.addEventListener('click', () => {
-        show(index);
+      frontImg.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openGallery(index);
       });
     }
 
@@ -196,16 +278,44 @@ function buildGallery() {
     });
   });
 
-  document.getElementById('galleryClose').addEventListener('click', () => lightbox.close());
-  document.getElementById('galleryPrevious').addEventListener('click', () => show(currentIndex - 1));
-  document.getElementById('galleryNext').addEventListener('click', () => show(currentIndex + 1));
-  lightbox.addEventListener('click', (event) => { if (event.target === lightbox) lightbox.close(); });
-  window.addEventListener('keydown', (event) => {
-    if (!lightbox.open) return;
-    if (event.key === 'Escape') lightbox.close();
-    if (event.key === 'ArrowLeft') show(currentIndex - 1);
-    if (event.key === 'ArrowRight') show(currentIndex + 1);
+  closeBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeGallery();
   });
+  prevBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    renderPhoto(currentIndex - 1);
+  });
+  nextBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    renderPhoto(currentIndex + 1);
+  });
+
+  // Click on background closes lightbox
+  lightbox.addEventListener('click', (event) => {
+    if (event.target === lightbox) closeGallery();
+  });
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (event) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (event.key === 'Escape') closeGallery();
+    if (event.key === 'ArrowLeft') renderPhoto(currentIndex - 1);
+    if (event.key === 'ArrowRight') renderPhoto(currentIndex + 1);
+  });
+
+  // Mobile swipe gestures
+  let touchStartX = 0;
+  image.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+
+  image.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 45) {
+      renderPhoto(currentIndex + (dx < 0 ? 1 : -1));
+    }
+  }, { passive: true });
 }
 
 let currentAlinaVoice = null;
@@ -216,42 +326,50 @@ function initAlinaVoiceNotes() {
   cards.forEach((card) => {
     const btn = card.querySelector('.alina-voice-btn');
     const audio = card.querySelector('audio');
+    if (!btn || !audio) return;
     const icon = btn.querySelector('span');
     const progressFill = card.querySelector('.alina-progress-fill');
     const timeDisplay = card.querySelector('.alina-voice-time');
-    const defaultDuration = timeDisplay.textContent;
+    const defaultDuration = timeDisplay ? timeDisplay.textContent : '0:30';
 
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
       if (currentAlinaVoice && currentAlinaVoice !== audio) {
         currentAlinaVoice.pause();
         currentAlinaVoice.currentTime = 0;
         if (currentAlinaVoiceBtn) {
           currentAlinaVoiceBtn.closest('.alina-voice-card')?.classList.remove('is-playing');
-          currentAlinaVoiceBtn.querySelector('span').textContent = '▶';
+          const prevIcon = currentAlinaVoiceBtn.querySelector('span');
+          if (prevIcon) prevIcon.textContent = '▶';
         }
       }
 
       if (audio.paused) {
         const music = document.getElementById('music');
-        if (!music.paused) toggleMusic();
+        if (music && !music.paused) {
+          music.pause();
+          const playBtn = document.getElementById('playButton');
+          if (playBtn) playBtn.textContent = '▶ Reproducir';
+          document.getElementById('disc')?.classList.remove('playing');
+        }
         try {
           await audio.play();
           currentAlinaVoice = audio;
           currentAlinaVoiceBtn = btn;
           card.classList.add('is-playing');
-          icon.textContent = '❚❚';
+          if (icon) icon.textContent = '❚❚';
         } catch {
-          timeDisplay.textContent = 'Error';
+          if (timeDisplay) timeDisplay.textContent = 'Error';
         }
       } else {
         audio.pause();
         card.classList.remove('is-playing');
-        icon.textContent = '▶';
+        if (icon) icon.textContent = '▶';
       }
     });
 
     audio.addEventListener('timeupdate', () => {
-      if (audio.duration) {
+      if (audio.duration && progressFill && timeDisplay) {
         const percent = (audio.currentTime / audio.duration) * 100;
         progressFill.style.width = percent + '%';
         const mins = Math.floor(audio.currentTime / 60);
@@ -262,9 +380,9 @@ function initAlinaVoiceNotes() {
 
     audio.addEventListener('ended', () => {
       card.classList.remove('is-playing');
-      icon.textContent = '▶';
-      progressFill.style.width = '0%';
-      timeDisplay.textContent = defaultDuration;
+      if (icon) icon.textContent = '▶';
+      if (progressFill) progressFill.style.width = '0%';
+      if (timeDisplay) timeDisplay.textContent = defaultDuration;
     });
   });
 }
@@ -312,7 +430,8 @@ function initAlinaTrivia() {
           <button type="button" class="glow-button" id="restartAlinaTrivia">Repetir test ↺</button>
         </div>
       `;
-      document.getElementById('restartAlinaTrivia')?.addEventListener('click', () => {
+      document.getElementById('restartAlinaTrivia')?.addEventListener('click', (e) => {
+        e.stopPropagation();
         current = 0; score = 0; answered = false; render();
       });
       return;
@@ -348,7 +467,8 @@ function initAlinaTrivia() {
     const btns = container.querySelectorAll('.alina-trivia-btn');
 
     btns.forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (answered) return;
         answered = true;
         const chosen = Number(btn.dataset.idx);
@@ -356,18 +476,19 @@ function initAlinaTrivia() {
         if (ok) {
           score++;
           btn.classList.add('is-correct');
-          fbText.innerHTML = '<strong>✨ ¡Correcto!</strong> ' + item.fb;
+          if (fbText) fbText.innerHTML = '<strong>✨ ¡Correcto!</strong> ' + item.fb;
         } else {
           btn.classList.add('is-wrong');
           btns[item.correct]?.classList.add('is-correct');
-          fbText.innerHTML = '<strong>Oops!</strong> ' + item.fb;
+          if (fbText) fbText.innerHTML = '<strong>Oops!</strong> ' + item.fb;
         }
         btns.forEach((b) => (b.disabled = true));
-        fb.classList.remove('hidden');
+        if (fb) fb.classList.remove('hidden');
       });
     });
 
-    nextBtn?.addEventListener('click', () => {
+    nextBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       current++;
       render();
     });
@@ -375,12 +496,6 @@ function initAlinaTrivia() {
 
   render();
 }
-
-openButton.addEventListener('click', revealPage);
-document.getElementById('playButton').addEventListener('click', toggleMusic);
-document.getElementById('nextButton').addEventListener('click', async () => { trackIndex = (trackIndex + 1) % tracks.length; loadTrack(); await toggleMusic(); });
-document.getElementById('music').addEventListener('ended', () => { trackIndex = (trackIndex + 1) % tracks.length; loadTrack(); document.getElementById('music').play().catch(() => {}); });
-document.getElementById('surpriseButton')?.addEventListener('click', () => { const text = document.getElementById('surpriseText'); text.classList.toggle('hidden'); document.getElementById('surpriseButton').textContent = text.classList.contains('hidden') ? 'Abrir sorpresa 💌' : 'Cerrar sorpresa'; });
 
 function triggerAlinaScratchParticles() {
   const wrapper = document.getElementById('alinaScratchWrapper');
@@ -404,11 +519,15 @@ function triggerAlinaScratchParticles() {
   }
 }
 
+let scratchInitialized = false;
+
 function initAlinaScratch() {
+  if (scratchInitialized) return;
   const canvas = document.getElementById('alinaScratchCanvas');
   const wrapper = document.getElementById('alinaScratchWrapper');
   const quickBtn = document.getElementById('alinaRevealBtn');
   if (!canvas || !wrapper) return;
+  scratchInitialized = true;
 
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   let isScratching = false;
@@ -425,7 +544,10 @@ function initAlinaScratch() {
     triggerAlinaScratchParticles();
   }
 
-  quickBtn?.addEventListener('click', reveal);
+  quickBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    reveal();
+  });
 
   function resizeCanvas() {
     if (isRevealed) return;
@@ -438,6 +560,8 @@ function initAlinaScratch() {
     ctx.scale(dpr, dpr);
     drawMetallicCover(rect.width, rect.height);
   }
+
+  resizeScratchCanvas = resizeCanvas;
 
   function drawMetallicCover(w, h) {
     const grad = ctx.createLinearGradient(0, 0, w, h);
@@ -511,10 +635,11 @@ function initAlinaScratch() {
 
   function checkReveal() {
     strokeCount++;
-    if (strokeCount % 8 !== 0 || isRevealed) return;
+    if (strokeCount % 10 !== 0 || isRevealed) return;
 
     const w = canvas.width;
     const h = canvas.height;
+    if (!w || !h) return;
     const imgData = ctx.getImageData(0, 0, w, h);
     const data = imgData.data;
     let transparent = 0;
@@ -528,14 +653,14 @@ function initAlinaScratch() {
       }
     }
 
-    if (transparent / totalSampled > 0.38) {
+    if (totalSampled > 0 && transparent / totalSampled > 0.38) {
       reveal();
     }
   }
 
   canvas.addEventListener('pointerdown', (e) => {
     isScratching = true;
-    canvas.setPointerCapture?.(e.pointerId);
+    try { canvas.setPointerCapture?.(e.pointerId); } catch {}
     const pos = getPos(e);
     scratch(pos.x, pos.y);
   });
@@ -579,12 +704,49 @@ function buildLogoutButton() {
   const section = document.createElement('section');
   section.className = 'section logout-section';
   section.innerHTML = '<div class="glass final-card"><button class="glow-button" type="button">Cerrar sesión y volver al inicio</button></div>';
-  section.querySelector('button').addEventListener('click', () => {
+  section.querySelector('button')?.addEventListener('click', (e) => {
+    e.stopPropagation();
     ['archivo-secreto-session', 'archivo-secreto-profile', 'archivo-secreto-access'].forEach((key) => localStorage.removeItem(key));
     window.location.href = 'index.html';
   });
-  main.appendChild(section);
+  if (main) main.appendChild(section);
 }
+
+// Observer for progressive reveal animations on scroll
+if ('IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+}
+
+openButton?.addEventListener('click', (e) => {
+  e.preventDefault();
+  revealPage();
+});
+document.getElementById('playButton')?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  toggleMusic();
+});
+document.getElementById('nextButton')?.addEventListener('click', async (e) => {
+  e.stopPropagation();
+  trackIndex = (trackIndex + 1) % tracks.length;
+  loadTrack();
+  await toggleMusic();
+});
+document.getElementById('music')?.addEventListener('ended', () => {
+  trackIndex = (trackIndex + 1) % tracks.length;
+  loadTrack();
+  document.getElementById('music')?.play().catch(() => {});
+});
 
 buildControls();
 buildGallery();

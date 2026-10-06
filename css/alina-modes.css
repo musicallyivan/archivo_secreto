@@ -836,3 +836,21 @@ html[data-night="1"] .glass { background: rgba(13,20,58,.58); }
     border-radius: 22px !important;
   }
 }
+
+/* Body initial lock & unlock states */
+body.locked {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+body.unlocked {
+  overflow-y: auto !important;
+  height: auto !important;
+}
+
+/* Alina Lightbox Accent Colors & Transitions */
+.gallery-lightbox-counter {
+  color: #c39bff !important;
+}
+.gallery-lightbox-stage img {
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.55), 0 0 70px rgba(124, 140, 255, 0.3) !important;
+}
