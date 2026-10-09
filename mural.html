@@ -18,7 +18,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/retro-camera.css?v=2" />
-    <link rel="stylesheet" href="css/mural.css?v=1" />
+    <link rel="stylesheet" href="css/mural.css?v=2" />
   </head>
   <body>
     <div class="aurora" aria-hidden="true"></div>
@@ -153,11 +153,16 @@
             <span class="photo-count-pill" id="photoCountPill">0 recuerdos</span>
           </h2>
 
-          <div class="wall-filters">
-            <button type="button" class="wall-filter-btn active" data-wall-filter="todos">Todas</button>
-            <button type="button" class="wall-filter-btn" data-wall-filter="Carla">🌸 Carla</button>
-            <button type="button" class="wall-filter-btn" data-wall-filter="Alina">💙 Alina</button>
-            <button type="button" class="wall-filter-btn" data-wall-filter="Iván">✨ Iván</button>
+          <div class="wall-header-controls">
+            <button type="button" class="cinema-mural-btn" id="openCinemaBtn" title="Ver recuerdos en pantalla completa">
+              🎬 Modo Cine
+            </button>
+            <div class="wall-filters">
+              <button type="button" class="wall-filter-btn active" data-wall-filter="todos">Todas</button>
+              <button type="button" class="wall-filter-btn" data-wall-filter="Carla">🌸 Carla</button>
+              <button type="button" class="wall-filter-btn" data-wall-filter="Alina">💙 Alina</button>
+              <button type="button" class="wall-filter-btn" data-wall-filter="Iván">✨ Iván</button>
+            </div>
           </div>
         </div>
 
@@ -184,7 +189,8 @@
           <div class="polaroid-footer" style="margin-top: 18px;">
             <p class="polaroid-caption" id="lightboxCaption" style="font-size: 1.3rem;"></p>
             <span class="polaroid-meta" id="lightboxMeta" style="font-size: 0.85rem;"></span>
-            <div style="margin-top: 14px; display: flex; justify-content: center;">
+            <div style="margin-top: 14px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="glow-btn" id="lightboxCinemaBtn">🎬 Modo Cine</button>
               <button type="button" class="glow-btn" id="lightboxDownload">💾 Descargar foto</button>
             </div>
           </div>
@@ -192,10 +198,39 @@
       </div>
     </div>
 
+    <!-- Modal Modo Cine del Mural -->
+    <dialog class="cinema-modal" id="muralCinemaModal" aria-label="Modo cine del mural de fotos">
+      <div class="cinema-topbar">
+        <div class="cinema-info">
+          <span class="cinema-tag">✦ Mural · Modo Cine</span>
+          <span class="cinema-counter" id="muralCinemaCounter">1 / 1</span>
+        </div>
+        <div class="cinema-controls">
+          <button type="button" class="cinema-ctrl-btn" id="muralCinemaPlayPauseBtn" aria-label="Pausar o reproducir presentación">⏸ Pausa</button>
+          <button type="button" class="cinema-ctrl-btn" id="muralCinemaDownloadBtn" aria-label="Descargar foto actual">💾 Descargar</button>
+          <button type="button" class="cinema-ctrl-btn cinema-close-btn" id="muralCinemaCloseBtn" aria-label="Salir de modo cine">✕ Salir</button>
+        </div>
+      </div>
+      <div class="cinema-stage" id="muralCinemaStage">
+        <button type="button" class="cinema-arrow cinema-arrow-prev" id="muralCinemaPrevBtn" aria-label="Foto anterior">‹</button>
+        <figure class="cinema-figure" id="muralCinemaFigure">
+          <img id="muralCinemaImage" src="" alt="Recuerdo del mural" />
+          <figcaption class="cinema-caption">
+            <h4 id="muralCinemaCaption">Recuerdo del mural</h4>
+            <p id="muralCinemaMeta">✦ Recuerdo ✦</p>
+          </figcaption>
+        </figure>
+        <button type="button" class="cinema-arrow cinema-arrow-next" id="muralCinemaNextBtn" aria-label="Foto siguiente">›</button>
+      </div>
+      <div class="cinema-progress-track">
+        <div class="cinema-progress-bar" id="muralCinemaProgressBar"></div>
+      </div>
+    </dialog>
+
     <!-- Notificación Toast -->
     <div class="mural-toast" id="muralToast">Notificación</div>
 
-    <script src="js/mural.js?v=1" defer></script>
+    <script src="js/mural.js?v=2" defer></script>
     <script src="js/pwa-update.js" defer></script>
   </body>
 </html>

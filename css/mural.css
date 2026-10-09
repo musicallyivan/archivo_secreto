@@ -818,6 +818,231 @@ body {
 }
 
 /* ==========================================================================
+   CINEMA / MODO CINE DEL MURAL
+   ========================================================================== */
+.wall-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cinema-mural-btn {
+  padding: 8px 18px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(255, 92, 168, 0.4), rgba(169, 76, 255, 0.45));
+  border: 1px solid rgba(255, 143, 199, 0.5);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 18px rgba(255, 92, 168, 0.25);
+  font-family: inherit;
+}
+
+.cinema-mural-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 92, 168, 0.65), rgba(169, 76, 255, 0.7));
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(255, 92, 168, 0.45);
+}
+
+.cinema-modal {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  padding: 0;
+  border: 0;
+  background: rgba(14, 7, 18, 0.96);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  color: #fff;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  z-index: 2000;
+}
+
+.cinema-modal[open] {
+  display: flex;
+}
+
+.cinema-modal::backdrop {
+  background: rgba(8, 3, 10, 0.96);
+}
+
+.cinema-topbar {
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  background: linear-gradient(180deg, rgba(14, 7, 18, 0.85) 0%, transparent 100%);
+  gap: 12px;
+}
+
+.cinema-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cinema-tag {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #ff9ec7;
+  text-shadow: 0 0 12px rgba(255, 158, 199, 0.4);
+}
+
+.cinema-counter {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.cinema-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.cinema-ctrl-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  font-family: inherit;
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.cinema-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.03);
+}
+
+.cinema-close-btn {
+  background: rgba(255, 92, 168, 0.3);
+  border-color: rgba(255, 143, 199, 0.5);
+  font-weight: 700;
+}
+
+.cinema-close-btn:hover {
+  background: rgba(255, 92, 168, 0.55);
+}
+
+.cinema-stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 3.5rem;
+  overflow: hidden;
+  user-select: none;
+}
+
+.cinema-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 1.8rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.cinema-arrow:hover {
+  background: rgba(255, 255, 255, 0.32);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.cinema-arrow-prev { left: 1.5rem; }
+.cinema-arrow-next { right: 1.5rem; }
+
+.cinema-figure {
+  margin: 0;
+  max-width: min(88vw, 980px);
+  max-height: calc(85vh - 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cinema-figure img {
+  max-width: 100%;
+  max-height: calc(75vh - 120px);
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+  animation: kenBurnsSlide 6s ease-out alternate;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes kenBurnsSlide {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.03); }
+}
+
+.cinema-caption {
+  margin-top: 1.2rem;
+  text-align: center;
+  max-width: 680px;
+}
+
+.cinema-caption h4 {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.6rem, 3.8vw, 2.4rem);
+  line-height: 1.2;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.cinema-caption p {
+  margin: 0.4rem 0 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
+.cinema-progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.cinema-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #ff5ca8, #a94cff);
+  box-shadow: 0 0 10px rgba(255, 92, 168, 0.7);
+  transition: width 100ms linear;
+}
+
+/* ==========================================================================
    Mobile Responsiveness & Polish (max-width: 768px)
    ========================================================================== */
 @media (max-width: 768px) {
@@ -1000,5 +1225,57 @@ body {
     width: 36px;
     height: 36px;
     font-size: 1.2rem;
+  }
+
+  /* Cinema Mode Responsive */
+  .wall-header-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .cinema-mural-btn {
+    padding: 7px 14px;
+    font-size: 0.8rem;
+  }
+
+  .cinema-topbar {
+    padding: 0.8rem 1rem;
+    gap: 8px;
+  }
+
+  .cinema-controls {
+    gap: 0.4rem;
+  }
+
+  .cinema-ctrl-btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.76rem;
+  }
+
+  .cinema-stage {
+    padding: 0.5rem 1rem;
+  }
+
+  .cinema-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+  }
+
+  .cinema-arrow-prev { left: 0.4rem; }
+  .cinema-arrow-next { right: 0.4rem; }
+
+  .cinema-figure img {
+    max-height: calc(70vh - 100px);
+    border-radius: 12px;
+  }
+
+  .cinema-caption h4 {
+    font-size: 1.25rem;
+  }
+
+  .cinema-caption p {
+    font-size: 0.82rem;
   }
 }

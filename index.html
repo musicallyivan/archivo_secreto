@@ -25,6 +25,7 @@
     </script>
 </head>
 <body>
+    <canvas id="ambientCanvas" class="ambient-canvas" aria-hidden="true"></canvas>
     <a href="mural.html" class="announcement-banner" role="status" aria-label="Nuevo mural de fotos" style="text-decoration: none; display: block; cursor: pointer;">
         <div class="announcement-track">
             <span>📸 ¡NUEVO MURAL DE FOTOS! TOCA AQUÍ PARA ENTRAR ✦</span>
@@ -42,10 +43,44 @@
             <p class="eyebrow">Un lugar para volver</p>
             <h2>Dos historias.<br><em>Un archivo.</em></h2>
             <p class="atmosphere-copy">Cartas, recuerdos, música y pequeños detalles guardados con calma.</p>
-            <div class="profile-preview" aria-hidden="true">
-                <div class="preview-card preview-carla"><span>01</span><strong>Carla</strong><small>rosa · cálida · cercana</small></div>
-                <div class="preview-card preview-alina"><span>02</span><strong>Alina</strong><small>azul · rosa · lila</small></div>
+            <div class="profile-preview">
+                <button type="button" class="preview-card preview-carla" data-profile-name="Carla" aria-label="Ver ficha personal de Carla">
+                    <span>01</span>
+                    <strong>Carla</strong>
+                    <small>rosa · cálida · cercana</small>
+                    <span class="preview-badge">Ver ficha ✦</span>
+                </button>
+                <button type="button" class="preview-card preview-alina" data-profile-name="Alina" aria-label="Ver ficha personal de Alina">
+                    <span>02</span>
+                    <strong>Alina</strong>
+                    <small>azul · rosa · lila</small>
+                    <span class="preview-badge">Ver ficha ✦</span>
+                </button>
             </div>
+
+            <div class="login-age-card" aria-label="Tiempo desde la creación de la web">
+                <p class="login-age-badge">✦ Tiempo en línea ✦</p>
+                <div class="login-age-grid">
+                    <div class="login-age-unit">
+                        <strong id="siteAgeDays">0</strong>
+                        <span>días</span>
+                    </div>
+                    <div class="login-age-unit">
+                        <strong id="siteAgeHours">0</strong>
+                        <span>horas</span>
+                    </div>
+                    <div class="login-age-unit">
+                        <strong id="siteAgeMinutes">0</strong>
+                        <span>min</span>
+                    </div>
+                    <div class="login-age-unit">
+                        <strong id="siteAgeSeconds">0</strong>
+                        <span>seg</span>
+                    </div>
+                </div>
+                <p class="login-age-note">Creado el 24 de marzo de 2026</p>
+            </div>
+
             <p class="atmosphere-note">La puerta se abre con una sola clave.</p>
         </aside>
         <section class="login-card" aria-labelledby="loginTitle">
@@ -70,6 +105,10 @@
 
                 <button type="submit" id="submitButton">Entrar al archivo</button>
                 <p class="feedback" id="loginFeedback" aria-live="polite"></p>
+
+                <div class="login-hints-trigger-wrap">
+                    <button type="button" class="hints-trigger-button" id="hintsOpenButton">🗝️ ¿Olvidaste la clave o buscas una pista? ✦</button>
+                </div>
 
                 <div class="direct-mural-access" style="margin-top: 18px; padding-top: 16px; border-top: 1px dashed rgba(255,255,255,0.18); text-align: center;">
                     <p style="font-size: 0.88rem; color: #f6dce9; margin: 0 0 10px;">¿Quieres ir directamente a las fotos?</p>
@@ -146,6 +185,7 @@
                     <button class="secondary-button" type="button" id="nextTrackButton">Siguiente pista</button>
                 </div>
                 <a class="secondary-button" href="mural.html" id="muralButton" style="text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center;">📸 Mural de fotos</a>
+                <button class="secondary-button" type="button" id="cinemaHeroButton">🎬 Modo Cine</button>
                 <button class="secondary-button" type="button" id="surpriseButton">Abrir sorpresa</button>
                 <button class="secondary-button" type="button" id="logoutButton">Cerrar acceso</button>
             </div>
@@ -200,9 +240,14 @@
             </section>
 
             <section class="section">
-                <div class="section-heading">
-                    <p class="eyebrow">Galeria</p>
-                    <h3 id="galleryTitle">Recuerdos en imagen</h3>
+                <div class="section-heading section-heading-with-action">
+                    <div>
+                        <p class="eyebrow">Galeria</p>
+                        <h3 id="galleryTitle">Recuerdos en imagen</h3>
+                    </div>
+                    <button class="secondary-button cinema-gallery-btn" type="button" id="cinemaGalleryButton">
+                        🎬 Revivir en Modo Cine
+                    </button>
                 </div>
                 <div class="photo-grid" id="photoGrid"></div>
             </section>
@@ -314,6 +359,132 @@
             <p class="surprise-copy" id="surpriseModalBody"></p>
         </div>
     </dialog>
+
+    <dialog class="profile-info-modal" id="profileInfoModal" aria-label="Ficha personal">
+        <div class="profile-info-card" id="profileInfoCard">
+            <button class="profile-info-close" type="button" id="closeProfileInfoBtn" aria-label="Cerrar ficha">✕</button>
+            <div class="profile-info-header">
+                <span class="profile-info-num" id="infoNumber">01</span>
+                <div class="profile-info-avatar" id="infoAvatar">
+                    <span id="infoAvatarEmoji">💗</span>
+                </div>
+                <h3 class="profile-info-name" id="infoName">Carla</h3>
+                <p class="profile-info-tagline" id="infoTagline">rosa · cálida · cercana</p>
+            </div>
+            <div class="profile-info-body">
+                <p class="profile-info-vibe" id="infoVibe"></p>
+                <div class="profile-info-quote-box">
+                    <blockquote id="infoQuote"></blockquote>
+                </div>
+                <div class="profile-info-grid" id="infoTraits"></div>
+            </div>
+            <div class="profile-info-footer">
+                <a href="#" class="profile-corner-link" id="infoCornerLink">🎂 Abrir rincón de cumpleaños</a>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="hints-modal" id="hintsModal">
+        <button class="lightbox-close" type="button" id="closeHintsModal" aria-label="Cerrar pistas">Cerrar</button>
+        <div class="hints-card">
+            <p class="eyebrow">Pistas de acceso</p>
+            <h4>Las llaves del archivo 🗝️</h4>
+            <p class="hints-copy">
+                Si no recuerdas la contraseña o buscas un rincón específico, aquí tienes las llaves secretas:
+            </p>
+            <div class="hints-list">
+                <div class="hint-item">
+                    <div class="hint-header">
+                        <span class="hint-tag">Principal</span>
+                        <strong>La chispa del archivo</strong>
+                    </div>
+                    <p class="hint-desc">Una palabra de 6 letras que enciende el portal y te deja elegir entre Carla y Alina.</p>
+                    <button type="button" class="hint-action-btn" data-fill="chispa">Usar clave «chispa»</button>
+                </div>
+                <div class="hint-item">
+                    <div class="hint-header">
+                        <span class="hint-tag hint-carla">Carla 🎂</span>
+                        <strong>Cumpleaños de Carla</strong>
+                    </div>
+                    <p class="hint-desc">Rincón interactivo con carta mecanografiada, notas de voz, trivia y polaroids 3D.</p>
+                    <a href="cumple-carla.html" class="hint-action-btn hint-link-btn">Ir al cumple de Carla 💗</a>
+                </div>
+                <div class="hint-item">
+                    <div class="hint-header">
+                        <span class="hint-tag hint-alina">Alina 💙</span>
+                        <strong>Cumpleaños de Alina</strong>
+                    </div>
+                    <p class="hint-desc">Rincón especial con efecto aurora boreal, lila, polaroids y mensaje al futuro.</p>
+                    <a href="cumple-alina.html" class="hint-action-btn hint-link-btn">Ir al cumple de Alina ✨</a>
+                </div>
+                <div class="hint-item">
+                    <div class="hint-header">
+                        <span class="hint-tag">Futuro ⏳</span>
+                        <strong>Cápsula 2027</strong>
+                    </div>
+                    <p class="hint-desc">Un año de cuatro dígitos para mirar recuerdos guardados para dentro de un tiempo.</p>
+                    <button type="button" class="hint-action-btn" data-fill="2027">Usar clave «2027»</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="cinema-modal" id="cinemaModal" aria-label="Modo cine y recuerdos">
+        <div class="cinema-topbar">
+            <div class="cinema-info">
+                <span class="cinema-tag">✦ Modo Cine</span>
+                <span class="cinema-counter" id="cinemaCounter">1 / 1</span>
+            </div>
+            <div class="cinema-controls">
+                <button type="button" class="cinema-ctrl-btn" id="cinemaPlayPauseBtn" aria-label="Pausar o reproducir presentación">⏸ Pausa</button>
+                <button type="button" class="cinema-ctrl-btn" id="cinemaMusicToggleBtn" aria-label="Música de fondo">🎵 Música</button>
+                <button type="button" class="cinema-ctrl-btn cinema-close-btn" id="cinemaCloseBtn" aria-label="Salir de modo cine">✕ Salir</button>
+            </div>
+        </div>
+        <div class="cinema-stage">
+            <button type="button" class="cinema-arrow cinema-arrow-prev" id="cinemaPrevBtn" aria-label="Foto anterior">‹</button>
+            <figure class="cinema-figure" id="cinemaFigure">
+                <img id="cinemaImage" src="" alt="Recuerdo">
+                <figcaption class="cinema-caption">
+                    <h4 id="cinemaTitle">Recuerdo</h4>
+                    <p id="cinemaDescription"></p>
+                </figcaption>
+            </figure>
+            <button type="button" class="cinema-arrow cinema-arrow-next" id="cinemaNextBtn" aria-label="Foto siguiente">›</button>
+        </div>
+        <div class="cinema-progress-track">
+            <div class="cinema-progress-bar" id="cinemaProgressBar"></div>
+        </div>
+    </dialog>
+
+    <aside class="floating-player hidden" id="floatingPlayer" aria-label="Reproductor de música flotante">
+        <div class="player-progress-bar" id="playerProgressBar" role="slider" aria-label="Progreso de la música" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+            <div class="player-progress-fill" id="playerProgressFill"></div>
+        </div>
+        <div class="floating-player-inner">
+            <div class="player-track-info">
+                <div class="player-disc" id="playerDisc" aria-hidden="true">
+                    <span>🎵</span>
+                </div>
+                <div class="player-details">
+                    <strong class="player-track-title" id="playerTrackTitle">Pista musical</strong>
+                    <span class="player-track-time" id="playerTrackTime">0:00 / 0:00</span>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button type="button" class="player-btn" id="playerPrevBtn" aria-label="Pista anterior" title="Pista anterior">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                </button>
+                <button type="button" class="player-btn player-btn-main" id="playerPlayBtn" aria-label="Reproducir o pausar" title="Reproducir/Pausar">
+                    <svg id="playerPlayIcon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <svg id="playerPauseIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+                <button type="button" class="player-btn" id="playerNextBtn" aria-label="Siguiente pista" title="Siguiente pista">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </aside>
 
     <audio id="backgroundAudio" preload="none"></audio>
 

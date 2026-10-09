@@ -59,6 +59,13 @@
       this.audioCtx = null;
       this.capturedSquare = null;
 
+      // Estado de Modo Cine
+      this.cinemaIndex = 0;
+      this.cinemaPlaying = true;
+      this.cinemaProgressRaf = null;
+      this.cinemaDuration = 5500;
+      this.currentLightboxPhoto = null;
+
       this.initElements();
       this.initIndexedDB().then(() => {
         this.loadLocalPhotos();
@@ -241,6 +248,22 @@
       this.lightboxCaption = document.getElementById('lightboxCaption');
       this.lightboxMeta = document.getElementById('lightboxMeta');
       this.lightboxDownload = document.getElementById('lightboxDownload');
+      this.lightboxCinemaBtn = document.getElementById('lightboxCinemaBtn');
+
+      // Cinema Modal
+      this.cinemaModal = document.getElementById('muralCinemaModal');
+      this.openCinemaBtn = document.getElementById('openCinemaBtn');
+      this.cinemaCloseBtn = document.getElementById('muralCinemaCloseBtn');
+      this.cinemaPlayPauseBtn = document.getElementById('muralCinemaPlayPauseBtn');
+      this.cinemaDownloadBtn = document.getElementById('muralCinemaDownloadBtn');
+      this.cinemaPrevBtn = document.getElementById('muralCinemaPrevBtn');
+      this.cinemaNextBtn = document.getElementById('muralCinemaNextBtn');
+      this.cinemaStage = document.getElementById('muralCinemaStage');
+      this.cinemaImg = document.getElementById('muralCinemaImage');
+      this.cinemaCaption = document.getElementById('muralCinemaCaption');
+      this.cinemaMeta = document.getElementById('muralCinemaMeta');
+      this.cinemaCounter = document.getElementById('muralCinemaCounter');
+      this.cinemaProgressBar = document.getElementById('muralCinemaProgressBar');
 
       // Toast
       this.toast = document.getElementById('muralToast');
@@ -309,6 +332,88 @@
           if (e.target === this.lightbox) this.closeLightbox();
         });
       }
+
+      // Eventos de Modo Cine
+      if (this.openCinemaBtn) {
+        this.openCinemaBtn.addEventListener('click', () => this.openCinema(0));
+      }
+      if (this.cinemaCloseBtn) {
+        this.cinemaCloseBtn.addEventListener('click', () => this.closeCinema());
+      }
+      if (this.cinemaPlayPauseBtn) {
+        this.cinemaPlayPauseBtn.addEventListener('click', () => this.toggleCinemaPlay());
+      }
+      if (this.cinemaDownloadBtn) {
+        this.cinemaDownloadBtn.addEventListener('click', () => this.downloadCurrentCinemaPhoto());
+      }
+      if (this.cinemaPrevBtn) {
+        this.cinemaPrevBtn.addEventListener('click', () => this.prevCinemaSlide());
+      }
+      if (this.cinemaNextBtn) {
+        this.cinemaNextBtn.addEventListener('click', () => this.nextCinemaSlide());
+      }
+
+      if (this.lightboxCinemaBtn) {
+        this.lightboxCinemaBtn.addEventListener('click', () => {
+          const currentPhoto = this.currentLightboxPhoto;
+          this.closeLightbox();
+          const photos = this.getActivePhotos();
+          const idx = photos.findIndex(p => p.id === currentPhoto?.id);
+          this.openCinema(idx >= 0 ? idx : 0);
+        });
+      }
+
+      if (this.cinemaModal) {
+        this.cinemaModal.addEventListener('click', (e) => {
+          if (e.target === this.cinemaModal) this.closeCinema();
+        });
+        this.cinemaModal.addEventListener('close', () => {
+          this.stopCinemaAutoplay();
+        });
+      }
+
+      // Soporte para gestos táctiles (Swipe)
+      let touchStartX = 0;
+      let touchStartY = 0;
+      if (this.cinemaStage) {
+        this.cinemaStage.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches[0]) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        this.cinemaStage.addEventListener('touchend', (e) => {
+          if (e.changedTouches && e.changedTouches[0]) {
+            const diffX = e.changedTouches[0].clientX - touchStartX;
+            const diffY = e.changedTouches[0].clientY - touchStartY;
+            if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+              if (diffX < 0) {
+                this.nextCinemaSlide();
+              } else {
+                this.prevCinemaSlide();
+              }
+            }
+          }
+        }, { passive: true });
+      }
+
+      // Atajos de teclado en modo cine
+      window.addEventListener('keydown', (e) => {
+        if (!this.cinemaModal || !this.cinemaModal.open) return;
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          this.nextCinemaSlide();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          this.prevCinemaSlide();
+        } else if (e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          this.toggleCinemaPlay();
+        } else if (e.key === 'Escape') {
+          this.closeCinema();
+        }
+      });
     }
 
     // ========================================================================
@@ -691,6 +796,7 @@
           <div class="polaroid-tape"></div>
           <div class="mural-item-toolbar">
             <button type="button" class="toolbar-btn view-btn" title="Ver grande">🔍</button>
+            <button type="button" class="toolbar-btn cinema-item-btn" title="Modo Cine desde esta foto">🎬</button>
             <button type="button" class="toolbar-btn download-btn" title="Descargar">💾</button>
             <button type="button" class="toolbar-btn delete-btn" title="Eliminar del mural">🗑️</button>
           </div>
@@ -707,6 +813,11 @@
 
         // Eventos de los botones de cada polaroid
         item.querySelector('.view-btn').addEventListener('click', () => this.openLightbox(photo));
+        item.querySelector('.cinema-item-btn').addEventListener('click', () => {
+          const photos = this.getActivePhotos();
+          const photoIdx = photos.findIndex(p => p.id === photo.id);
+          this.openCinema(photoIdx >= 0 ? photoIdx : 0);
+        });
         item.querySelector('.download-btn').addEventListener('click', () => this.downloadPhoto(photo));
         item.querySelector('.delete-btn').addEventListener('click', () => this.confirmDelete(photo));
 
@@ -753,6 +864,7 @@
     // ========================================================================
     openLightbox(photo) {
       if (!this.lightbox) return;
+      this.currentLightboxPhoto = photo;
       this.lightboxImg.src = photo.image_data;
       this.lightboxCaption.textContent = photo.caption || 'Recuerdo especial';
       this.lightboxMeta.textContent = `Foto de ${photo.author} · ${new Date(photo.created_at).toLocaleDateString('es-ES')}`;
@@ -773,6 +885,171 @@
       this.toast.classList.add('show');
       clearTimeout(this.toastTimeout);
       this.toastTimeout = setTimeout(() => this.toast.classList.remove('show'), 3400);
+    }
+
+    getActivePhotos() {
+      if (this.filterWallAuthor === 'todos') {
+        return this.photos;
+      }
+      return this.photos.filter(p => (p.author || '').toLowerCase() === this.filterWallAuthor.toLowerCase());
+    }
+
+    // ========================================================================
+    // MODO CINE / PRESENTACIÓN A PANTALLA COMPLETA
+    // ========================================================================
+    openCinema(startIndex = 0) {
+      const photos = this.getActivePhotos();
+      if (!photos || photos.length === 0) {
+        this.showToast('No hay fotos en el mural para reproducir en Modo Cine aún');
+        return;
+      }
+
+      this.cinemaIndex = (startIndex >= 0 && startIndex < photos.length) ? startIndex : 0;
+      this.cinemaPlaying = true;
+      if (this.cinemaPlayPauseBtn) {
+        this.cinemaPlayPauseBtn.innerHTML = '⏸ Pausa';
+      }
+
+      if (this.cinemaModal) {
+        if (typeof this.cinemaModal.showModal === 'function') {
+          if (!this.cinemaModal.open) this.cinemaModal.showModal();
+        } else {
+          this.cinemaModal.setAttribute('open', '');
+        }
+      }
+
+      this.updateCinemaSlide();
+      this.startCinemaAutoplay();
+    }
+
+    closeCinema() {
+      this.stopCinemaAutoplay();
+      if (this.cinemaModal) {
+        if (typeof this.cinemaModal.close === 'function') {
+          if (this.cinemaModal.open) this.cinemaModal.close();
+        } else {
+          this.cinemaModal.removeAttribute('open');
+        }
+      }
+    }
+
+    updateCinemaSlide(restartAnim = true) {
+      const photos = this.getActivePhotos();
+      if (!photos || photos.length === 0) return;
+
+      const photo = photos[this.cinemaIndex];
+      if (!photo) return;
+
+      if (this.cinemaImg) {
+        if (restartAnim) {
+          this.cinemaImg.style.animation = 'none';
+          void this.cinemaImg.offsetWidth;
+          this.cinemaImg.style.animation = 'kenBurnsSlide 6s ease-out alternate';
+        }
+        this.cinemaImg.src = photo.image_data;
+        this.cinemaImg.alt = photo.caption || 'Recuerdo del mural';
+      }
+
+      if (this.cinemaCaption) {
+        this.cinemaCaption.textContent = photo.caption || 'Recuerdo del mural';
+      }
+
+      if (this.cinemaMeta) {
+        const dateStr = photo.created_at
+          ? new Date(photo.created_at).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })
+          : 'Recuerdo';
+        this.cinemaMeta.textContent = `✦ Por ${photo.author || 'Anónimo'} · ${dateStr} ✦`;
+      }
+
+      if (this.cinemaCounter) {
+        this.cinemaCounter.textContent = `${this.cinemaIndex + 1} / ${photos.length}`;
+      }
+
+      this.resetCinemaProgressBar();
+    }
+
+    nextCinemaSlide() {
+      const photos = this.getActivePhotos();
+      if (!photos || photos.length === 0) return;
+      if (photos.length === 1) {
+        this.resetCinemaProgressBar();
+        return;
+      }
+      this.cinemaIndex = (this.cinemaIndex + 1) % photos.length;
+      this.updateCinemaSlide();
+    }
+
+    prevCinemaSlide() {
+      const photos = this.getActivePhotos();
+      if (!photos || photos.length === 0) return;
+      if (photos.length === 1) {
+        this.resetCinemaProgressBar();
+        return;
+      }
+      this.cinemaIndex = (this.cinemaIndex - 1 + photos.length) % photos.length;
+      this.updateCinemaSlide();
+    }
+
+    toggleCinemaPlay() {
+      this.cinemaPlaying = !this.cinemaPlaying;
+      if (this.cinemaPlayPauseBtn) {
+        this.cinemaPlayPauseBtn.innerHTML = this.cinemaPlaying ? '⏸ Pausa' : '▶ Reanudar';
+      }
+      if (this.cinemaPlaying) {
+        this.startCinemaAutoplay();
+      } else {
+        this.stopCinemaAutoplay();
+      }
+    }
+
+    startCinemaAutoplay() {
+      this.stopCinemaAutoplay();
+      if (!this.cinemaPlaying) return;
+
+      const duration = this.cinemaDuration || 5500;
+      const startTime = performance.now();
+
+      const tick = (now) => {
+        if (!this.cinemaPlaying) return;
+        const elapsed = now - startTime;
+        const progress = Math.min(100, (elapsed / duration) * 100);
+
+        if (this.cinemaProgressBar) {
+          this.cinemaProgressBar.style.width = `${progress}%`;
+        }
+
+        if (elapsed >= duration) {
+          this.nextCinemaSlide();
+        } else {
+          this.cinemaProgressRaf = requestAnimationFrame(tick);
+        }
+      };
+
+      this.cinemaProgressRaf = requestAnimationFrame(tick);
+    }
+
+    stopCinemaAutoplay() {
+      if (this.cinemaProgressRaf) {
+        cancelAnimationFrame(this.cinemaProgressRaf);
+        this.cinemaProgressRaf = null;
+      }
+    }
+
+    resetCinemaProgressBar() {
+      if (this.cinemaProgressBar) {
+        this.cinemaProgressBar.style.width = '0%';
+      }
+      if (this.cinemaPlaying) {
+        this.startCinemaAutoplay();
+      }
+    }
+
+    downloadCurrentCinemaPhoto() {
+      const photos = this.getActivePhotos();
+      const current = photos[this.cinemaIndex];
+      if (current) {
+        this.downloadPhoto(current);
+      }
     }
   }
 

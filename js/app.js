@@ -89,6 +89,92 @@ const rateAgainButton = document.getElementById("rateAgainButton");
 const securitySummary = document.getElementById("securitySummary");
 const securityNextStep = document.getElementById("securityNextStep");
 
+const hintsModal = document.getElementById("hintsModal");
+const hintsOpenButton = document.getElementById("hintsOpenButton");
+const closeHintsModal = document.getElementById("closeHintsModal");
+
+const siteAgeCounter = document.getElementById("siteAgeCounter");
+const siteAgeDays = document.getElementById("siteAgeDays");
+const siteAgeHours = document.getElementById("siteAgeHours");
+const siteAgeMinutes = document.getElementById("siteAgeMinutes");
+const siteAgeSeconds = document.getElementById("siteAgeSeconds");
+const SITE_CREATION_DATE = new Date("2026-03-24T22:53:09+01:00").getTime();
+
+const floatingPlayer = document.getElementById("floatingPlayer");
+const playerProgressBar = document.getElementById("playerProgressBar");
+const playerProgressFill = document.getElementById("playerProgressFill");
+const playerTrackTitle = document.getElementById("playerTrackTitle");
+const playerTrackTime = document.getElementById("playerTrackTime");
+const playerDisc = document.getElementById("playerDisc");
+const playerPrevBtn = document.getElementById("playerPrevBtn");
+const playerPlayBtn = document.getElementById("playerPlayBtn");
+const playerNextBtn = document.getElementById("playerNextBtn");
+const playerPlayIcon = document.getElementById("playerPlayIcon");
+const playerPauseIcon = document.getElementById("playerPauseIcon");
+
+const cinemaModal = document.getElementById("cinemaModal");
+const cinemaHeroButton = document.getElementById("cinemaHeroButton");
+const cinemaGalleryButton = document.getElementById("cinemaGalleryButton");
+const cinemaCloseBtn = document.getElementById("cinemaCloseBtn");
+const cinemaPrevBtn = document.getElementById("cinemaPrevBtn");
+const cinemaNextBtn = document.getElementById("cinemaNextBtn");
+const cinemaPlayPauseBtn = document.getElementById("cinemaPlayPauseBtn");
+const cinemaMusicToggleBtn = document.getElementById("cinemaMusicToggleBtn");
+const cinemaImage = document.getElementById("cinemaImage");
+const cinemaTitle = document.getElementById("cinemaTitle");
+const cinemaDescription = document.getElementById("cinemaDescription");
+const cinemaCounter = document.getElementById("cinemaCounter");
+const cinemaProgressBar = document.getElementById("cinemaProgressBar");
+
+const PROFILES_INFO = {
+    Carla: {
+        number: "01",
+        name: "Carla",
+        emoji: "💗",
+        themeClass: "info-carla",
+        tagline: "rosa · cálida · cercana",
+        vibe: "Energía incondicional, risas sin filtro y una chispa que lo hace todo más fácil.",
+        quote: "«Eres esa persona con la que sé que siempre puedo contar, para lo bueno, lo malo y lo completamente absurdo. No cambiaría eso por nada.»",
+        traits: [
+            { icon: "✨", label: "Concepto", value: "La Chispa pura" },
+            { icon: "🎂", label: "Cumpleaños", value: "12 de Enero" },
+            { icon: "💌", label: "Cartas", value: "2 cartas privadas" },
+            { icon: "🎵", label: "Música", value: "Blessings & Raindance" }
+        ],
+        cornerUrl: "cumple-carla.html",
+        cornerLabel: "🎂 Abrir Rincón de Cumple de Carla 💗"
+    },
+    Alina: {
+        number: "02",
+        name: "Alina",
+        emoji: "💙",
+        themeClass: "info-alina",
+        tagline: "azul · rosa · lila",
+        vibe: "Serenidad, tono cinematográfico y recuerdos que dejan huella con calma y complicidad.",
+        quote: "«Un rincón hecho con azul, rosa y lila para celebrar tu día y guardar momentos que merecen quedarse para siempre.»",
+        traits: [
+            { icon: "✨", label: "Concepto", value: "Aurora Boreal" },
+            { icon: "🎂", label: "Cumpleaños", value: "10 de Octubre" },
+            { icon: "📸", label: "Recuerdos", value: "Polaroids & Galería" },
+            { icon: "🎵", label: "Música", value: "Tell Me & Relax" }
+        ],
+        cornerUrl: "cumple-alina.html",
+        cornerLabel: "✨ Abrir Rincón de Cumple de Alina 💙"
+    }
+};
+
+const profileInfoModal = document.getElementById("profileInfoModal");
+const profileInfoCard = document.getElementById("profileInfoCard");
+const closeProfileInfoBtn = document.getElementById("closeProfileInfoBtn");
+const infoNumber = document.getElementById("infoNumber");
+const infoAvatarEmoji = document.getElementById("infoAvatarEmoji");
+const infoName = document.getElementById("infoName");
+const infoTagline = document.getElementById("infoTagline");
+const infoVibe = document.getElementById("infoVibe");
+const infoQuote = document.getElementById("infoQuote");
+const infoTraits = document.getElementById("infoTraits");
+const infoCornerLink = document.getElementById("infoCornerLink");
+
 const SESSION_KEY = "archivo-secreto-session";
 const PROFILE_KEY = "archivo-secreto-profile";
 const ACCESS_KEY = "archivo-secreto-access";
@@ -132,7 +218,58 @@ function renderLetters(items) { lettersGrid.innerHTML = items.map((item) => `<ar
 function openLightbox(index) { const photo = getActiveProfile()?.photos?.[index]; if (!photo) return; lightboxImage.src = photo.file; lightboxImage.alt = photo.title; lightbox.showModal(); }
 function closeLightboxModal() { if (lightbox.open) lightbox.close(); }
 function closeSurprise() { if (surpriseModal.open) surpriseModal.close(); }
-function updateMusicUi() { const tracks = getActiveProfile()?.backgroundTracks || []; const activeTrack = tracks[currentTrackIndex]; if (!tracks.length || !activeTrack) { musicStatus.textContent = "Sin pistas"; toggleMusicButton.disabled = true; nextTrackButton.disabled = true; return; } toggleMusicButton.disabled = false; nextTrackButton.disabled = false; musicStatus.textContent = backgroundAudio.paused ? `${activeTrack.title} en pausa` : activeTrack.title; toggleMusicButton.textContent = backgroundAudio.paused ? "Reproducir musica" : "Pausar musica"; renderPlaylist(tracks); }
+function formatAudioTime(seconds) {
+    if (Number.isNaN(seconds) || seconds < 0) return "0:00";
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
+}
+
+function updateFloatingPlayerUi() {
+    const tracks = getActiveProfile()?.backgroundTracks || [];
+    const activeTrack = tracks[currentTrackIndex];
+    const isAppVisible = app && !app.classList.contains("hidden");
+
+    if (!floatingPlayer) return;
+
+    if (!isAppVisible || !tracks.length || !activeTrack) {
+        floatingPlayer.classList.add("hidden");
+        return;
+    }
+
+    floatingPlayer.classList.remove("hidden");
+    if (playerTrackTitle) playerTrackTitle.textContent = activeTrack.title || `Pista ${currentTrackIndex + 1}`;
+    const isPlaying = !backgroundAudio.paused;
+    if (playerDisc) playerDisc.classList.toggle("is-playing", isPlaying);
+    if (playerPlayIcon) playerPlayIcon.classList.toggle("hidden", isPlaying);
+    if (playerPauseIcon) playerPauseIcon.classList.toggle("hidden", !isPlaying);
+}
+
+function updateCinemaMusicBtn() {
+    if (cinemaMusicToggleBtn) {
+        cinemaMusicToggleBtn.textContent = backgroundAudio.paused ? "▶ Música" : "⏸ Música";
+    }
+}
+
+function updateMusicUi() {
+    const tracks = getActiveProfile()?.backgroundTracks || [];
+    const activeTrack = tracks[currentTrackIndex];
+    if (!tracks.length || !activeTrack) {
+        musicStatus.textContent = "Sin pistas";
+        toggleMusicButton.disabled = true;
+        nextTrackButton.disabled = true;
+        updateFloatingPlayerUi();
+        updateCinemaMusicBtn();
+        return;
+    }
+    toggleMusicButton.disabled = false;
+    nextTrackButton.disabled = false;
+    musicStatus.textContent = backgroundAudio.paused ? `${activeTrack.title} en pausa` : activeTrack.title;
+    toggleMusicButton.textContent = backgroundAudio.paused ? "Reproducir musica" : "Pausar musica";
+    renderPlaylist(tracks);
+    updateFloatingPlayerUi();
+    updateCinemaMusicBtn();
+}
 function updateSurpriseStatus() { const profile = getActiveProfile(); const surprises = profile?.surprises || []; surpriseStatus.textContent = surprises.length ? profile?.surpriseLabel || "Lista" : "Sin sorpresas"; surpriseButton.disabled = !surprises.length; }
 function showRandomSurprise() { const surprises = getActiveProfile()?.surprises || []; if (!surprises.length) return; let nextIndex = Math.floor(Math.random() * surprises.length); if (surprises.length > 1 && nextIndex === lastSurpriseIndex) nextIndex = (nextIndex + 1) % surprises.length; lastSurpriseIndex = nextIndex; const surprise = surprises[nextIndex]; surpriseEyebrow.textContent = surprise.eyebrow || "Sorpresa"; surpriseModalTitle.textContent = surprise.title || "Momento sorpresa"; surpriseModalBody.textContent = surprise.body || ""; surpriseStatus.textContent = `Ultima sorpresa #${nextIndex + 1}`; surpriseModal.showModal(); }
 function setTrack(index) { const tracks = getActiveProfile()?.backgroundTracks || []; if (!tracks.length) { updateMusicUi(); return; } currentTrackIndex = (index + tracks.length) % tracks.length; backgroundAudio.src = tracks[currentTrackIndex].file; updateMusicUi(); }
@@ -150,14 +287,317 @@ function loadSavedRating() { const ratingsByProfile = JSON.parse(localStorage.ge
 async function submitRating() { if (!selectedRating) { ratingFeedback.textContent = "Selecciona una puntuacion antes de guardar."; ratingFeedback.dataset.state = "error"; return; } const submittedAt = formatTimestamp(new Date()); submittedAtInput.value = submittedAt; const payload = { profile: activeProfileName, access: activeAccess, rating: selectedRating, message: ratingMessage.value.trim(), submittedAt }; const ratingsByProfile = JSON.parse(localStorage.getItem(RATING_KEY) || "{}"); ratingsByProfile[`${activeAccess}:${activeProfileName}`] = payload; localStorage.setItem(RATING_KEY, JSON.stringify(ratingsByProfile)); saveRatingButton.disabled = true; ratingFeedback.textContent = "Enviando valoracion..."; try { const formData = new FormData(ratingForm); const response = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(formData).toString() }); if (!response.ok) throw new Error("netlify-submit-failed"); ratingFeedback.textContent = "Valoracion enviada y guardada en este dispositivo."; ratingFeedback.dataset.state = "success"; showThankYouCard(selectedRating, payload.message, submittedAt); } catch { ratingFeedback.textContent = "No se pudo enviar a Netlify, pero la valoracion se guardo en este dispositivo."; ratingFeedback.dataset.state = "error"; } finally { saveRatingButton.disabled = false; } }
 function clearRating() { selectedRating = 0; submittedAtInput.value = ""; ratingMessage.value = ""; const ratingsByProfile = JSON.parse(localStorage.getItem(RATING_KEY) || "{}"); delete ratingsByProfile[`${activeAccess}:${activeProfileName}`]; localStorage.setItem(RATING_KEY, JSON.stringify(ratingsByProfile)); updateRatingUi(); ratingFeedback.textContent = "Valoracion borrada."; ratingFeedback.dataset.state = "success"; showRatingForm(); }
 function showProfileStep() { document.body.dataset.screen = "login"; loginForm.classList.add("hidden"); profileStep.classList.remove("hidden"); setFeedback(""); }
-function showPasswordStep() { document.body.dataset.screen = "login"; profileStep.classList.add("hidden"); loginForm.classList.remove("hidden"); introScreen.classList.add("hidden"); app.classList.add("hidden"); }
-function showIntroScreen() { document.body.dataset.screen = "intro"; loginShell.classList.add("hidden"); introScreen.classList.remove("hidden"); app.classList.add("hidden"); }
-function showApp() { document.body.dataset.screen = "app"; loginShell.classList.add("hidden"); introScreen.classList.add("hidden"); app.classList.remove("hidden"); }
+function showPasswordStep() { document.body.dataset.screen = "login"; profileStep.classList.add("hidden"); loginForm.classList.remove("hidden"); introScreen.classList.add("hidden"); app.classList.add("hidden"); floatingPlayer?.classList.add("hidden"); }
+function showIntroScreen() { document.body.dataset.screen = "intro"; loginShell.classList.add("hidden"); introScreen.classList.remove("hidden"); app.classList.add("hidden"); floatingPlayer?.classList.add("hidden"); }
+function showApp() { document.body.dataset.screen = "app"; loginShell.classList.add("hidden"); introScreen.classList.add("hidden"); app.classList.remove("hidden"); updateFloatingPlayerUi(); }
 function applyProfile(profileName) { const profile = content.profiles?.[profileName]; if (!profile) return; activeProfileName = profileName; currentTrackIndex = 0; document.body.dataset.profile = profile.theme || ""; introEyebrow.textContent = profile.introEyebrow || `Entrada de ${profileName}`; introTitle.textContent = profile.introTitle || "Una portada hecha para ti."; introDescription.textContent = profile.introDescription || "Tu version arranca con su propia introduccion."; enterProfileButton.textContent = profile.introButton || "Entrar a mi archivo"; heroEyebrow.textContent = profile.eyebrow; updateTimeGreeting(profile); heroTitle.textContent = profile.heroTitle; heroDescription.textContent = profile.heroDescription; statusValue.textContent = profile.statusLabel; profileValue.textContent = profileName; libraryTitle.textContent = profile.libraryTitle; galleryTitle.textContent = profile.galleryTitle; lettersTitle.textContent = profile.lettersTitle || "Mensajes solo para ti"; timelineTitle.textContent = profile.timelineTitle || "Recorrido de recuerdos"; capsuleTitle.textContent = profile.capsuleTitle || "Mensajes para otro momento"; playlistTitle.textContent = profile.playlistTitle || "Las pistas de esta version"; dailyMemoryTitle.textContent = profile.dailyMemoryTitle || "Hoy el archivo ha elegido esto"; countdownTitle.textContent = profile.countdownTitle || "Un momento marcado en el archivo"; notesTitle.textContent = profile.notesTitle; ratingTitle.textContent = profile.ratingTitle; securitySummary.textContent = profile.securitySummary || "La proteccion actual es solo de navegador."; securityNextStep.textContent = profile.securityNextStep || "Para privacidad real necesitas backend o una capa privada del hosting."; profileInput.value = profileName; renderFeatured(profile.featured || []); renderPhotos(profile.photos || []); renderLetters(profile.letters || []); renderTimeline(profile.timeline || []); renderCapsule(profile.capsule || []); renderDailyMemory(profile); renderPlaylist(profile.backgroundTracks || []); renderNotes(profile.notes || []); const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}"); visitCount.textContent = String(visitsByProfile[`${activeAccess}:${profileName}`] || 0); lastSurpriseIndex = -1; setTrack(0); updateSurpriseStatus(); startCountdown(); loadSavedRating(); }
-function unlockApp() { showApp(); localStorage.setItem(SESSION_KEY, "open"); localStorage.setItem(PROFILE_KEY, activeProfileName); localStorage.setItem(ACCESS_KEY, activeAccess); registerVisit(); playBackgroundMusic(); }
-function lockApp() { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(PROFILE_KEY); localStorage.removeItem(ACCESS_KEY); loginShell.classList.remove("hidden"); app.classList.add("hidden"); passwordInput.value = ""; setFeedback(""); pauseBackgroundMusic(); stopCountdown(); showPasswordStep(); activeProfileName = ""; activeAccess = "legacy"; document.body.removeAttribute("data-profile"); }
+function unlockApp() { showApp(); localStorage.setItem(SESSION_KEY, "open"); localStorage.setItem(PROFILE_KEY, activeProfileName); localStorage.setItem(ACCESS_KEY, activeAccess); registerVisit(); playBackgroundMusic(); updateFloatingPlayerUi(); }
+function lockApp() { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(PROFILE_KEY); localStorage.removeItem(ACCESS_KEY); loginShell.classList.remove("hidden"); app.classList.add("hidden"); floatingPlayer?.classList.add("hidden"); closeCinemaMode(); passwordInput.value = ""; setFeedback(""); pauseBackgroundMusic(); stopCountdown(); showPasswordStep(); activeProfileName = ""; activeAccess = "legacy"; document.body.removeAttribute("data-profile"); }
 function handleLogin(password) { if (isLocked()) { updateLoginAvailability(); return; } const matchedAccess = Object.keys(PASSWORDS).find((key) => PASSWORDS[key] && password === PASSWORDS[key]); if (matchedAccess) { activeAccess = matchedAccess; localStorage.removeItem(ATTEMPTS_KEY); localStorage.removeItem(LOCK_KEY); setFeedback(matchedAccess === "future" ? "Acceso 2027 desbloqueado. Ahora elige tu nombre." : "Contraseña correcta. Ahora elige tu nombre.", "success"); showProfileStep(); return; } const attempts = Number(localStorage.getItem(ATTEMPTS_KEY) || 0) + 1; localStorage.setItem(ATTEMPTS_KEY, String(attempts)); if (attempts >= MAX_ATTEMPTS) { const lockUntil = Date.now() + LOCK_MINUTES * 60 * 1000; localStorage.setItem(LOCK_KEY, String(lockUntil)); localStorage.removeItem(ATTEMPTS_KEY); updateLoginAvailability(); return; } setFeedback(`Contraseña incorrecta. Quedan ${MAX_ATTEMPTS - attempts} intento(s).`, "error"); }
-function bootstrap() { updateLoginAvailability(); showPasswordStep(); const savedProfile = localStorage.getItem(PROFILE_KEY); const savedAccess = localStorage.getItem(ACCESS_KEY) || "legacy"; if (localStorage.getItem(SESSION_KEY) === "open" && savedProfile && content.profiles?.[savedProfile] && PASSWORDS[savedAccess]) { activeAccess = savedAccess; applyProfile(savedProfile); unlockApp(); } }
+
+/* ==========================================================================
+   AMBIENT IMMERSIVE CANVAS
+   ========================================================================== */
+function initAmbientCanvas() {
+    const canvas = document.getElementById("ambientCanvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let particles = [];
+    let animationId = null;
+    const mouse = { x: -1000, y: -1000, active: false };
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    function createParticle() {
+        return {
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 1.8 + 0.8,
+            baseAlpha: Math.random() * 0.45 + 0.25,
+            twinkleSpeed: Math.random() * 0.02 + 0.01,
+            twinkleOffset: Math.random() * Math.PI * 2,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.2 - 0.15
+        };
+    }
+
+    function initParticles() {
+        const count = Math.min(45, Math.max(20, Math.floor((width * height) / 30000)));
+        particles = [];
+        for (let i = 0; i < count; i++) {
+            particles.push(createParticle());
+        }
+    }
+
+    function getPalette() {
+        const profile = document.body.dataset.profile;
+        if (profile === "carla") {
+            return ["255, 140, 190", "255, 185, 215", "255, 215, 235", "255, 240, 248"];
+        }
+        if (profile === "alina") {
+            return ["126, 213, 255", "165, 195, 255", "190, 225, 255", "240, 248, 255"];
+        }
+        return ["230, 165, 115", "245, 198, 145", "255, 230, 190", "255, 255, 255"];
+    }
+
+    let tick = 0;
+    function render() {
+        ctx.clearRect(0, 0, width, height);
+        tick += 1;
+        const palette = getPalette();
+
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < -10) p.x = width + 10;
+            if (p.x > width + 10) p.x = -10;
+            if (p.y < -10) p.y = height + 10;
+            if (p.y > height + 10) p.y = -10;
+
+            const twinkle = Math.sin(tick * p.twinkleSpeed + p.twinkleOffset);
+            let alpha = p.baseAlpha + twinkle * 0.2;
+
+            if (mouse.active) {
+                const dx = mouse.x - p.x;
+                const dy = mouse.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    alpha = Math.min(0.95, alpha + (1 - dist / 120) * 0.5);
+                }
+            }
+
+            const color = palette[i % palette.length];
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${color}, ${Math.max(0.08, alpha)})`;
+            ctx.shadowBlur = p.radius * 3.5;
+            ctx.shadowColor = `rgba(${color}, ${alpha * 0.8})`;
+            ctx.fill();
+        }
+
+        animationId = requestAnimationFrame(render);
+    }
+
+    resize();
+    initParticles();
+    render();
+
+    window.addEventListener("resize", () => {
+        resize();
+        initParticles();
+    });
+
+    const setPointer = (e) => {
+        mouse.x = e.clientX || (e.touches && e.touches[0]?.clientX) || -1000;
+        mouse.y = e.clientY || (e.touches && e.touches[0]?.clientY) || -1000;
+        mouse.active = true;
+    };
+    window.addEventListener("pointermove", setPointer, { passive: true });
+    window.addEventListener("pointerleave", () => { mouse.active = false; });
+    window.addEventListener("touchstart", setPointer, { passive: true });
+    window.addEventListener("touchmove", setPointer, { passive: true });
+    window.addEventListener("touchend", () => { mouse.active = false; });
+
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+            if (animationId) cancelAnimationFrame(animationId);
+            animationId = null;
+        } else if (!animationId) {
+            render();
+        }
+    });
+}
+
+/* ==========================================================================
+   SITE AGE / HISTORIA VIVA
+   ========================================================================== */
+function updateSiteAgeUi() {
+    const diff = Math.max(0, Date.now() - SITE_CREATION_DATE);
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    if (siteAgeCounter) siteAgeCounter.textContent = `${days} días y ${hours}h`;
+    if (siteAgeDays) siteAgeDays.textContent = String(days);
+    if (siteAgeHours) siteAgeHours.textContent = String(hours);
+    if (siteAgeMinutes) siteAgeMinutes.textContent = String(minutes);
+    if (siteAgeSeconds) siteAgeSeconds.textContent = String(seconds);
+}
+
+/* ==========================================================================
+   CINEMA MODE / REVIVIR RECUERDOS
+   ========================================================================== */
+let cinemaIndex = 0;
+let cinemaPlaying = true;
+let cinemaSlideTimer = null;
+let cinemaProgressTimer = null;
+const CINEMA_DURATION = 5000;
+let cinemaStartTime = 0;
+
+function getCinemaPhotos() {
+    return getActiveProfile()?.photos || [];
+}
+
+function updateCinemaSlide() {
+    const photos = getCinemaPhotos();
+    if (!photos.length) return;
+    const photo = photos[cinemaIndex];
+
+    if (cinemaImage) {
+        cinemaImage.src = photo.file;
+        cinemaImage.alt = photo.title || "Recuerdo";
+        cinemaImage.style.animation = "none";
+        void cinemaImage.offsetWidth;
+        cinemaImage.style.animation = "";
+    }
+    if (cinemaTitle) cinemaTitle.textContent = photo.title || "Recuerdo";
+    if (cinemaDescription) cinemaDescription.textContent = photo.description || "";
+    if (cinemaCounter) cinemaCounter.textContent = `${cinemaIndex + 1} / ${photos.length}`;
+
+    resetCinemaProgress();
+}
+
+function resetCinemaProgress() {
+    if (cinemaProgressTimer) clearInterval(cinemaProgressTimer);
+    if (cinemaSlideTimer) clearTimeout(cinemaSlideTimer);
+    if (cinemaProgressBar) cinemaProgressBar.style.width = "0%";
+
+    if (!cinemaPlaying) return;
+
+    cinemaStartTime = Date.now();
+    cinemaProgressTimer = setInterval(() => {
+        const elapsed = Date.now() - cinemaStartTime;
+        const pct = Math.min(100, (elapsed / CINEMA_DURATION) * 100);
+        if (cinemaProgressBar) cinemaProgressBar.style.width = `${pct}%`;
+    }, 50);
+
+    cinemaSlideTimer = setTimeout(() => {
+        nextCinemaSlide();
+    }, CINEMA_DURATION);
+}
+
+function nextCinemaSlide() {
+    const photos = getCinemaPhotos();
+    if (!photos.length) return;
+    cinemaIndex = (cinemaIndex + 1) % photos.length;
+    updateCinemaSlide();
+}
+
+function prevCinemaSlide() {
+    const photos = getCinemaPhotos();
+    if (!photos.length) return;
+    cinemaIndex = (cinemaIndex - 1 + photos.length) % photos.length;
+    updateCinemaSlide();
+}
+
+function toggleCinemaPlay() {
+    cinemaPlaying = !cinemaPlaying;
+    if (cinemaPlayPauseBtn) {
+        cinemaPlayPauseBtn.textContent = cinemaPlaying ? "⏸ Pausa" : "▶ Reanudar";
+    }
+    if (cinemaPlaying) {
+        resetCinemaProgress();
+    } else {
+        if (cinemaProgressTimer) clearInterval(cinemaProgressTimer);
+        if (cinemaSlideTimer) clearTimeout(cinemaSlideTimer);
+    }
+}
+
+function openCinemaMode() {
+    const photos = getCinemaPhotos();
+    if (!photos.length) {
+        alert("Todavía no hay fotos en este perfil para el Modo Cine.");
+        return;
+    }
+    cinemaIndex = 0;
+    cinemaPlaying = true;
+    if (cinemaPlayPauseBtn) cinemaPlayPauseBtn.textContent = "⏸ Pausa";
+    updateCinemaSlide();
+    if (cinemaModal) cinemaModal.showModal();
+
+    if (backgroundAudio.paused) {
+        playBackgroundMusic().catch(() => {});
+    }
+    updateCinemaMusicBtn();
+}
+
+function closeCinemaMode() {
+    if (cinemaProgressTimer) clearInterval(cinemaProgressTimer);
+    if (cinemaSlideTimer) clearTimeout(cinemaSlideTimer);
+    if (cinemaModal && cinemaModal.open) cinemaModal.close();
+}
+
+function openProfileInfo(profileKey) {
+    const data = PROFILES_INFO[profileKey];
+    if (!data || !profileInfoModal) return;
+
+    if (profileInfoCard) profileInfoCard.className = `profile-info-card ${data.themeClass}`;
+    if (infoNumber) infoNumber.textContent = data.number;
+    if (infoAvatarEmoji) infoAvatarEmoji.textContent = data.emoji;
+    if (infoName) infoName.textContent = data.name;
+    if (infoTagline) infoTagline.textContent = data.tagline;
+    if (infoVibe) infoVibe.textContent = data.vibe;
+    if (infoQuote) infoQuote.textContent = data.quote;
+    if (infoCornerLink) {
+        infoCornerLink.href = data.cornerUrl;
+        infoCornerLink.textContent = data.cornerLabel;
+    }
+    if (infoTraits) {
+        infoTraits.innerHTML = data.traits.map((t) => `
+            <div class="profile-info-chip">
+                <span class="profile-info-chip-icon">${t.icon}</span>
+                <div class="profile-info-chip-texts">
+                    <small>${escapeHtml(t.label)}</small>
+                    <strong>${escapeHtml(t.value)}</strong>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    if (profileInfoCard) {
+        profileInfoCard.style.animation = "none";
+        void profileInfoCard.offsetWidth;
+        profileInfoCard.style.animation = "";
+    }
+
+    profileInfoModal.showModal();
+}
+
+function closeProfileInfo() {
+    if (profileInfoModal && profileInfoModal.open) {
+        profileInfoModal.close();
+    }
+}
+
+function bootstrap() {
+    initAmbientCanvas();
+    updateSiteAgeUi();
+    setInterval(updateSiteAgeUi, 1000);
+    updateLoginAvailability();
+    showPasswordStep();
+    const savedProfile = localStorage.getItem(PROFILE_KEY);
+    const savedAccess = localStorage.getItem(ACCESS_KEY) || "legacy";
+    if (localStorage.getItem(SESSION_KEY) === "open" && savedProfile && content.profiles?.[savedProfile] && PASSWORDS[savedAccess]) {
+        activeAccess = savedAccess;
+        applyProfile(savedProfile);
+        unlockApp();
+    }
+}
+
+/* ==========================================================================
+   EVENT LISTENERS
+   ========================================================================== */
 loginForm.addEventListener("submit", (event) => { event.preventDefault(); handleLogin(passwordInput.value.trim()); });
 logoutButton.addEventListener("click", lockApp);
 backToPasswordButton.addEventListener("click", showPasswordStep);
@@ -173,7 +613,107 @@ toggleMusicButton.addEventListener("click", () => backgroundAudio.paused ? playB
 nextTrackButton.addEventListener("click", async () => { setTrack(currentTrackIndex + 1); await playBackgroundMusic(); });
 surpriseButton.addEventListener("click", showRandomSurprise);
 backgroundAudio.addEventListener("ended", async () => { setTrack(currentTrackIndex + 1); await playBackgroundMusic(); });
-window.addEventListener("keydown", (event) => { if (event.key === "Escape") { closeLightboxModal(); closeSurprise(); } });
+
+/* Profile Info modal events */
+document.querySelectorAll(".preview-card[data-profile-name]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        openProfileInfo(btn.dataset.profileName);
+    });
+});
+closeProfileInfoBtn?.addEventListener("click", closeProfileInfo);
+profileInfoModal?.addEventListener("click", (event) => {
+    if (event.target === profileInfoModal) closeProfileInfo();
+});
+
+/* Hints modal events */
+hintsOpenButton?.addEventListener("click", () => hintsModal?.showModal());
+closeHintsModal?.addEventListener("click", () => hintsModal?.close());
+hintsModal?.addEventListener("click", (event) => { if (event.target === hintsModal) hintsModal.close(); });
+hintsModal?.querySelectorAll("[data-fill]").forEach((button) => {
+    button.addEventListener("click", () => {
+        const key = button.getAttribute("data-fill");
+        if (!key) return;
+        passwordInput.value = key;
+        hintsModal.close();
+        handleLogin(key);
+    });
+});
+
+/* Cinema mode events */
+cinemaHeroButton?.addEventListener("click", openCinemaMode);
+cinemaGalleryButton?.addEventListener("click", openCinemaMode);
+cinemaCloseBtn?.addEventListener("click", closeCinemaMode);
+cinemaPrevBtn?.addEventListener("click", prevCinemaSlide);
+cinemaNextBtn?.addEventListener("click", nextCinemaSlide);
+cinemaPlayPauseBtn?.addEventListener("click", toggleCinemaPlay);
+cinemaMusicToggleBtn?.addEventListener("click", () => {
+    backgroundAudio.paused ? playBackgroundMusic() : pauseBackgroundMusic();
+    updateCinemaMusicBtn();
+});
+cinemaModal?.addEventListener("click", (event) => { if (event.target === cinemaModal) closeCinemaMode(); });
+
+let touchCinemaStartX = 0;
+cinemaModal?.addEventListener("touchstart", (e) => {
+    touchCinemaStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+cinemaModal?.addEventListener("touchend", (e) => {
+    const touchCinemaEndX = e.changedTouches[0].screenX;
+    if (touchCinemaEndX < touchCinemaStartX - 50) nextCinemaSlide();
+    if (touchCinemaEndX > touchCinemaStartX + 50) prevCinemaSlide();
+}, { passive: true });
+
+/* Floating Player events */
+backgroundAudio.addEventListener("timeupdate", () => {
+    if (!backgroundAudio.duration) return;
+    const progress = (backgroundAudio.currentTime / backgroundAudio.duration) * 100;
+    if (playerProgressFill) playerProgressFill.style.width = `${progress}%`;
+    if (playerProgressBar) playerProgressBar.setAttribute("aria-valuenow", Math.round(progress));
+    if (playerTrackTime) {
+        playerTrackTime.textContent = `${formatAudioTime(backgroundAudio.currentTime)} / ${formatAudioTime(backgroundAudio.duration)}`;
+    }
+});
+backgroundAudio.addEventListener("play", updateFloatingPlayerUi);
+backgroundAudio.addEventListener("pause", updateFloatingPlayerUi);
+
+if (playerProgressBar) {
+    playerProgressBar.addEventListener("click", (e) => {
+        if (!backgroundAudio.duration) return;
+        const rect = playerProgressBar.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        backgroundAudio.currentTime = ratio * backgroundAudio.duration;
+    });
+}
+playerPlayBtn?.addEventListener("click", () => {
+    backgroundAudio.paused ? playBackgroundMusic() : pauseBackgroundMusic();
+});
+playerPrevBtn?.addEventListener("click", async () => {
+    setTrack(currentTrackIndex - 1);
+    await playBackgroundMusic();
+});
+playerNextBtn?.addEventListener("click", async () => {
+    setTrack(currentTrackIndex + 1);
+    await playBackgroundMusic();
+});
+
+/* Keyboard shortcuts */
+window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        closeLightboxModal();
+        closeSurprise();
+        closeCinemaMode();
+        closeProfileInfo();
+        if (hintsModal?.open) hintsModal.close();
+    }
+    if (cinemaModal?.open) {
+        if (event.key === "ArrowRight") nextCinemaSlide();
+        if (event.key === "ArrowLeft") prevCinemaSlide();
+        if (event.key === " ") {
+            event.preventDefault();
+            toggleCinemaPlay();
+        }
+    }
+});
+
 ratingStars.addEventListener("click", (event) => { const star = event.target.closest(".star-button"); if (!star) return; selectedRating = Number(star.dataset.value); star.classList.remove("is-burst"); void star.offsetWidth; star.classList.add("is-burst"); updateRatingUi(); ratingFeedback.textContent = ""; ratingFeedback.dataset.state = ""; });
 ratingForm.addEventListener("submit", (event) => { event.preventDefault(); submitRating(); });
 clearRatingButton.addEventListener("click", clearRating);
