@@ -3,6 +3,19 @@ window.ARCHIVO_CONTENT = {
     profiles: {
         Carla: {
             theme: "carla",
+            cardInfo: {
+                photo: "assets/media/CUMPLE_CARLA/RETRATO-1.JPEG",
+                photoPosition: "center 20%",
+                birthDate: "12 de enero",
+                age: "22 años",
+                city: "Madrid",
+                favColor: "Rosa",
+                favColorHex: "#ff8fc7",
+                socials: [
+                    { name: "Instagram", icon: "instagram", url: "https://www.instagram.com/carla12_01", handle: "@carla12_01" },
+                    { name: "TikTok", icon: "tiktok", url: "https://www.tiktok.com/@_carlalopez_03", handle: "@_carlalopez_03" }
+                ]
+            },
             eyebrow: "Archivo de Carla",
             introEyebrow: "Entrada de Carla",
             introTitle: "Carla, esta portada es solo tuya.",
@@ -241,6 +254,19 @@ window.ARCHIVO_CONTENT = {
         },
         Alina: {
             theme: "alina",
+            cardInfo: {
+                photo: "assets/media/ALINA_ANUEL.PNG",
+                photoPosition: "22% 24%",
+                birthDate: "10 de octubre",
+                age: "22 años",
+                city: "Madrid",
+                favColor: "Azul / Lila",
+                favColorHex: "#7c8cff",
+                socials: [
+                    { name: "Instagram", icon: "instagram", url: "https://www.instagram.com/", handle: "@alina" },
+                    { name: "TikTok", icon: "tiktok", url: "https://www.tiktok.com/", handle: "@alina" }
+                ]
+            },
             eyebrow: "Archivo de Alina",
             introEyebrow: "Entrada de Alina",
             introTitle: "Alina, esta version entra con otro aire.",

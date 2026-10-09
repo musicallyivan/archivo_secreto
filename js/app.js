@@ -131,14 +131,27 @@ const PROFILES_INFO = {
         number: "01",
         name: "Carla",
         emoji: "💗",
+        photo: "assets/media/CUMPLE_CARLA/RETRATO-1.JPEG",
+        photoPosition: "center 20%",
+        birthDate: "12 de enero",
+        age: "22 años",
+        city: "Madrid",
+        favColor: "Rosa",
+        favColorHex: "#ff8fc7",
+        socials: [
+            { name: "Instagram", icon: "ig", url: "https://www.instagram.com/carla12_01", handle: "@carla12_01" },
+            { name: "TikTok", icon: "tt", url: "https://www.tiktok.com/@_carlalopez_03", handle: "@_carlalopez_03" }
+        ],
         themeClass: "info-carla",
         tagline: "rosa · cálida · cercana",
         vibe: "Energía incondicional, risas sin filtro y una chispa que lo hace todo más fácil.",
         quote: "«Eres esa persona con la que sé que siempre puedo contar, para lo bueno, lo malo y lo completamente absurdo. No cambiaría eso por nada.»",
         traits: [
+            { icon: "🎂", label: "Nacimiento", value: "12 de enero" },
+            { icon: "⏳", label: "Edad", value: "22 años" },
+            { icon: "📍", label: "Ciudad", value: "Madrid" },
+            { icon: "🎨", label: "Color fav", value: "Rosa" },
             { icon: "✨", label: "Concepto", value: "La Chispa pura" },
-            { icon: "🎂", label: "Cumpleaños", value: "12 de Enero" },
-            { icon: "💌", label: "Cartas", value: "2 cartas privadas" },
             { icon: "🎵", label: "Música", value: "Blessings & Raindance" }
         ],
         cornerUrl: "cumple-carla.html",
@@ -148,14 +161,27 @@ const PROFILES_INFO = {
         number: "02",
         name: "Alina",
         emoji: "💙",
+        photo: "assets/media/ALINA_ANUEL.PNG",
+        photoPosition: "22% 24%",
+        birthDate: "10 de octubre",
+        age: "22 años",
+        city: "Madrid",
+        favColor: "Azul / Lila",
+        favColorHex: "#7c8cff",
+        socials: [
+            { name: "Instagram", icon: "ig", url: "https://www.instagram.com/", handle: "@alina" },
+            { name: "TikTok", icon: "tt", url: "https://www.tiktok.com/", handle: "@alina" }
+        ],
         themeClass: "info-alina",
         tagline: "azul · rosa · lila",
         vibe: "Serenidad, tono cinematográfico y recuerdos que dejan huella con calma y complicidad.",
         quote: "«Un rincón hecho con azul, rosa y lila para celebrar tu día y guardar momentos que merecen quedarse para siempre.»",
         traits: [
+            { icon: "🎂", label: "Nacimiento", value: "10 de octubre" },
+            { icon: "⏳", label: "Edad", value: "22 años" },
+            { icon: "📍", label: "Ciudad", value: "Madrid" },
+            { icon: "🎨", label: "Color fav", value: "Azul / Lila" },
             { icon: "✨", label: "Concepto", value: "Aurora Boreal" },
-            { icon: "🎂", label: "Cumpleaños", value: "10 de Octubre" },
-            { icon: "📸", label: "Recuerdos", value: "Polaroids & Galería" },
             { icon: "🎵", label: "Música", value: "Tell Me & Relax" }
         ],
         cornerUrl: "cumple-alina.html",
@@ -167,12 +193,14 @@ const profileInfoModal = document.getElementById("profileInfoModal");
 const profileInfoCard = document.getElementById("profileInfoCard");
 const closeProfileInfoBtn = document.getElementById("closeProfileInfoBtn");
 const infoNumber = document.getElementById("infoNumber");
+const infoAvatar = document.getElementById("infoAvatar");
 const infoAvatarEmoji = document.getElementById("infoAvatarEmoji");
 const infoName = document.getElementById("infoName");
 const infoTagline = document.getElementById("infoTagline");
 const infoVibe = document.getElementById("infoVibe");
 const infoQuote = document.getElementById("infoQuote");
 const infoTraits = document.getElementById("infoTraits");
+const infoSocials = document.getElementById("infoSocials");
 const infoCornerLink = document.getElementById("infoCornerLink");
 
 const SESSION_KEY = "archivo-secreto-session";
@@ -544,7 +572,13 @@ function openProfileInfo(profileKey) {
 
     if (profileInfoCard) profileInfoCard.className = `profile-info-card ${data.themeClass}`;
     if (infoNumber) infoNumber.textContent = data.number;
-    if (infoAvatarEmoji) infoAvatarEmoji.textContent = data.emoji;
+    if (infoAvatar) {
+        if (data.photo) {
+            infoAvatar.innerHTML = `<img src="${escapeHtml(data.photo)}" alt="${escapeHtml(data.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;object-position:${data.photoPosition || 'center'};display:block;">`;
+        } else if (infoAvatarEmoji) {
+            infoAvatar.innerHTML = `<span id="infoAvatarEmoji">${data.emoji}</span>`;
+        }
+    }
     if (infoName) infoName.textContent = data.name;
     if (infoTagline) infoTagline.textContent = data.tagline;
     if (infoVibe) infoVibe.textContent = data.vibe;
@@ -563,6 +597,19 @@ function openProfileInfo(profileKey) {
                 </div>
             </div>
         `).join("");
+    }
+    if (infoSocials) {
+        if (data.socials && data.socials.length) {
+            infoSocials.innerHTML = data.socials.map((s) => `
+                <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" class="social-link social-${escapeHtml(s.icon)}" aria-label="${escapeHtml(s.name)} de ${escapeHtml(data.name)} (abre en nueva pestaña)">
+                    <span>${escapeHtml(s.name)}</span>
+                </a>
+            `).join("");
+            infoSocials.classList.remove("hidden");
+        } else {
+            infoSocials.innerHTML = "";
+            infoSocials.classList.add("hidden");
+        }
     }
 
     if (profileInfoCard) {
@@ -615,8 +662,15 @@ surpriseButton.addEventListener("click", showRandomSurprise);
 backgroundAudio.addEventListener("ended", async () => { setTrack(currentTrackIndex + 1); await playBackgroundMusic(); });
 
 /* Profile Info modal events */
-document.querySelectorAll(".preview-card[data-profile-name]").forEach((btn) => {
-    btn.addEventListener("click", () => {
+document.querySelectorAll(".preview-card[data-profile-name]").forEach((card) => {
+    card.addEventListener("click", (event) => {
+        if (event.target.closest("a") || event.target.closest(".preview-socials")) return;
+        openProfileInfo(card.dataset.profileName);
+    });
+});
+document.querySelectorAll(".preview-badge-btn[data-profile-name]").forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+        event.stopPropagation();
         openProfileInfo(btn.dataset.profileName);
     });
 });

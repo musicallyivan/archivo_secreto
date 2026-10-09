@@ -44,18 +44,109 @@
             <h2>Dos historias.<br><em>Un archivo.</em></h2>
             <p class="atmosphere-copy">Cartas, recuerdos, música y pequeños detalles guardados con calma.</p>
             <div class="profile-preview">
-                <button type="button" class="preview-card preview-carla" data-profile-name="Carla" aria-label="Ver ficha personal de Carla">
-                    <span>01</span>
-                    <strong>Carla</strong>
-                    <small>rosa · cálida · cercana</small>
-                    <span class="preview-badge">Ver ficha ✦</span>
-                </button>
-                <button type="button" class="preview-card preview-alina" data-profile-name="Alina" aria-label="Ver ficha personal de Alina">
-                    <span>02</span>
-                    <strong>Alina</strong>
-                    <small>azul · rosa · lila</small>
-                    <span class="preview-badge">Ver ficha ✦</span>
-                </button>
+                <!-- Tarjeta personal de Carla -->
+                <article class="preview-card preview-carla" data-profile-name="Carla" aria-label="Ficha de Carla">
+                    <div class="preview-card-header">
+                        <span class="preview-card-num">01</span>
+                        <div class="preview-photo-wrap">
+                            <img src="assets/media/CUMPLE_CARLA/RETRATO-1.JPEG" alt="Foto de Carla" class="preview-photo" style="object-position: center 20%;" loading="lazy">
+                        </div>
+                        <strong class="preview-name">Carla</strong>
+                        <span class="preview-tagline">rosa · cálida · cercana</span>
+                    </div>
+
+                    <dl class="preview-info-list">
+                        <div class="preview-info-row">
+                            <dt><span class="info-icon" aria-hidden="true">🎂</span> Nacimiento</dt>
+                            <dd>12 de enero</dd>
+                        </div>
+                        <div class="preview-info-row">
+                            <dt><span class="info-icon" aria-hidden="true">⏳</span> Edad</dt>
+                            <dd>23 años</dd>
+                        </div>
+                        <div class="preview-info-row">
+                            <dt><span class="info-icon" aria-hidden="true">📍</span> Ciudad</dt>
+                            <dd>Denia</dd>
+                        </div>
+                        <div class="preview-info-row">
+                            <dt><span class="info-icon" aria-hidden="true">🎨</span> Color fav</dt>
+                            <dd class="preview-color-val">
+                                <span class="color-swatch" style="background-color: #ff8fc7;" aria-hidden="true"></span>
+                                <span>Rosa</span>
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <div class="preview-socials" aria-label="Redes sociales de Carla">
+                        <span class="preview-socials-label">Redes sociales</span>
+                        <div class="preview-social-links">
+                            <a href="https://www.instagram.com/carla12_01" target="_blank" rel="noopener noreferrer" class="social-link social-ig" aria-label="Instagram de Carla (abre en nueva pestaña)" title="Instagram de Carla">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.tiktok.com/@_carlalopez_03" target="_blank" rel="noopener noreferrer" class="social-link social-tt" aria-label="TikTok de Carla (abre en nueva pestaña)" title="TikTok de Carla">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.49 6.27 6.27 0 0 0 1.87-4.49V8.75a8.16 8.16 0 0 0 4.77 1.52V6.83a4.86 4.86 0 0 1-.87-.14z"/></svg>
+                                <span>TikTok</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <button type="button" class="preview-badge-btn" data-profile-name="Carla" aria-label="Ver ficha completa de Carla">
+                        <span>Ver ficha completa ✦</span>
+                    </button>
+                </article>
+
+                <!-- Tarjeta personal de Alina -->
+                <article class="preview-card preview-alina" data-profile-name="Alina" aria-label="Ficha de Alina">
+                    <div class="preview-card-header">
+                        <span class="preview-card-num">02</span>
+                        <div class="preview-photo-wrap">
+                            <img src="assets/media/ALINA_ANUEL.PNG" alt="Foto de Alina" class="preview-photo" style="object-position: 22% 24%;" loading="lazy">
+                        </div>
+                        <strong class="preview-name">Alina</strong>
+                        <span class="preview-tagline">azul · rosa · lila</span>
+                    </div>
+
+                    <dl class="preview-info-list">
+                        <div class="preview-info-row">
+                            <dt><span class="info-icon" aria-hidden="true">🎂</span> Nacimiento</dt>
+                            <dd>10 de octubre</dd>
+                        </div>
+                        <div class="preview-info-row">
+                            <dt><span class="info-icon" aria-hidden="true">⏳</span> Edad</dt>
+                            <dd>20 años</dd>
+                        </div>
+                        <div class="preview-info-row">
+                            <dt><span class="info-icon" aria-hidden="true">📍</span> Ciudad</dt>
+                            <dd>Denia</dd>
+                        </div>
+                        <div class="preview-info-row">
+                            <dt><span class="info-icon" aria-hidden="true">🎨</span> Color fav</dt>
+                            <dd class="preview-color-val">
+                                <span class="color-swatch" style="background-color: #7c8cff;" aria-hidden="true"></span>
+                                <span>Azul / Lila</span>
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <div class="preview-socials" aria-label="Redes sociales de Alina">
+                        <span class="preview-socials-label">Redes sociales</span>
+                        <div class="preview-social-links">
+                            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="social-link social-ig" aria-label="Instagram de Alina (abre en nueva pestaña)" title="Instagram de Alina">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" class="social-link social-tt" aria-label="TikTok de Alina (abre en nueva pestaña)" title="TikTok de Alina">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.49 6.27 6.27 0 0 0 1.87-4.49V8.75a8.16 8.16 0 0 0 4.77 1.52V6.83a4.86 4.86 0 0 1-.87-.14z"/></svg>
+                                <span>TikTok</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <button type="button" class="preview-badge-btn" data-profile-name="Alina" aria-label="Ver ficha completa de Alina">
+                        <span>Ver ficha completa ✦</span>
+                    </button>
+                </article>
             </div>
 
             <div class="login-age-card" aria-label="Tiempo desde la creación de la web">
@@ -379,6 +470,7 @@
                 <div class="profile-info-grid" id="infoTraits"></div>
             </div>
             <div class="profile-info-footer">
+                <div class="profile-info-socials" id="infoSocials"></div>
                 <a href="#" class="profile-corner-link" id="infoCornerLink">🎂 Abrir rincón de cumpleaños</a>
             </div>
         </div>
