@@ -9,10 +9,11 @@
     surpriseBtn = $("surpriseBtn"),
     surpriseText = $("surpriseText");
   const tracks = [
-    { title: "Blessings", file: "assets/media/MUSICA 1.mp3" },
-    { title: "Tell Me", file: "assets/media/MUSICA 2.mp3" },
-    { title: "Raindance", file: "assets/media/MUSICA 4.mp3" },
-    { title: "Buenos Días", file: "assets/media/MUSICA 5.mp3" },
+    { title: "MARIMANDONA", file: "assets/media/CUMPLE_CARLA/MUSICA_1.mp3" },
+    { title: "Carolina", file: "assets/media/CUMPLE_CARLA/MUSICA_2.mp3" },
+    { title: "TATAMI", file: "assets/media/CUMPLE_CARLA/MUSICA_3.mp3" },
+    { title: "Subelo Remix", file: "assets/media/CUMPLE_CARLA/MUSICA_4.mp3" },
+    { title: "MUSICA SORPRESA", file: "assets/media/CUMPLE_CARLA/MUSICA_5.mp3" },
   ];
   let trackIndex = 0;
   function loadTrack(i) {
