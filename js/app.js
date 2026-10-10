@@ -570,7 +570,17 @@ function openProfileInfo(profileKey) {
     const data = PROFILES_INFO[profileKey];
     if (!data || !profileInfoModal) return;
 
-    if (profileInfoCard) profileInfoCard.className = `profile-info-card ${data.themeClass}`;
+    if (profileInfoCard) {
+        profileInfoCard.className = `profile-info-card ${data.themeClass}`;
+        const customColor = profileKey && (content.profiles?.[profileKey]?.colorKey || getCustomProfiles()?.[profileKey]?.colorKey);
+        if (customColor && COLOR_PRESETS[customColor]) {
+            profileInfoCard.style.background = COLOR_PRESETS[customColor].bg;
+            profileInfoCard.style.color = COLOR_PRESETS[customColor].text;
+        } else {
+            profileInfoCard.style.background = "";
+            profileInfoCard.style.color = "";
+        }
+    }
     if (infoNumber) infoNumber.textContent = data.number;
     if (infoAvatar) {
         if (data.photo) {
@@ -584,8 +594,19 @@ function openProfileInfo(profileKey) {
     if (infoVibe) infoVibe.textContent = data.vibe;
     if (infoQuote) infoQuote.textContent = data.quote;
     if (infoCornerLink) {
-        infoCornerLink.href = data.cornerUrl;
+        infoCornerLink.href = data.cornerUrl || "#";
         infoCornerLink.textContent = data.cornerLabel;
+        if (data.cornerUrl === "#") {
+            infoCornerLink.onclick = (e) => {
+                e.preventDefault();
+                closeProfileInfo();
+                activeAccess = "legacy";
+                applyProfile(data.name);
+                showIntroScreen();
+            };
+        } else {
+            infoCornerLink.onclick = null;
+        }
     }
     if (infoTraits) {
         infoTraits.innerHTML = data.traits.map((t) => `
@@ -787,8 +808,9 @@ function renderCustomProfileCard(name, profile) {
     const colorKey = profile.colorKey || "pink";
     const preset = COLOR_PRESETS[colorKey] || COLOR_PRESETS.pink;
     const card = document.createElement("article");
-    card.className = "preview-card preview-custom";
+    card.className = `preview-card preview-custom preview-custom-${colorKey} preview-${colorKey}`;
     card.dataset.profileName = name;
+    card.dataset.color = colorKey;
     card.setAttribute("aria-label", `Ficha de ${name}`);
     card.style.background = preset.bg;
     card.style.borderColor = preset.border;

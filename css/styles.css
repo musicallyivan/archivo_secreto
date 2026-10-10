@@ -1282,6 +1282,7 @@ body:not([data-profile]) .login-shell::after {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     overflow: hidden;
+    background: #ffffff;
 }
 
 .preview-card:hover {
@@ -1307,6 +1308,76 @@ body:not([data-profile]) .login-shell::after {
 
 .preview-alina:hover {
     border-color: rgba(93, 169, 210, 0.6);
+}
+
+/* Custom Profile Preview Themes */
+.preview-custom {
+    background: #ffffff;
+}
+
+.preview-custom-pink,
+.preview-custom[data-color="pink"],
+.preview-custom.preview-pink {
+    color: #6a2b47;
+    background: linear-gradient(155deg, rgba(255, 245, 250, 0.98) 0%, rgba(255, 222, 237, 0.95) 100%) !important;
+    border: 1px solid rgba(227, 106, 150, 0.35);
+}
+.preview-custom-pink:hover,
+.preview-custom[data-color="pink"]:hover,
+.preview-custom.preview-pink:hover {
+    border-color: rgba(227, 106, 150, 0.65);
+}
+
+.preview-custom-blue,
+.preview-custom[data-color="blue"],
+.preview-custom.preview-blue {
+    color: #23456b;
+    background: linear-gradient(155deg, rgba(246, 252, 255, 0.98) 0%, rgba(220, 236, 255, 0.95) 100%) !important;
+    border: 1px solid rgba(90, 160, 220, 0.35);
+}
+.preview-custom-blue:hover,
+.preview-custom[data-color="blue"]:hover,
+.preview-custom.preview-blue:hover {
+    border-color: rgba(90, 160, 220, 0.65);
+}
+
+.preview-custom-purple,
+.preview-custom[data-color="purple"],
+.preview-custom.preview-purple {
+    color: #4a1e5c;
+    background: linear-gradient(155deg, rgba(251, 246, 255, 0.98) 0%, rgba(238, 218, 255, 0.95) 100%) !important;
+    border: 1px solid rgba(173, 117, 201, 0.35);
+}
+.preview-custom-purple:hover,
+.preview-custom[data-color="purple"]:hover,
+.preview-custom.preview-purple:hover {
+    border-color: rgba(173, 117, 201, 0.65);
+}
+
+.preview-custom-green,
+.preview-custom[data-color="green"],
+.preview-custom.preview-green {
+    color: #1b4d3e;
+    background: linear-gradient(155deg, rgba(244, 251, 247, 0.98) 0%, rgba(212, 244, 228, 0.95) 100%) !important;
+    border: 1px solid rgba(82, 183, 136, 0.35);
+}
+.preview-custom-green:hover,
+.preview-custom[data-color="green"]:hover,
+.preview-custom.preview-green:hover {
+    border-color: rgba(82, 183, 136, 0.65);
+}
+
+.preview-custom-gold,
+.preview-custom[data-color="gold"],
+.preview-custom.preview-gold {
+    color: #6e3810;
+    background: linear-gradient(155deg, rgba(255, 250, 244, 0.98) 0%, rgba(255, 231, 210, 0.95) 100%) !important;
+    border: 1px solid rgba(244, 162, 97, 0.35);
+}
+.preview-custom-gold:hover,
+.preview-custom[data-color="gold"]:hover,
+.preview-custom.preview-gold:hover {
+    border-color: rgba(244, 162, 97, 0.65);
 }
 
 .preview-card-header {
@@ -1540,6 +1611,71 @@ body:not([data-profile]) .login-shell::after {
     background: linear-gradient(135deg, #4aaedd 0%, #267ba8 100%);
     color: #fff;
     box-shadow: 0 6px 16px rgba(74, 174, 221, 0.35);
+    transform: translateY(-1px);
+}
+
+.preview-custom-pink .preview-badge-btn,
+.preview-custom[data-color="pink"] .preview-badge-btn {
+    background: rgba(227, 106, 150, 0.22);
+    color: #9c2e5b;
+}
+.preview-custom-pink .preview-badge-btn:hover,
+.preview-custom[data-color="pink"] .preview-badge-btn:hover {
+    background: linear-gradient(135deg, #e36a96 0%, #c7487b 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(227, 106, 150, 0.35);
+    transform: translateY(-1px);
+}
+
+.preview-custom-blue .preview-badge-btn,
+.preview-custom[data-color="blue"] .preview-badge-btn {
+    background: rgba(74, 174, 221, 0.24);
+    color: #1a5e88;
+}
+.preview-custom-blue .preview-badge-btn:hover,
+.preview-custom[data-color="blue"] .preview-badge-btn:hover {
+    background: linear-gradient(135deg, #4aaedd 0%, #267ba8 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(74, 174, 221, 0.35);
+    transform: translateY(-1px);
+}
+
+.preview-custom-purple .preview-badge-btn,
+.preview-custom[data-color="purple"] .preview-badge-btn {
+    background: rgba(173, 117, 201, 0.22);
+    color: #4a1e5c;
+}
+.preview-custom-purple .preview-badge-btn:hover,
+.preview-custom[data-color="purple"] .preview-badge-btn:hover {
+    background: linear-gradient(135deg, #ad75c9 0%, #8b4fa8 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(173, 117, 201, 0.35);
+    transform: translateY(-1px);
+}
+
+.preview-custom-green .preview-badge-btn,
+.preview-custom[data-color="green"] .preview-badge-btn {
+    background: rgba(82, 183, 136, 0.22);
+    color: #1b4d3e;
+}
+.preview-custom-green .preview-badge-btn:hover,
+.preview-custom[data-color="green"] .preview-badge-btn:hover {
+    background: linear-gradient(135deg, #52b788 0%, #358d64 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(82, 183, 136, 0.35);
+    transform: translateY(-1px);
+}
+
+.preview-custom-gold .preview-badge-btn,
+.preview-custom[data-color="gold"] .preview-badge-btn {
+    background: rgba(244, 162, 97, 0.22);
+    color: #6e3810;
+}
+.preview-custom-gold .preview-badge-btn:hover,
+.preview-custom[data-color="gold"] .preview-badge-btn:hover {
+    background: linear-gradient(135deg, #f4a261 0%, #e07a38 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(244, 162, 97, 0.35);
     transform: translateY(-1px);
 }
 
@@ -2322,6 +2458,7 @@ body[data-profile="alina"] .floating-player {
     position: relative;
     padding: clamp(1.6rem, 5vw, 2.2rem);
     border-radius: calc(var(--radius-xl) + 6px);
+    background: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.7);
     box-shadow: 0 30px 80px rgba(40, 20, 28, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
     animation: cardPopIn 420ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -2354,6 +2491,47 @@ body[data-profile="alina"] .floating-player {
         radial-gradient(circle at top right, rgba(160, 220, 255, 0.5), transparent 45%),
         linear-gradient(180deg, rgba(246, 252, 255, 0.98) 0%, rgba(228, 243, 255, 0.96) 100%);
     color: #173340;
+}
+
+/* Custom Profile Modal Themes */
+.profile-info-card.info-pink {
+    background:
+        radial-gradient(circle at top right, rgba(255, 170, 215, 0.45), transparent 45%),
+        linear-gradient(180deg, #fff7fc 0%, #ffeaef 100%) !important;
+    color: #351823;
+}
+
+.profile-info-card.info-blue {
+    background:
+        radial-gradient(circle at top right, rgba(160, 220, 255, 0.5), transparent 45%),
+        linear-gradient(180deg, #f6fcff 0%, #e4f3ff 100%) !important;
+    color: #173340;
+}
+
+.profile-info-card.info-purple {
+    background:
+        radial-gradient(circle at top right, rgba(200, 150, 240, 0.45), transparent 45%),
+        linear-gradient(180deg, #fbf7ff 0%, #f1e2ff 100%) !important;
+    color: #2e123b;
+}
+
+.profile-info-card.info-green {
+    background:
+        radial-gradient(circle at top right, rgba(140, 230, 185, 0.45), transparent 45%),
+        linear-gradient(180deg, #f5fcf8 0%, #def6eb 100%) !important;
+    color: #113629;
+}
+
+.profile-info-card.info-gold {
+    background:
+        radial-gradient(circle at top right, rgba(255, 200, 140, 0.45), transparent 45%),
+        linear-gradient(180deg, #fffaf4 0%, #ffeedd 100%) !important;
+    color: #452108;
+}
+
+.profile-info-card.info-custom {
+    background: linear-gradient(180deg, #fff7fc 0%, #ffeaef 100%);
+    color: #351823;
 }
 
 .profile-info-close {
@@ -2419,6 +2597,31 @@ body[data-profile="alina"] .floating-player {
     color: #267ba8;
 }
 
+.info-pink .profile-info-num {
+    background: rgba(227, 106, 150, 0.16);
+    color: #c7487b;
+}
+
+.info-blue .profile-info-num {
+    background: rgba(74, 174, 221, 0.18);
+    color: #267ba8;
+}
+
+.info-purple .profile-info-num {
+    background: rgba(173, 117, 201, 0.18);
+    color: #7b3d9c;
+}
+
+.info-green .profile-info-num {
+    background: rgba(82, 183, 136, 0.18);
+    color: #2b7d58;
+}
+
+.info-gold .profile-info-num {
+    background: rgba(244, 162, 97, 0.18);
+    color: #bd6923;
+}
+
 .profile-info-avatar {
     width: 76px;
     height: 76px;
@@ -2443,6 +2646,26 @@ body[data-profile="alina"] .floating-player {
 
 .info-alina .profile-info-avatar {
     background: linear-gradient(135deg, #d3efff 0%, #7c8cff 100%);
+}
+
+.info-pink .profile-info-avatar {
+    background: linear-gradient(135deg, #ffd3e6 0%, #ff8fc7 100%);
+}
+
+.info-blue .profile-info-avatar {
+    background: linear-gradient(135deg, #d3efff 0%, #7c8cff 100%);
+}
+
+.info-purple .profile-info-avatar {
+    background: linear-gradient(135deg, #edd7ff 0%, #ad75c9 100%);
+}
+
+.info-green .profile-info-avatar {
+    background: linear-gradient(135deg, #d2f6e4 0%, #52b788 100%);
+}
+
+.info-gold .profile-info-avatar {
+    background: linear-gradient(135deg, #ffe2c8 0%, #f4a261 100%);
 }
 
 .profile-info-name {
@@ -2504,6 +2727,26 @@ body[data-profile="alina"] .floating-player {
 
 .info-alina .profile-info-quote-box {
     border-left-color: #4aaedd;
+}
+
+.info-pink .profile-info-quote-box {
+    border-left-color: #e36a96;
+}
+
+.info-blue .profile-info-quote-box {
+    border-left-color: #4aaedd;
+}
+
+.info-purple .profile-info-quote-box {
+    border-left-color: #ad75c9;
+}
+
+.info-green .profile-info-quote-box {
+    border-left-color: #52b788;
+}
+
+.info-gold .profile-info-quote-box {
+    border-left-color: #f4a261;
 }
 
 .profile-info-quote-box blockquote {
@@ -2582,6 +2825,31 @@ body[data-profile="alina"] .floating-player {
 .info-alina .profile-corner-link {
     background: linear-gradient(135deg, #4aaedd 0%, #2f7ca8 100%);
     box-shadow: 0 8px 20px rgba(47, 124, 168, 0.28);
+}
+
+.info-pink .profile-corner-link {
+    background: linear-gradient(135deg, #e36a96 0%, #c7487b 100%);
+    box-shadow: 0 8px 20px rgba(199, 72, 123, 0.28);
+}
+
+.info-blue .profile-corner-link {
+    background: linear-gradient(135deg, #4aaedd 0%, #2f7ca8 100%);
+    box-shadow: 0 8px 20px rgba(47, 124, 168, 0.28);
+}
+
+.info-purple .profile-corner-link {
+    background: linear-gradient(135deg, #ad75c9 0%, #7c3b99 100%);
+    box-shadow: 0 8px 20px rgba(124, 59, 153, 0.28);
+}
+
+.info-green .profile-corner-link {
+    background: linear-gradient(135deg, #52b788 0%, #2f8059 100%);
+    box-shadow: 0 8px 20px rgba(47, 128, 89, 0.28);
+}
+
+.info-gold .profile-corner-link {
+    background: linear-gradient(135deg, #f4a261 0%, #c96e26 100%);
+    box-shadow: 0 8px 20px rgba(201, 110, 38, 0.28);
 }
 
 .profile-corner-link:hover {
