@@ -259,15 +259,18 @@
    Carla - 3D Flip Polaroids
    ========================================== */
 .photo-wall {
-  perspective: 1200px;
+  perspective: none;
 }
 .memory-card {
   perspective: 1200px;
+  -webkit-perspective: 1200px;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   cursor: default;
   overflow: visible !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 .memory-card:after {
   display: none !important;
@@ -278,11 +281,14 @@
   height: 100%;
   min-height: 320px;
   transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 22px;
+  will-change: transform;
 }
 .memory-card.is-flipped .polaroid-inner {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 .polaroid-front,
 .polaroid-back {
@@ -291,19 +297,28 @@
   width: 100%;
   height: 100%;
   border-radius: 22px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 .polaroid-front {
   border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  transform: rotateY(0deg) translateZ(1px);
+  -webkit-transform: rotateY(0deg) translateZ(1px);
+  z-index: 2;
+  pointer-events: auto;
 }
 .polaroid-front img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 .polaroid-front:after {
   content: "";
@@ -321,6 +336,7 @@
   height: 22px;
   background: rgba(255, 255, 255, 0.28);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border-radius: 2px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 6;
@@ -333,6 +349,7 @@
   z-index: 5;
   background: rgba(20, 8, 20, 0.65);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #ffb8db;
   border: 1px solid rgba(255, 143, 199, 0.4);
   padding: 6px 12px;
@@ -344,13 +361,16 @@
   align-items: center;
   gap: 5px;
   transition: transform 0.2s, background 0.2s;
+  touch-action: manipulation;
 }
-.flip-btn-badge:hover {
+.flip-btn-badge:hover,
+.flip-btn-badge:active {
   transform: scale(1.08);
   background: rgba(255, 143, 199, 0.35);
 }
 .polaroid-back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
+  -webkit-transform: rotateY(180deg) translateZ(1px);
   background: linear-gradient(145deg, rgba(38, 14, 34, 0.96), rgba(20, 8, 22, 0.98));
   border: 1px solid rgba(255, 143, 199, 0.35);
   box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
@@ -359,6 +379,8 @@
   flex-direction: column;
   justify-content: space-between;
   text-align: left;
+  z-index: 1;
+  pointer-events: none;
 }
 .polaroid-back-date {
   font-size: 0.75rem;
@@ -394,10 +416,22 @@
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   transition: transform 0.2s, background 0.2s;
+  touch-action: manipulation;
 }
-.polaroid-back-actions button:hover {
+.polaroid-back-actions button:hover,
+.polaroid-back-actions button:active {
   transform: translateY(-2px);
   background: rgba(255, 143, 199, 0.3);
+}
+
+/* Flipped state management: toggle interaction & z-index */
+.memory-card.is-flipped .polaroid-front {
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+.memory-card.is-flipped .polaroid-back {
+  z-index: 3 !important;
+  pointer-events: auto !important;
 }
 
 /* ==========================================
@@ -561,7 +595,7 @@
     display: flex !important;
     flex-direction: column !important;
     gap: 22px !important;
-    perspective: 1200px !important;
+    perspective: none !important;
     width: 100% !important;
   }
   .memory-card,
@@ -576,17 +610,34 @@
     margin: 0 !important;
     display: block !important;
     position: relative !important;
+    perspective: 1200px !important;
+    -webkit-perspective: 1200px !important;
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    overflow: visible !important;
   }
   .polaroid-inner {
     width: 100% !important;
     height: 100% !important;
-    min-height: clamp(340px, 92vw, 420px) !important;
+    min-height: 100% !important;
+    transform-style: preserve-3d !important;
+    -webkit-transform-style: preserve-3d !important;
+    will-change: transform !important;
   }
   .polaroid-front,
   .polaroid-back {
     width: 100% !important;
     height: 100% !important;
     border-radius: 20px !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    transform-style: preserve-3d !important;
+    -webkit-transform-style: preserve-3d !important;
+    overflow: hidden !important;
+  }
+  .polaroid-front {
+    transform: rotateY(0deg) translateZ(1px) !important;
+    -webkit-transform: rotateY(0deg) translateZ(1px) !important;
   }
   .polaroid-front img {
     width: 100% !important;
@@ -595,17 +646,23 @@
     object-fit: cover !important;
   }
   .polaroid-back {
+    transform: rotateY(180deg) translateZ(1px) !important;
+    -webkit-transform: rotateY(180deg) translateZ(1px) !important;
     padding: 22px 18px !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
   }
   .polaroid-back-date {
     font-size: 0.72rem !important;
   }
   .polaroid-back-note {
-    font-size: 1.05rem !important;
-    line-height: 1.55 !important;
-    margin: 10px 0 !important;
+    font-size: 1.02rem !important;
+    line-height: 1.5 !important;
+    margin: 8px 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-height: 190px !important;
   }
   .polaroid-back-actions {
     margin-top: 8px !important;
@@ -615,6 +672,7 @@
     padding: 9px 16px !important;
     font-size: 0.85rem !important;
     min-height: 40px !important;
+    touch-action: manipulation !important;
   }
   .flip-btn-badge {
     padding: 7px 14px !important;
@@ -622,6 +680,7 @@
     min-height: 36px !important;
     top: 12px !important;
     right: 12px !important;
+    touch-action: manipulation !important;
   }
 
   /* Letter Card */

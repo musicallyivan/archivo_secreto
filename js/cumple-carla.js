@@ -208,6 +208,7 @@
       // Flip button badges (front "↺ Girar" and back "↺ Volver")
       card.querySelectorAll(".flip-btn-badge, .polaroid-flip-btn").forEach((btn) => {
         btn.addEventListener("click", (e) => {
+          e.preventDefault();
           e.stopPropagation();
           card.classList.toggle("is-flipped");
         });
@@ -216,15 +217,18 @@
       // Open gallery button on back
       card.querySelectorAll(".polaroid-gallery-btn").forEach((btn) => {
         btn.addEventListener("click", (e) => {
+          e.preventDefault();
           e.stopPropagation();
           openGallery(idx);
         });
       });
 
-      // Front image click opens lightbox directly
+      // Front image click opens lightbox directly (only when not flipped)
       const frontImg = card.querySelector(".polaroid-front img");
       if (frontImg) {
         frontImg.addEventListener("click", (e) => {
+          if (card.classList.contains("is-flipped")) return;
+          e.stopPropagation();
           openGallery(idx);
         });
       }

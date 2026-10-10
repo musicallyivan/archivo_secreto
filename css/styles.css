@@ -3064,14 +3064,66 @@ body[data-profile^="custom-gold"] {
     .field-two-cols {
         grid-template-columns: 1fr;
     }
+    .creator-modal {
+        padding: 0.6rem;
+        max-width: 100vw;
+    }
+    .creator-modal-card {
+        padding: 1.25rem 1rem;
+        border-radius: 1.5rem;
+        max-height: 92vh;
+    }
+    .creator-header h3 {
+        font-size: 1.7rem;
+    }
+    .creator-progress-track {
+        gap: 0.35rem;
+    }
+    .creator-step-dot {
+        font-size: 0.72rem;
+        padding: 0.35rem 0.6rem;
+    }
+    .creator-step-dot span {
+        width: 18px;
+        height: 18px;
+        font-size: 0.68rem;
+    }
     .creator-step-actions {
         flex-direction: column-reverse;
         align-items: stretch;
+        gap: 0.65rem;
     }
     .creator-action-btn,
     .creator-step-actions .secondary-button {
         width: 100%;
         justify-content: center;
+        min-height: 44px;
+    }
+    .creator-success-buttons {
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+    .creator-success-buttons button {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+    }
+    .profile-preview {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 1.25rem;
+    }
+    .preview-card {
+        padding: 1.25rem 1.1rem;
+    }
+    .preview-social-links {
+        grid-template-columns: 1fr 1fr;
+    }
+    .social-link {
+        min-height: 42px;
+        font-size: 0.8rem;
     }
 }
 
