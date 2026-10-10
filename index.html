@@ -149,6 +149,17 @@
                 </article>
             </div>
 
+            <div class="creator-trigger-wrap">
+                <button type="button" class="creator-trigger-btn" id="openCreatorBtn" aria-label="Crear un archivo secreto para otra persona">
+                    <span class="creator-trigger-spark" aria-hidden="true">✨</span>
+                    <span class="creator-trigger-texts">
+                        <strong>Crea un archivo para quien tú quieras</strong>
+                        <small>Responde unas preguntas y el motor lo genera automáticamente ✦</small>
+                    </span>
+                    <span class="creator-trigger-badge" aria-hidden="true">Nuevo</span>
+                </button>
+            </div>
+
             <div class="login-age-card" aria-label="Tiempo desde la creación de la web">
                 <p class="login-age-badge">✦ Tiempo en línea ✦</p>
                 <div class="login-age-grid">
@@ -213,7 +224,7 @@
                 <p class="eyebrow">Segundo paso</p>
                 <h2 id="profileTitle">Elige tu nombre</h2>
                 <p class="login-copy">Cada nombre abre una version distinta del archivo.</p>
-                <div class="profile-grid">
+                <div class="profile-grid" id="profileGrid">
                     <button type="button" class="profile-button" data-profile="Carla">Carla</button>
                     <button type="button" class="profile-button" data-profile="Alina">Alina</button>
                 </div>
@@ -546,6 +557,201 @@
         </div>
         <div class="cinema-progress-track">
             <div class="cinema-progress-bar" id="cinemaProgressBar"></div>
+        </div>
+    </dialog>
+
+    <dialog class="creator-modal" id="creatorModal" aria-label="Creador de archivos secretos">
+        <div class="creator-modal-card">
+            <button type="button" class="creator-close-btn" id="closeCreatorBtn" aria-label="Cerrar creador">✕</button>
+
+            <header class="creator-header">
+                <span class="creator-badge">✦ Generador Mágico ✦</span>
+                <h3 id="creatorHeaderTitle">Crea un archivo secreto nuevo</h3>
+                <p class="creator-subtitle">Responde estas sencillas preguntas y la página generará todo su refugio personal al instante.</p>
+                <div class="creator-progress-track">
+                    <div class="creator-step-dot active" data-step="1"><span>1</span> Datos</div>
+                    <div class="creator-step-dot" data-step="2"><span>2</span> Ficha & Foto</div>
+                    <div class="creator-step-dot" data-step="3"><span>3</span> Mensaje</div>
+                </div>
+            </header>
+
+            <form id="creatorForm" class="creator-form" novalidate>
+                <!-- Paso 1: Datos básicos -->
+                <div class="creator-step-pane" id="creatorStep1">
+                    <div class="creator-pane-header">
+                        <span class="step-num">Paso 1 de 3</span>
+                        <h4>¿A quién va dedicado este archivo?</h4>
+                    </div>
+
+                    <div class="creator-fields-grid">
+                        <label class="field">
+                            <span>¿Cómo se llama esa persona? *</span>
+                            <input type="text" id="crPersonName" placeholder="Ej. Lucía, Mateo, Andrea..." required maxlength="25">
+                            <small class="field-help">Aparecerá en la portada, en las cartas y en el selector de perfiles.</small>
+                        </label>
+
+                        <label class="field">
+                            <span>¿Quién se lo dedica? (Tu nombre) *</span>
+                            <input type="text" id="crCreatorName" placeholder="Ej. Iván, Carlos, Sofía..." required maxlength="25">
+                            <small class="field-help">Firmará las cartas y la dedicatoria.</small>
+                        </label>
+
+                        <label class="field">
+                            <span>Frase corta o apodo que os define *</span>
+                            <input type="text" id="crTagline" placeholder="Ej. Risas sin filtro, complicidad pura..." required maxlength="45">
+                            <small class="field-help">Se mostrará como subtítulo en su tarjeta.</small>
+                        </label>
+
+                        <label class="field">
+                            <span>Contraseña propia para entrar (opcional)</span>
+                            <input type="text" id="crPassword" placeholder="Por defecto: chispa" maxlength="20">
+                            <small class="field-help">Si no pones ninguna, usará la clave principal «chispa».</small>
+                        </label>
+                    </div>
+
+                    <div class="creator-step-actions">
+                        <button type="button" class="creator-action-btn creator-next-btn" id="crGoStep2">
+                            <span>Continuar: Ficha & Foto</span> →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paso 2: Ficha personal & foto -->
+                <div class="creator-step-pane hidden" id="creatorStep2">
+                    <div class="creator-pane-header">
+                        <span class="step-num">Paso 2 de 3</span>
+                        <h4>Ficha personal, color y foto</h4>
+                    </div>
+
+                    <div class="creator-fields-grid">
+                        <div class="field-two-cols">
+                            <label class="field">
+                                <span>Fecha de nacimiento *</span>
+                                <input type="text" id="crBirthDate" placeholder="Ej. 18 de agosto" required maxlength="30">
+                            </label>
+
+                            <label class="field">
+                                <span>Edad *</span>
+                                <input type="text" id="crAge" placeholder="Ej. 21 años" required maxlength="15">
+                            </label>
+                        </div>
+
+                        <div class="field-two-cols">
+                            <label class="field">
+                                <span>Ciudad *</span>
+                                <input type="text" id="crCity" placeholder="Ej. Madrid, Barcelona..." required maxlength="30">
+                            </label>
+
+                            <label class="field">
+                                <span>Color & Estilo favorito *</span>
+                                <select id="crColorSelect" class="cr-select">
+                                    <option value="pink" selected>🌸 Rosa Pastel (Cálido y cercano)</option>
+                                    <option value="blue">💙 Azul Nube (Sereno y cinematográfico)</option>
+                                    <option value="purple">💜 Lila Mágico (Elegante y nocturno)</option>
+                                    <option value="green">🌿 Verde Menta (Fresco y luminoso)</option>
+                                    <option value="gold">✨ Ámbar Dorado (Brillante y acogedor)</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div class="cr-photo-uploader">
+                            <span class="field-label-text">Foto de perfil para su tarjeta (opcional)</span>
+                            <div class="cr-upload-flex">
+                                <div class="cr-avatar-preview" id="crAvatarPreview">
+                                    <span id="crAvatarPlaceholder">📸</span>
+                                </div>
+                                <div class="cr-upload-controls">
+                                    <input type="file" id="crPhotoInput" accept="image/*" class="visually-hidden">
+                                    <button type="button" class="secondary-button cr-file-trigger" id="crPhotoChooseBtn">
+                                        📁 Elegir foto de mi galería
+                                    </button>
+                                    <button type="button" class="secondary-button cr-remove-photo-btn hidden" id="crPhotoRemoveBtn">
+                                        Quitar foto
+                                    </button>
+                                    <small id="crPhotoNote">Si no subes foto, se creará un avatar ilustrado con su color.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field-two-cols">
+                            <label class="field">
+                                <span>Instagram (opcional)</span>
+                                <input type="text" id="crInstagram" placeholder="Ej. @usuario o enlace" maxlength="70">
+                            </label>
+
+                            <label class="field">
+                                <span>TikTok (opcional)</span>
+                                <input type="text" id="crTiktok" placeholder="Ej. @usuario o enlace" maxlength="70">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="creator-step-actions">
+                        <button type="button" class="secondary-button" id="crBackStep1">← Volver</button>
+                        <button type="button" class="creator-action-btn creator-next-btn" id="crGoStep3">
+                            <span>Continuar: Recuerdos</span> →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paso 3: Dedicatoria y Recuerdos -->
+                <div class="creator-step-pane hidden" id="creatorStep3">
+                    <div class="creator-pane-header">
+                        <span class="step-num">Paso 3 de 3</span>
+                        <h4>Carta personal y detalles</h4>
+                    </div>
+
+                    <div class="creator-fields-grid">
+                        <label class="field">
+                            <div class="field-header-row">
+                                <span>Carta privada o dedicatoria *</span>
+                                <button type="button" class="cr-inline-action-btn" id="crSuggestLetterBtn">✨ Sugerir texto</button>
+                            </div>
+                            <textarea id="crLetter" rows="4" placeholder="Escribe aquí un mensaje especial que solo esa persona leerá..." required></textarea>
+                            <small class="field-help">Aparecerá en la sección de cartas privadas de su archivo.</small>
+                        </label>
+
+                        <label class="field">
+                            <span>Un recuerdo o anécdota especial</span>
+                            <input type="text" id="crMemory" placeholder="Ej. El viaje de verano, nuestras risas improvisadas..." maxlength="120">
+                            <small class="field-help">Se guardará como hito en su línea del tiempo.</small>
+                        </label>
+
+                        <label class="field">
+                            <span>Mensaje para la cápsula del tiempo (abrir en el futuro)</span>
+                            <input type="text" id="crCapsule" placeholder="Ej. Vuelve aquí cuando necesites recordar todo lo que vales." maxlength="140">
+                            <small class="field-help">Un mensaje guardado para leer más adelante.</small>
+                        </label>
+                    </div>
+
+                    <div class="creator-step-actions">
+                        <button type="button" class="secondary-button" id="crBackStep2">← Volver</button>
+                        <button type="submit" class="creator-action-btn creator-submit-btn" id="crSubmitBtn">
+                            <span>✨ Generar Archivo Secreto ✦</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Pantalla de éxito -->
+            <div class="creator-success-pane hidden" id="creatorSuccessPane">
+                <div class="creator-confetti-banner">🎉 ✨ 🎊 ✨ 🎉</div>
+                <div class="creator-success-avatar-wrap" id="crSuccessAvatar"></div>
+                <h3 id="crSuccessName">¡El archivo de Lucía ya está listo!</h3>
+                <p id="crSuccessMsg">El motor de la página ha creado automáticamente su portada, su tarjeta de acceso, su carta privada y su línea del tiempo.</p>
+
+                <div class="creator-success-buttons">
+                    <button type="button" class="creator-action-btn creator-enter-btn" id="crSuccessEnterBtn">
+                        🚀 Entrar a su archivo ahora
+                    </button>
+                    <button type="button" class="secondary-button" id="crSuccessViewCardBtn">
+                        👀 Ver su tarjeta en la portada
+                    </button>
+                    <button type="button" class="secondary-button" id="crSuccessDownloadBtn">
+                        💾 Descargar copia de seguridad (.json)
+                    </button>
+                </div>
+            </div>
         </div>
     </dialog>
 

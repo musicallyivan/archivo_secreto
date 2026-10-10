@@ -627,11 +627,471 @@ function closeProfileInfo() {
     }
 }
 
+/* ==========================================================================
+   CUSTOM PROFILE CREATOR ENGINE & LOCAL STORAGE SYNC
+   ========================================================================== */
+const CUSTOM_PROFILES_KEY = "archivo-secreto-custom-profiles";
+const COLOR_PRESETS = {
+    pink: { name: "Rosa Pastel", hex: "#ff8fc7", theme: "custom-pink", emoji: "🌸", bg: "linear-gradient(155deg, rgba(255, 245, 250, 0.96) 0%, rgba(255, 222, 237, 0.92) 100%)", border: "rgba(227, 106, 150, 0.35)", text: "#6a2b47" },
+    blue: { name: "Azul Nube", hex: "#7c8cff", theme: "custom-blue", emoji: "💙", bg: "linear-gradient(155deg, rgba(246, 252, 255, 0.96) 0%, rgba(220, 236, 255, 0.92) 100%)", border: "rgba(90, 160, 220, 0.35)", text: "#23456b" },
+    purple: { name: "Lila Mágico", hex: "#ad75c9", theme: "custom-purple", emoji: "💜", bg: "linear-gradient(155deg, rgba(251, 246, 255, 0.96) 0%, rgba(238, 218, 255, 0.92) 100%)", border: "rgba(173, 117, 201, 0.35)", text: "#4a1e5c" },
+    green: { name: "Verde Menta", hex: "#52b788", theme: "custom-green", emoji: "🌿", bg: "linear-gradient(155deg, rgba(244, 251, 247, 0.96) 0%, rgba(212, 244, 228, 0.92) 100%)", border: "rgba(82, 183, 136, 0.35)", text: "#1b4d3e" },
+    gold: { name: "Ámbar Dorado", hex: "#f4a261", theme: "custom-gold", emoji: "✨", bg: "linear-gradient(155deg, rgba(255, 250, 244, 0.96) 0%, rgba(255, 231, 210, 0.92) 100%)", border: "rgba(244, 162, 97, 0.35)", text: "#6e3810" }
+};
+
+function getCustomProfiles() {
+    try {
+        return JSON.parse(localStorage.getItem(CUSTOM_PROFILES_KEY) || "{}");
+    } catch {
+        return {};
+    }
+}
+
+function saveCustomProfile(name, profileData) {
+    const list = getCustomProfiles();
+    list[name] = profileData;
+    localStorage.setItem(CUSTOM_PROFILES_KEY, JSON.stringify(list));
+}
+
+function renderCustomProfileCard(name, profile) {
+    const previewContainer = document.querySelector(".profile-preview");
+    if (!previewContainer) return;
+    if (previewContainer.querySelector(`.preview-card[data-profile-name="${name}"]`)) return;
+
+    const info = profile.cardInfo || {};
+    const colorKey = profile.colorKey || "pink";
+    const preset = COLOR_PRESETS[colorKey] || COLOR_PRESETS.pink;
+    const card = document.createElement("article");
+    card.className = "preview-card preview-custom";
+    card.dataset.profileName = name;
+    card.setAttribute("aria-label", `Ficha de ${name}`);
+    card.style.background = preset.bg;
+    card.style.borderColor = preset.border;
+    card.style.color = preset.text;
+
+    const ig = info.socials?.find((s) => s.icon === "ig" || s.name.toLowerCase().includes("insta"));
+    const tt = info.socials?.find((s) => s.icon === "tt" || s.name.toLowerCase().includes("tiktok"));
+
+    card.innerHTML = `
+        <div class="preview-card-header">
+            <span class="preview-card-num" style="background:${preset.hex}22; color:${preset.hex}">✦</span>
+            <div class="preview-photo-wrap" style="border:3px solid rgba(255,255,255,0.95); box-shadow:0 8px 22px ${preset.hex}44">
+                ${info.photo ? `<img src="${escapeHtml(info.photo)}" alt="Foto de ${escapeHtml(name)}" class="preview-photo" style="object-position:${info.photoPosition || 'center'};" loading="lazy">` : `<div style="font-size:2rem;display:grid;place-items:center;height:100%">${preset.emoji}</div>`}
+            </div>
+            <strong class="preview-name">${escapeHtml(name)}</strong>
+            <span class="preview-tagline">${escapeHtml(profile.tagline || 'archivo personalizado')}</span>
+        </div>
+
+        <dl class="preview-info-list">
+            <div class="preview-info-row">
+                <dt><span class="info-icon" aria-hidden="true">🎂</span> Nacimiento</dt>
+                <dd>${escapeHtml(info.birthDate || 'Sin fecha')}</dd>
+            </div>
+            <div class="preview-info-row">
+                <dt><span class="info-icon" aria-hidden="true">⏳</span> Edad</dt>
+                <dd>${escapeHtml(info.age || '—')}</dd>
+            </div>
+            <div class="preview-info-row">
+                <dt><span class="info-icon" aria-hidden="true">📍</span> Ciudad</dt>
+                <dd>${escapeHtml(info.city || '—')}</dd>
+            </div>
+            <div class="preview-info-row">
+                <dt><span class="info-icon" aria-hidden="true">🎨</span> Color fav</dt>
+                <dd class="preview-color-val">
+                    <span class="color-swatch" style="background-color: ${preset.hex};" aria-hidden="true"></span>
+                    <span>${escapeHtml(info.favColor || preset.name)}</span>
+                </dd>
+            </div>
+        </dl>
+
+        <div class="preview-socials" aria-label="Redes sociales de ${escapeHtml(name)}">
+            <span class="preview-socials-label">Redes sociales</span>
+            <div class="preview-social-links">
+                ${ig ? `<a href="${escapeHtml(ig.url)}" target="_blank" rel="noopener noreferrer" class="social-link social-ig" title="Instagram de ${escapeHtml(name)}">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <span>Instagram</span>
+                </a>` : ""}
+                ${tt ? `<a href="${escapeHtml(tt.url)}" target="_blank" rel="noopener noreferrer" class="social-link social-tt" title="TikTok de ${escapeHtml(name)}">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.49 6.27 6.27 0 0 0 1.87-4.49V8.75a8.16 8.16 0 0 0 4.77 1.52V6.83a4.86 4.86 0 0 1-.87-.14z"/></svg>
+                    <span>TikTok</span>
+                </a>` : ""}
+                ${!ig && !tt ? `<span style="grid-column:span 2;font-size:0.75rem;opacity:0.6;text-align:center;">Sin redes añadidas</span>` : ""}
+            </div>
+        </div>
+
+        <button type="button" class="preview-badge-btn" data-profile-name="${escapeHtml(name)}" aria-label="Ver ficha de ${escapeHtml(name)}">
+            <span>Ver ficha completa ✦</span>
+        </button>
+    `;
+
+    card.addEventListener("click", (event) => {
+        if (event.target.closest("a") || event.target.closest(".preview-socials")) return;
+        openProfileInfo(name);
+    });
+    card.querySelector(".preview-badge-btn")?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openProfileInfo(name);
+    });
+
+    previewContainer.appendChild(card);
+}
+
+function renderCustomProfileButton(name) {
+    const grid = document.getElementById("profileGrid");
+    if (!grid) return;
+    if (grid.querySelector(`button[data-profile="${name}"]`)) return;
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "profile-button";
+    btn.dataset.profile = name;
+    btn.textContent = name;
+    btn.addEventListener("click", () => {
+        applyProfile(name);
+        showIntroScreen();
+    });
+    grid.appendChild(btn);
+}
+
+function loadCustomProfiles() {
+    const list = getCustomProfiles();
+    for (const [name, profile] of Object.entries(list)) {
+        content.profiles[name] = profile;
+        const colorKey = profile.colorKey || "pink";
+        const preset = COLOR_PRESETS[colorKey] || COLOR_PRESETS.pink;
+        PROFILES_INFO[name] = {
+            number: "✦",
+            name: name,
+            emoji: preset.emoji,
+            photo: profile.cardInfo?.photo || "",
+            photoPosition: profile.cardInfo?.photoPosition || "center 20%",
+            birthDate: profile.cardInfo?.birthDate || "",
+            age: profile.cardInfo?.age || "",
+            city: profile.cardInfo?.city || "",
+            favColor: profile.cardInfo?.favColor || preset.name,
+            favColorHex: preset.hex,
+            socials: profile.cardInfo?.socials || [],
+            themeClass: `info-custom info-${colorKey}`,
+            tagline: profile.tagline || "archivo personalizado",
+            vibe: `Espacio personal creado con cariño para ${name} por ${profile.creator || "un ser querido"}.`,
+            quote: profile.letters?.[0]?.body ? `«${profile.letters[0].body.slice(0, 140)}...»` : "«Un lugar al que volver cuando quieras.»",
+            traits: [
+                { icon: "🎂", label: "Nacimiento", value: profile.cardInfo?.birthDate || "—" },
+                { icon: "⏳", label: "Edad", value: profile.cardInfo?.age || "—" },
+                { icon: "📍", label: "Ciudad", value: profile.cardInfo?.city || "—" },
+                { icon: "🎨", label: "Color fav", value: profile.cardInfo?.favColor || preset.name },
+                { icon: "✨", label: "Creador", value: profile.creator || "Archivo" }
+            ],
+            cornerUrl: "#",
+            cornerLabel: `✨ Entrar al archivo de ${name}`
+        };
+
+        if (profile.password) {
+            PASSWORDS[name.toLowerCase()] = profile.password;
+        }
+
+        renderCustomProfileCard(name, profile);
+        renderCustomProfileButton(name);
+    }
+}
+
+function initCreatorWizard() {
+    const modal = document.getElementById("creatorModal");
+    const openBtn = document.getElementById("openCreatorBtn");
+    const closeBtn = document.getElementById("closeCreatorBtn");
+    const form = document.getElementById("creatorForm");
+    const step1 = document.getElementById("creatorStep1");
+    const step2 = document.getElementById("creatorStep2");
+    const step3 = document.getElementById("creatorStep3");
+    const successPane = document.getElementById("creatorSuccessPane");
+    const dots = document.querySelectorAll(".creator-step-dot");
+
+    let uploadedPhotoData = "";
+
+    function setStep(step) {
+        step1?.classList.toggle("hidden", step !== 1);
+        step2?.classList.toggle("hidden", step !== 2);
+        step3?.classList.toggle("hidden", step !== 3);
+        successPane?.classList.add("hidden");
+        form?.classList.remove("hidden");
+        dots.forEach((dot) => {
+            const dotStep = Number(dot.dataset.step);
+            dot.classList.toggle("active", dotStep === step);
+        });
+    }
+
+    openBtn?.addEventListener("click", () => {
+        setStep(1);
+        modal?.showModal();
+    });
+    closeBtn?.addEventListener("click", () => modal?.close());
+    modal?.addEventListener("click", (e) => {
+        if (e.target === modal) modal.close();
+    });
+
+    document.getElementById("crGoStep2")?.addEventListener("click", () => {
+        const name = document.getElementById("crPersonName")?.value.trim();
+        const creator = document.getElementById("crCreatorName")?.value.trim();
+        const tagline = document.getElementById("crTagline")?.value.trim();
+        if (!name || !creator || !tagline) {
+            alert("Por favor, rellena los campos marcados con asterisco (*).");
+            return;
+        }
+        setStep(2);
+    });
+
+    document.getElementById("crBackStep1")?.addEventListener("click", () => setStep(1));
+
+    document.getElementById("crGoStep3")?.addEventListener("click", () => {
+        const bdate = document.getElementById("crBirthDate")?.value.trim();
+        const age = document.getElementById("crAge")?.value.trim();
+        const city = document.getElementById("crCity")?.value.trim();
+        if (!bdate || !age || !city) {
+            alert("Por favor, completa fecha de nacimiento, edad y ciudad.");
+            return;
+        }
+        setStep(3);
+    });
+
+    document.getElementById("crBackStep2")?.addEventListener("click", () => setStep(2));
+
+    const photoInput = document.getElementById("crPhotoInput");
+    const chooseBtn = document.getElementById("crPhotoChooseBtn");
+    const removeBtn = document.getElementById("crPhotoRemoveBtn");
+    const avatarPreview = document.getElementById("crAvatarPreview");
+
+    chooseBtn?.addEventListener("click", () => photoInput?.click());
+    photoInput?.addEventListener("change", (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            uploadedPhotoData = evt.target.result;
+            if (avatarPreview) avatarPreview.innerHTML = `<img src="${uploadedPhotoData}" alt="Foto previsualizada">`;
+            removeBtn?.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+    });
+    removeBtn?.addEventListener("click", () => {
+        uploadedPhotoData = "";
+        if (avatarPreview) avatarPreview.innerHTML = `<span id="crAvatarPlaceholder">📸</span>`;
+        if (photoInput) photoInput.value = "";
+        removeBtn?.classList.add("hidden");
+    });
+
+    document.getElementById("crSuggestLetterBtn")?.addEventListener("click", () => {
+        const name = document.getElementById("crPersonName")?.value.trim() || "ti";
+        const creator = document.getElementById("crCreatorName")?.value.trim() || "mí";
+        const letterArea = document.getElementById("crLetter");
+        if (letterArea) {
+            letterArea.value = `Querida/o ${name},\n\nQuería que tuvieras un rincón privado que fuera solamente tuyo. Gracias por estar siempre ahí, por cada risa compartida y por esa complicidad que lo hace todo más fácil.\n\nEste archivo está hecho para que vuelvas siempre que quieras recordar los buenos momentos. ¡Te lo mereces todo!\n\nCon muchísimo cariño, ${creator}. ✦`;
+        }
+    });
+
+    form?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("crPersonName")?.value.trim();
+        const creator = document.getElementById("crCreatorName")?.value.trim();
+        const tagline = document.getElementById("crTagline")?.value.trim();
+        const password = document.getElementById("crPassword")?.value.trim();
+        const birthDate = document.getElementById("crBirthDate")?.value.trim();
+        const age = document.getElementById("crAge")?.value.trim();
+        const city = document.getElementById("crCity")?.value.trim();
+        const colorKey = document.getElementById("crColorSelect")?.value || "pink";
+        const instagram = document.getElementById("crInstagram")?.value.trim();
+        const tiktok = document.getElementById("crTiktok")?.value.trim();
+        const letter = document.getElementById("crLetter")?.value.trim();
+        const memory = document.getElementById("crMemory")?.value.trim();
+        const capsule = document.getElementById("crCapsule")?.value.trim();
+
+        if (!name || !letter) {
+            alert("Por favor, indica al menos el nombre y la carta personal.");
+            return;
+        }
+
+        const preset = COLOR_PRESETS[colorKey] || COLOR_PRESETS.pink;
+        function formatSocial(urlOrUser, network) {
+            if (!urlOrUser) return "";
+            if (urlOrUser.startsWith("http://") || urlOrUser.startsWith("https://")) return urlOrUser;
+            const clean = urlOrUser.replace(/^@/, "");
+            return network === "instagram" ? `https://www.instagram.com/${clean}/` : `https://www.tiktok.com/@${clean}`;
+        }
+
+        const newProfile = {
+            theme: preset.theme,
+            colorKey: colorKey,
+            creator: creator,
+            tagline: tagline,
+            password: password || undefined,
+            eyebrow: `Archivo de ${name}`,
+            introEyebrow: `Entrada de ${name}`,
+            introTitle: `${name}, esta portada es solo para ti.`,
+            introDescription: `Todo aquí entra con calma y con tu propia energía. Este rincón ha sido guardado con dedicación por ${creator}.`,
+            introButton: `Entrar al archivo de ${name}`,
+            timeGreetings: {
+                morning: `Buenos días, ${name}. Tu archivo despierta suave y con luz propia.`,
+                afternoon: `Buenas tardes, ${name}. Este refugio entra cálido y con buen ritmo.`,
+                evening: `Buenas noches, ${name}. Esta versión se ve mejor cuando todo va más lento.`
+            },
+            heroTitle: `Un refugio privado hecho a la medida de ${name}.`,
+            heroDescription: `Cartas, recuerdos y música guardados con calma para volver cuando quieras.`,
+            statusLabel: `Modo ${name}`,
+            surpriseLabel: "Activa",
+            libraryTitle: `Contenido especial de ${name}`,
+            galleryTitle: `Recuerdos para ${name}`,
+            lettersTitle: `Cartas para ${name}`,
+            playlistTitle: `La mezcla musical de ${name}`,
+            dailyMemoryTitle: `Hoy el archivo destaca este recuerdo para ${name}`,
+            timelineTitle: `Momentos especiales con ${creator}`,
+            capsuleTitle: `Cápsula del tiempo`,
+            countdownTitle: `Momentos marcados en el archivo`,
+            notesTitle: `Notas privadas`,
+            securitySummary: `Este archivo personalizado está guardado en el navegador de este dispositivo.`,
+            securityNextStep: `Puedes descargar una copia de seguridad en formato JSON cuando quieras.`,
+            cardInfo: {
+                photo: uploadedPhotoData || (colorKey === "pink" ? "assets/media/CUMPLE_CARLA/RETRATO-1.JPEG" : "assets/media/ALINA_ANUEL.PNG"),
+                photoPosition: "center 20%",
+                birthDate: birthDate,
+                age: age,
+                city: city,
+                favColor: preset.name,
+                favColorHex: preset.hex,
+                socials: [
+                    ...(instagram ? [{ name: "Instagram", icon: "ig", url: formatSocial(instagram, "instagram") }] : []),
+                    ...(tiktok ? [{ name: "TikTok", icon: "tt", url: formatSocial(tiktok, "tiktok") }] : [])
+                ]
+            },
+            letters: [
+                {
+                    title: `Para ${name}`,
+                    tag: "Carta principal",
+                    body: letter,
+                    signature: `Con cariño, ${creator}`
+                }
+            ],
+            timeline: [
+                {
+                    date: "El comienzo",
+                    title: tagline,
+                    body: memory || `Aquí empezó todo lo bueno. Cada conversación y cada broma compartida han sumado a este refugio.`
+                }
+            ],
+            capsule: [
+                {
+                    when: "Abrir cuando necesites sonreír",
+                    title: "Reserva de buen rollo",
+                    body: capsule || `Vuelve a esta parte cuando las cosas pesen. Aquí sigue guardada la mejor versión de esta historia.`
+                }
+            ],
+            surprises: [
+                {
+                    eyebrow: `Sorpresa de ${name}`,
+                    title: "Un detalle inesperado",
+                    body: `Hay recuerdos que no necesitan orden exacto. El archivo siempre tendrá sitio para ti.`
+                }
+            ],
+            backgroundTracks: [
+                { title: "Blessings (Chill Mix)", file: "assets/media/MUSICA 1.mp3" },
+                { title: "Raindance (Nocturno)", file: "assets/media/MUSICA 4.mp3" },
+                { title: "Tell Me (Melodía)", file: "assets/media/MUSICA 2.mp3" }
+            ],
+            photos: []
+        };
+
+        saveCustomProfile(name, newProfile);
+        content.profiles[name] = newProfile;
+        if (password) PASSWORDS[name.toLowerCase()] = password;
+
+        PROFILES_INFO[name] = {
+            number: "✦",
+            name: name,
+            emoji: preset.emoji,
+            photo: newProfile.cardInfo.photo,
+            photoPosition: "center 20%",
+            birthDate: birthDate,
+            age: age,
+            city: city,
+            favColor: preset.name,
+            favColorHex: preset.hex,
+            socials: newProfile.cardInfo.socials,
+            themeClass: `info-custom info-${colorKey}`,
+            tagline: tagline,
+            vibe: `Energía única, recuerdos compartidos y complicidad con ${creator}.`,
+            quote: `«${letter.slice(0, 140)}...»`,
+            traits: [
+                { icon: "🎂", label: "Nacimiento", value: birthDate },
+                { icon: "⏳", label: "Edad", value: age },
+                { icon: "📍", label: "Ciudad", value: city },
+                { icon: "🎨", label: "Color fav", value: preset.name },
+                { icon: "✨", label: "Creador", value: creator }
+            ],
+            cornerUrl: "#",
+            cornerLabel: `✨ Entrar al archivo de ${name}`
+        };
+
+        renderCustomProfileCard(name, newProfile);
+        renderCustomProfileButton(name);
+
+        form.classList.add("hidden");
+        const successName = document.getElementById("crSuccessName");
+        const successMsg = document.getElementById("crSuccessMsg");
+        const successAvatar = document.getElementById("crSuccessAvatar");
+        if (successName) successName.textContent = `¡El archivo de ${name} ya está listo!`;
+        if (successMsg) successMsg.textContent = `El motor ha creado automáticamente su tarjeta en la portada, su carta dedicada por ${creator} y su espacio personal.`;
+        if (successAvatar) {
+            if (newProfile.cardInfo.photo) {
+                successAvatar.innerHTML = `<img src="${newProfile.cardInfo.photo}" alt="${name}">`;
+            } else {
+                successAvatar.innerHTML = `<span>${preset.emoji}</span>`;
+            }
+        }
+        successPane?.classList.remove("hidden");
+
+        const enterBtn = document.getElementById("crSuccessEnterBtn");
+        if (enterBtn) {
+            enterBtn.onclick = () => {
+                modal.close();
+                activeAccess = "legacy";
+                applyProfile(name);
+                showIntroScreen();
+            };
+        }
+
+        const viewCardBtn = document.getElementById("crSuccessViewCardBtn");
+        if (viewCardBtn) {
+            viewCardBtn.onclick = () => {
+                modal.close();
+                const card = document.querySelector(`.preview-card[data-profile-name="${name}"]`);
+                if (card) {
+                    card.scrollIntoView({ behavior: "smooth", block: "center" });
+                    card.style.transform = "scale(1.05)";
+                    setTimeout(() => card.style.transform = "", 600);
+                }
+            };
+        }
+
+        const downloadBtn = document.getElementById("crSuccessDownloadBtn");
+        if (downloadBtn) {
+            downloadBtn.onclick = () => {
+                const blob = new Blob([JSON.stringify(newProfile, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `archivo-secreto-${name.toLowerCase()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+        }
+    });
+}
+
 function bootstrap() {
     initAmbientCanvas();
     updateSiteAgeUi();
     setInterval(updateSiteAgeUi, 1000);
     updateLoginAvailability();
+    loadCustomProfiles();
+    initCreatorWizard();
     showPasswordStep();
     const savedProfile = localStorage.getItem(PROFILE_KEY);
     const savedAccess = localStorage.getItem(ACCESS_KEY) || "legacy";
