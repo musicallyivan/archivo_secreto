@@ -154,9 +154,9 @@
                     <span class="creator-trigger-spark" aria-hidden="true">✨</span>
                     <span class="creator-trigger-texts">
                         <strong>Crea un archivo para quien tú quieras</strong>
-                        <small>Responde unas preguntas y el motor lo genera automáticamente ✦</small>
+                        <small>Responde unas preguntas y se guarda en la nube automáticamente ✦</small>
                     </span>
-                    <span class="creator-trigger-badge" aria-hidden="true">Nuevo</span>
+                    <span class="creator-trigger-badge" aria-hidden="true">☁️ Nube</span>
                 </button>
             </div>
 
@@ -727,7 +727,7 @@
                     <div class="creator-step-actions">
                         <button type="button" class="secondary-button" id="crBackStep2">← Volver</button>
                         <button type="submit" class="creator-action-btn creator-submit-btn" id="crSubmitBtn">
-                            <span>✨ Generar Archivo Secreto ✦</span>
+                            <span>☁️ Guardar y Crear en la Nube ✦</span>
                         </button>
                     </div>
                 </div>
@@ -739,6 +739,14 @@
                 <div class="creator-success-avatar-wrap" id="crSuccessAvatar"></div>
                 <h3 id="crSuccessName">¡El archivo de Lucía ya está listo!</h3>
                 <p id="crSuccessMsg">El motor de la página ha creado automáticamente su portada, su tarjeta de acceso, su carta privada y su línea del tiempo.</p>
+
+                <div class="creator-cloud-status" id="crCloudStatus" role="status">
+                    <span class="cloud-icon" id="crCloudIcon">☁️</span>
+                    <div class="cloud-status-text" id="crCloudText">
+                        <strong>Sincronizando con la nube...</strong>
+                        <small>Guardando perfil en el servidor online.</small>
+                    </div>
+                </div>
 
                 <div class="creator-success-buttons">
                     <button type="button" class="creator-action-btn creator-enter-btn" id="crSuccessEnterBtn">

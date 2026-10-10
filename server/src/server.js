@@ -38,6 +38,16 @@ await pool.query(`
   )
 `);
 
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS custom_profiles (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(120) NOT NULL UNIQUE,
+    data JSONB NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  )
+`);
+
 // CORS is a browser security policy, not API authentication. The API currently
 // has no private credentials in browser requests, so allow web clients to call it.
 app.use(cors({
@@ -153,6 +163,65 @@ app.delete('/api/mural-photos/:id', async (req, res) => {
   } catch (err) {
     console.error('Error al eliminar foto del mural:', err);
     res.status(500).json({ error: 'No se pudo eliminar la foto del mural.' });
+  }
+});
+
+// ============================================================================
+// ARCHIVOS SECRETOS PERSONALIZADOS - CLOUD STORAGE REST API
+// ============================================================================
+app.get('/api/custom-profiles', async (_req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT name, data, created_at, updated_at FROM custom_profiles ORDER BY created_at ASC'
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('Error al recuperar perfiles de la nube:', err);
+    res.status(500).json({ error: 'No se pudieron recuperar los perfiles de la nube.' });
+  }
+});
+
+app.post('/api/custom-profiles', async (req, res) => {
+  const name = String(req.body?.name || '').trim().slice(0, 120);
+  const data = req.body?.data;
+
+  if (!name) {
+    return res.status(400).json({ error: 'El nombre del perfil es obligatorio.' });
+  }
+  if (!data || typeof data !== 'object') {
+    return res.status(400).json({ error: 'Los datos del perfil son obligatorios.' });
+  }
+
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO custom_profiles (name, data)
+       VALUES ($1, $2)
+       ON CONFLICT (name) DO UPDATE SET data = EXCLUDED.data, updated_at = NOW()
+       RETURNING name, data, created_at, updated_at`,
+      [name, JSON.stringify(data)]
+    );
+    res.status(201).json({ ok: true, profile: rows[0] });
+  } catch (err) {
+    console.error('Error al guardar perfil en la nube:', err);
+    res.status(500).json({ error: 'No se pudo guardar el perfil en la nube.' });
+  }
+});
+
+app.delete('/api/custom-profiles/:name', async (req, res) => {
+  const name = String(req.params.name || '').trim().slice(0, 120);
+  if (!name) {
+    return res.status(400).json({ error: 'Nombre de perfil inválido.' });
+  }
+
+  try {
+    const result = await pool.query('DELETE FROM custom_profiles WHERE LOWER(name) = LOWER($1)', [name]);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Perfil no encontrado en la nube.' });
+    }
+    res.status(204).end();
+  } catch (err) {
+    console.error('Error al eliminar perfil de la nube:', err);
+    res.status(500).json({ error: 'No se pudo eliminar el perfil de la nube.' });
   }
 });
 

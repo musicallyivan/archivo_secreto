@@ -628,8 +628,9 @@ function closeProfileInfo() {
 }
 
 /* ==========================================================================
-   CUSTOM PROFILE CREATOR ENGINE & LOCAL STORAGE SYNC
+   CUSTOM PROFILE CREATOR ENGINE & CLOUD STORAGE SYNC
    ========================================================================== */
+const API = (window.CARLA_API_URL || "https://archivo-secreto-api-v3.onrender.com").replace(/\/$/, "");
 const CUSTOM_PROFILES_KEY = "archivo-secreto-custom-profiles";
 const COLOR_PRESETS = {
     pink: { name: "Rosa Pastel", hex: "#ff8fc7", theme: "custom-pink", emoji: "🌸", bg: "linear-gradient(155deg, rgba(255, 245, 250, 0.96) 0%, rgba(255, 222, 237, 0.92) 100%)", border: "rgba(227, 106, 150, 0.35)", text: "#6a2b47" },
@@ -638,6 +639,37 @@ const COLOR_PRESETS = {
     green: { name: "Verde Menta", hex: "#52b788", theme: "custom-green", emoji: "🌿", bg: "linear-gradient(155deg, rgba(244, 251, 247, 0.96) 0%, rgba(212, 244, 228, 0.92) 100%)", border: "rgba(82, 183, 136, 0.35)", text: "#1b4d3e" },
     gold: { name: "Ámbar Dorado", hex: "#f4a261", theme: "custom-gold", emoji: "✨", bg: "linear-gradient(155deg, rgba(255, 250, 244, 0.96) 0%, rgba(255, 231, 210, 0.92) 100%)", border: "rgba(244, 162, 97, 0.35)", text: "#6e3810" }
 };
+
+function compressAvatar(file, maxSize = 600, quality = 0.85) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onerror = reject;
+            img.onload = () => {
+                let { width, height } = img;
+                if (width > maxSize || height > maxSize) {
+                    if (width > height) {
+                        height = Math.round((height * maxSize) / width);
+                        width = maxSize;
+                    } else {
+                        width = Math.round((width * maxSize) / height);
+                        height = maxSize;
+                    }
+                }
+                const canvas = document.createElement("canvas");
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL("image/jpeg", quality));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
 
 function getCustomProfiles() {
     try {
@@ -651,6 +683,95 @@ function saveCustomProfile(name, profileData) {
     const list = getCustomProfiles();
     list[name] = profileData;
     localStorage.setItem(CUSTOM_PROFILES_KEY, JSON.stringify(list));
+}
+
+async function syncProfileToCloud(name, profileData) {
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
+        const res = await fetch(`${API}/api/custom-profiles`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, data: profileData }),
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        return { ok: true };
+    } catch (err) {
+        console.warn("No se pudo guardar el perfil en la nube:", err);
+        return { ok: false, error: err };
+    }
+}
+
+async function syncCustomProfilesFromCloud() {
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        const res = await fetch(`${API}/api/custom-profiles`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (!res.ok) return;
+        const rows = await res.json();
+        if (!Array.isArray(rows)) return;
+
+        const localList = getCustomProfiles();
+        let changed = false;
+
+        for (const item of rows) {
+            const name = item.name;
+            const profile = item.data;
+            if (!name || !profile) continue;
+
+            localList[name] = profile;
+            changed = true;
+
+            registerCustomProfileInMemory(name, profile);
+            renderCustomProfileCard(name, profile);
+            renderCustomProfileButton(name);
+        }
+
+        if (changed) {
+            localStorage.setItem(CUSTOM_PROFILES_KEY, JSON.stringify(localList));
+        }
+    } catch (err) {
+        console.warn("No se pudieron sincronizar perfiles de la nube:", err);
+    }
+}
+
+function registerCustomProfileInMemory(name, profile) {
+    content.profiles[name] = profile;
+    const colorKey = profile.colorKey || "pink";
+    const preset = COLOR_PRESETS[colorKey] || COLOR_PRESETS.pink;
+    PROFILES_INFO[name] = {
+        number: "✦",
+        name: name,
+        emoji: preset.emoji,
+        photo: profile.cardInfo?.photo || "",
+        photoPosition: profile.cardInfo?.photoPosition || "center 20%",
+        birthDate: profile.cardInfo?.birthDate || "",
+        age: profile.cardInfo?.age || "",
+        city: profile.cardInfo?.city || "",
+        favColor: profile.cardInfo?.favColor || preset.name,
+        favColorHex: preset.hex,
+        socials: profile.cardInfo?.socials || [],
+        themeClass: `info-custom info-${colorKey}`,
+        tagline: profile.tagline || "archivo personalizado",
+        vibe: `Espacio personal creado con cariño para ${name} por ${profile.creator || "un ser querido"}.`,
+        quote: profile.letters?.[0]?.body ? `«${profile.letters[0].body.slice(0, 140)}...»` : "«Un lugar al que volver cuando quieras.»",
+        traits: [
+            { icon: "🎂", label: "Nacimiento", value: profile.cardInfo?.birthDate || "—" },
+            { icon: "⏳", label: "Edad", value: profile.cardInfo?.age || "—" },
+            { icon: "📍", label: "Ciudad", value: profile.cardInfo?.city || "—" },
+            { icon: "🎨", label: "Color fav", value: profile.cardInfo?.favColor || preset.name },
+            { icon: "✨", label: "Creador", value: profile.creator || "Archivo" }
+        ],
+        cornerUrl: "#",
+        cornerLabel: `✨ Entrar al archivo de ${name}`
+    };
+
+    if (profile.password) {
+        PASSWORDS[name.toLowerCase()] = profile.password;
+    }
 }
 
 function renderCustomProfileCard(name, profile) {
@@ -673,6 +794,7 @@ function renderCustomProfileCard(name, profile) {
     const tt = info.socials?.find((s) => s.icon === "tt" || s.name.toLowerCase().includes("tiktok"));
 
     card.innerHTML = `
+        <span class="creator-cloud-badge" aria-label="Sincronizado en la nube">☁️ Nube</span>
         <div class="preview-card-header">
             <span class="preview-card-num" style="background:${preset.hex}22; color:${preset.hex}">✦</span>
             <div class="preview-photo-wrap" style="border:3px solid rgba(255,255,255,0.95); box-shadow:0 8px 22px ${preset.hex}44">
@@ -756,43 +878,11 @@ function renderCustomProfileButton(name) {
 function loadCustomProfiles() {
     const list = getCustomProfiles();
     for (const [name, profile] of Object.entries(list)) {
-        content.profiles[name] = profile;
-        const colorKey = profile.colorKey || "pink";
-        const preset = COLOR_PRESETS[colorKey] || COLOR_PRESETS.pink;
-        PROFILES_INFO[name] = {
-            number: "✦",
-            name: name,
-            emoji: preset.emoji,
-            photo: profile.cardInfo?.photo || "",
-            photoPosition: profile.cardInfo?.photoPosition || "center 20%",
-            birthDate: profile.cardInfo?.birthDate || "",
-            age: profile.cardInfo?.age || "",
-            city: profile.cardInfo?.city || "",
-            favColor: profile.cardInfo?.favColor || preset.name,
-            favColorHex: preset.hex,
-            socials: profile.cardInfo?.socials || [],
-            themeClass: `info-custom info-${colorKey}`,
-            tagline: profile.tagline || "archivo personalizado",
-            vibe: `Espacio personal creado con cariño para ${name} por ${profile.creator || "un ser querido"}.`,
-            quote: profile.letters?.[0]?.body ? `«${profile.letters[0].body.slice(0, 140)}...»` : "«Un lugar al que volver cuando quieras.»",
-            traits: [
-                { icon: "🎂", label: "Nacimiento", value: profile.cardInfo?.birthDate || "—" },
-                { icon: "⏳", label: "Edad", value: profile.cardInfo?.age || "—" },
-                { icon: "📍", label: "Ciudad", value: profile.cardInfo?.city || "—" },
-                { icon: "🎨", label: "Color fav", value: profile.cardInfo?.favColor || preset.name },
-                { icon: "✨", label: "Creador", value: profile.creator || "Archivo" }
-            ],
-            cornerUrl: "#",
-            cornerLabel: `✨ Entrar al archivo de ${name}`
-        };
-
-        if (profile.password) {
-            PASSWORDS[name.toLowerCase()] = profile.password;
-        }
-
+        registerCustomProfileInMemory(name, profile);
         renderCustomProfileCard(name, profile);
         renderCustomProfileButton(name);
     }
+    syncCustomProfilesFromCloud();
 }
 
 function initCreatorWizard() {
@@ -861,16 +951,22 @@ function initCreatorWizard() {
     const avatarPreview = document.getElementById("crAvatarPreview");
 
     chooseBtn?.addEventListener("click", () => photoInput?.click());
-    photoInput?.addEventListener("change", (e) => {
+    photoInput?.addEventListener("change", async (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-            uploadedPhotoData = evt.target.result;
+        try {
+            uploadedPhotoData = await compressAvatar(file, 600, 0.85);
             if (avatarPreview) avatarPreview.innerHTML = `<img src="${uploadedPhotoData}" alt="Foto previsualizada">`;
             removeBtn?.classList.remove("hidden");
-        };
-        reader.readAsDataURL(file);
+        } catch {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                uploadedPhotoData = evt.target.result;
+                if (avatarPreview) avatarPreview.innerHTML = `<img src="${uploadedPhotoData}" alt="Foto previsualizada">`;
+                removeBtn?.classList.remove("hidden");
+            };
+            reader.readAsDataURL(file);
+        }
     });
     removeBtn?.addEventListener("click", () => {
         uploadedPhotoData = "";
@@ -888,8 +984,15 @@ function initCreatorWizard() {
         }
     });
 
-    form?.addEventListener("submit", (e) => {
+    form?.addEventListener("submit", async (e) => {
         e.preventDefault();
+        const submitBtn = document.getElementById("crSubmitBtn");
+        const originalBtnText = submitBtn ? submitBtn.innerHTML : "";
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>☁️ Guardando en la nube...</span>`;
+        }
+
         const name = document.getElementById("crPersonName")?.value.trim();
         const creator = document.getElementById("crCreatorName")?.value.trim();
         const tagline = document.getElementById("crTagline")?.value.trim();
@@ -906,6 +1009,10 @@ function initCreatorWizard() {
 
         if (!name || !letter) {
             alert("Por favor, indica al menos el nombre y la carta personal.");
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
             return;
         }
 
@@ -946,7 +1053,7 @@ function initCreatorWizard() {
             capsuleTitle: `Cápsula del tiempo`,
             countdownTitle: `Momentos marcados en el archivo`,
             notesTitle: `Notas privadas`,
-            securitySummary: `Este archivo personalizado está guardado en el navegador de este dispositivo.`,
+            securitySummary: `Este archivo personalizado está sincronizado en la nube y accesible desde cualquier dispositivo.`,
             securityNextStep: `Puedes descargar una copia de seguridad en formato JSON cuando quieras.`,
             cardInfo: {
                 photo: uploadedPhotoData || (colorKey === "pink" ? "assets/media/CUMPLE_CARLA/RETRATO-1.JPEG" : "assets/media/ALINA_ANUEL.PNG"),
@@ -999,36 +1106,7 @@ function initCreatorWizard() {
         };
 
         saveCustomProfile(name, newProfile);
-        content.profiles[name] = newProfile;
-        if (password) PASSWORDS[name.toLowerCase()] = password;
-
-        PROFILES_INFO[name] = {
-            number: "✦",
-            name: name,
-            emoji: preset.emoji,
-            photo: newProfile.cardInfo.photo,
-            photoPosition: "center 20%",
-            birthDate: birthDate,
-            age: age,
-            city: city,
-            favColor: preset.name,
-            favColorHex: preset.hex,
-            socials: newProfile.cardInfo.socials,
-            themeClass: `info-custom info-${colorKey}`,
-            tagline: tagline,
-            vibe: `Energía única, recuerdos compartidos y complicidad con ${creator}.`,
-            quote: `«${letter.slice(0, 140)}...»`,
-            traits: [
-                { icon: "🎂", label: "Nacimiento", value: birthDate },
-                { icon: "⏳", label: "Edad", value: age },
-                { icon: "📍", label: "Ciudad", value: city },
-                { icon: "🎨", label: "Color fav", value: preset.name },
-                { icon: "✨", label: "Creador", value: creator }
-            ],
-            cornerUrl: "#",
-            cornerLabel: `✨ Entrar al archivo de ${name}`
-        };
-
+        registerCustomProfileInMemory(name, newProfile);
         renderCustomProfileCard(name, newProfile);
         renderCustomProfileButton(name);
 
@@ -1045,7 +1123,34 @@ function initCreatorWizard() {
                 successAvatar.innerHTML = `<span>${preset.emoji}</span>`;
             }
         }
+
+        const cloudStatus = document.getElementById("crCloudStatus");
+        const cloudIcon = document.getElementById("crCloudIcon");
+        const cloudText = document.getElementById("crCloudText");
+        if (cloudStatus && cloudIcon && cloudText) {
+            cloudStatus.className = "creator-cloud-status";
+            cloudIcon.textContent = "☁️ ⏳";
+            cloudText.innerHTML = `<strong>Sincronizando con la nube...</strong><small>Enviando el archivo al servidor online...</small>`;
+        }
         successPane?.classList.remove("hidden");
+
+        const cloudRes = await syncProfileToCloud(name, newProfile);
+        if (cloudStatus && cloudIcon && cloudText) {
+            if (cloudRes.ok) {
+                cloudStatus.className = "creator-cloud-status is-success";
+                cloudIcon.textContent = "☁️ ✨";
+                cloudText.innerHTML = `<strong>¡Guardado en la nube con éxito!</strong><small>Este archivo ya está en el servidor online. Se podrá abrir desde cualquier móvil o dispositivo y entrar con su PIN.</small>`;
+            } else {
+                cloudStatus.className = "creator-cloud-status is-warning";
+                cloudIcon.textContent = "💾 ⚠️";
+                cloudText.innerHTML = `<strong>Guardado localmente en este dispositivo</strong><small>No se pudo conectar a la nube en este momento. El archivo queda guardado aquí y se reintentará sincronizar automáticamente.</small>`;
+            }
+        }
+
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }
 
         const enterBtn = document.getElementById("crSuccessEnterBtn");
         if (enterBtn) {

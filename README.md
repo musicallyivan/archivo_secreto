@@ -29,7 +29,7 @@ Página web privada e interactiva para las cartas, recuerdos, fotos, audios y v�
 - `sw.js`: Service Worker PWA con estrategia cache-first y soporte para streaming de medios.
 
 ### Backend (`server/`)
-- `server/src/server.js`: API REST en Express y Node.js conectada a PostgreSQL para autoguardado de fotos y mensajes al futuro.
+- `server/src/server.js`: API REST en Express y Node.js conectada a PostgreSQL para autoguardado de fotos del mural, mensajes al futuro y archivos secretos personalizados generados por el motor.
 - `render.yaml`: Manifiesto de despliegue automático en Render (`archivo-secreto-api-v3`).
 
 ---
@@ -40,7 +40,7 @@ Página web privada e interactiva para las cartas, recuerdos, fotos, audios y v�
 - **Modularización de JavaScript:** Extracción del código inline a `js/cumple-carla.js`, reduciendo el peso de `cumple-carla.html` de 58 KB a 32 KB y permitiendo caché HTTP y PWA independiente.
 - **Eliminación de bloqueo de renderizado:** Atributos `defer` en todos los scripts de la aplicación para que el navegador construya el DOM inmediatamente sin pausas.
 - **Precarga inteligente de audio:** Modificado `preload="auto"` por `preload="none"` / `preload="metadata"` para no consumir datos de canciones hasta que el usuario decida reproducirlas.
-- **Service Worker robusto (v13):** Cacheado offline de todos los recursos esenciales y bypass automático de peticiones con cabecera `Range` para garantizar fluidez en la reproducción y avance de pistas de audio y vídeo.
+- **Service Worker robusto (v21):** Cacheado offline de todos los recursos esenciales, bypass de llamadas a `/api/` para sincronización en tiempo real y soporte para streaming de medios.
 - **CI/CD optimizado:** Automatización de despliegue en GitHub Pages mediante GitHub Actions compatible con ejecuciones en Windows Services (`cmd.exe`).
 
 ---
@@ -50,9 +50,10 @@ Página web privada e interactiva para las cartas, recuerdos, fotos, audios y v�
 1. **Mural de Fotos Secreto:** Fotos sincronizadas en la nube (PostgreSQL en Render) con respaldo local inmediato en IndexedDB.
 2. **Cabina Polaroid Retro:** Filtros en tiempo real (Chispa Rosa, Retro 90s, Noir, Golden Hour, Pastel Dream), flash, captura frontal/trasera y descarga en alta resolución con marco polaroid.
 3. **Cápsula del Tiempo:** Espacio para escribir mensajes a la versión futura de cada perfil guardados en la nube.
-4. **Tarjetas Interactivas y Rascador:** Efecto de rascar interactivo con partículas para descubrir sorpresas.
-5. **Trivia y Notas de Voz:** Minijuegos de complicidad con feedback inmediato y reproductor de audios personalizado.
-6. **Experiencia PWA Instalable:** Acceso directo como aplicación en iOS y Android con icono personalizado y funcionamiento offline.
+4. **Generador Mágico de Archivos en la Nube:** Creación guiada de archivos secretos dedicados con autoguardado en PostgreSQL y sincronización multidispositivo.
+5. **Tarjetas Interactivas y Rascador:** Efecto de rascar interactivo con partículas para descubrir sorpresas.
+6. **Trivia y Notas de Voz:** Minijuegos de complicidad con feedback inmediato y reproductor de audios personalizado.
+7. **Experiencia PWA Instalable:** Acceso directo como aplicación en iOS y Android con icono personalizado y funcionamiento offline.
 
 ---
 

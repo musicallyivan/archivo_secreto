@@ -1,4 +1,4 @@
-const CACHE_NAME = 'archivo-secreto-v20';
+const CACHE_NAME = 'archivo-secreto-v21';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -50,6 +50,8 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  // Never cache API calls
+  if (event.request.url.includes('/api/')) return;
   // Let the browser handle audio/video Range requests natively
   if (event.request.headers.get('range')) return;
 
