@@ -158,6 +158,10 @@
                     </span>
                     <span class="creator-trigger-badge" aria-hidden="true">☁️ Nube</span>
                 </button>
+                <button type="button" class="creator-manage-btn" id="openManageBtn" aria-label="Gestionar y editar archivos creados en la nube">
+                    <span class="manage-btn-icon" aria-hidden="true">⚙️</span>
+                    <span>Gestionar / Editar archivos en la nube</span>
+                </button>
             </div>
 
             <div class="login-age-card" aria-label="Tiempo desde la creación de la web">
@@ -760,6 +764,155 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </dialog>
+
+    <!-- Modal: Panel de Gestión de Archivos en la Nube -->
+    <dialog class="manage-modal" id="manageModal" aria-label="Panel de gestión de archivos en la nube">
+        <div class="manage-modal-card">
+            <button type="button" class="creator-close-btn" id="closeManageBtn" aria-label="Cerrar panel de gestión">✕</button>
+
+            <header class="manage-header">
+                <span class="creator-badge">☁️ Nube & Base de Datos ✦</span>
+                <h3>Gestión de Archivos Creados</h3>
+                <p class="manage-subtitle">Edita los textos, fotos o claves de cualquier archivo, o elimínalo si ya no lo necesitas.</p>
+            </header>
+
+            <div class="manage-list-wrap" id="manageListWrap">
+                <div class="manage-list" id="manageList">
+                    <!-- Se inyecta dinámicamente con JS -->
+                </div>
+            </div>
+
+            <footer class="manage-footer">
+                <button type="button" class="secondary-button" id="manageCloseFooterBtn">Cerrar panel</button>
+                <button type="button" class="creator-action-btn" id="manageNewProfileBtn">
+                    <span>✨ Crear nuevo archivo</span>
+                </button>
+            </footer>
+        </div>
+    </dialog>
+
+    <!-- Modal: Editor de Archivo en la Nube -->
+    <dialog class="creator-modal edit-modal" id="editModal" aria-label="Editar archivo secreto en la nube">
+        <div class="creator-modal-card">
+            <button type="button" class="creator-close-btn" id="closeEditBtn" aria-label="Cerrar editor">✕</button>
+
+            <header class="creator-header">
+                <span class="creator-badge">✏️ Editor de Archivo ✦</span>
+                <h3 id="editHeaderTitle">Editar archivo secreto</h3>
+                <p class="creator-subtitle">Modifica los datos que desees y se sincronizarán en la nube al instante.</p>
+            </header>
+
+            <form id="editForm" class="creator-form" novalidate>
+                <input type="hidden" id="editOldName">
+
+                <div class="creator-fields-grid">
+                    <div class="field-two-cols">
+                        <label class="field">
+                            <span>Nombre de la persona *</span>
+                            <input type="text" id="editPersonName" required maxlength="25">
+                        </label>
+                        <label class="field">
+                            <span>¿Quién lo dedica? (Tu nombre) *</span>
+                            <input type="text" id="editCreatorName" required maxlength="25">
+                        </label>
+                    </div>
+
+                    <div class="field-two-cols">
+                        <label class="field">
+                            <span>Frase / Tagline de portada *</span>
+                            <input type="text" id="editTagline" required maxlength="45">
+                        </label>
+                        <label class="field">
+                            <span>PIN o clave de acceso</span>
+                            <input type="text" id="editPassword" maxlength="20" placeholder="Ej. 1234">
+                        </label>
+                    </div>
+
+                    <div class="field-three-cols">
+                        <label class="field">
+                            <span>Fecha de nacimiento</span>
+                            <input type="text" id="editBirthDate" placeholder="Ej. 14 de Mayo">
+                        </label>
+                        <label class="field">
+                            <span>Edad</span>
+                            <input type="text" id="editAge" placeholder="Ej. 20 años">
+                        </label>
+                        <label class="field">
+                            <span>Ciudad</span>
+                            <input type="text" id="editCity" placeholder="Ej. Valencia">
+                        </label>
+                    </div>
+
+                    <label class="field">
+                        <span>Color y atmósfera visual</span>
+                        <select id="editColorSelect">
+                            <option value="pink">🌸 Rosa Pastel</option>
+                            <option value="blue">💙 Azul Nube</option>
+                            <option value="purple">💜 Lila Mágico</option>
+                            <option value="green">🌿 Verde Menta</option>
+                            <option value="gold">✨ Ámbar Dorado</option>
+                        </select>
+                    </label>
+
+                    <!-- Foto de perfil -->
+                    <div class="cr-photo-section">
+                        <span class="cr-photo-label">Foto de perfil en la tarjeta</span>
+                        <div class="cr-photo-row">
+                            <div class="cr-avatar-preview" id="editAvatarPreview">
+                                <span>📸</span>
+                            </div>
+                            <div class="cr-photo-buttons">
+                                <button type="button" class="cr-photo-btn" id="editPhotoChooseBtn">Cambiar foto</button>
+                                <button type="button" class="cr-photo-remove-btn hidden" id="editPhotoRemoveBtn">Quitar</button>
+                                <input type="file" id="editPhotoInput" accept="image/*" class="hidden">
+                                <small class="field-help">Se optimiza y comprime automáticamente para la nube.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-two-cols">
+                        <label class="field">
+                            <span>Instagram (usuario o link)</span>
+                            <input type="text" id="editInstagram" placeholder="@usuario">
+                        </label>
+                        <label class="field">
+                            <span>TikTok (usuario o link)</span>
+                            <input type="text" id="editTiktok" placeholder="@usuario">
+                        </label>
+                    </div>
+
+                    <label class="field">
+                        <span>Carta privada o dedicatoria *</span>
+                        <textarea id="editLetter" rows="4" required></textarea>
+                    </label>
+
+                    <label class="field">
+                        <span>Recuerdo o anécdota especial</span>
+                        <input type="text" id="editMemory" maxlength="120">
+                    </label>
+
+                    <label class="field">
+                        <span>Mensaje para la cápsula del tiempo</span>
+                        <input type="text" id="editCapsule" maxlength="140">
+                    </label>
+                </div>
+
+                <div class="creator-cloud-status hidden" id="editCloudStatus" role="status">
+                    <span class="cloud-icon" id="editCloudIcon">☁️</span>
+                    <div class="cloud-status-text" id="editCloudText">
+                        <strong>Guardando cambios...</strong>
+                    </div>
+                </div>
+
+                <div class="creator-step-actions" style="margin-top: 1.4rem;">
+                    <button type="button" class="secondary-button" id="editCancelBtn">Cancelar</button>
+                    <button type="submit" class="creator-action-btn creator-submit-btn" id="editSubmitBtn">
+                        <span>☁️ Guardar Cambios en la Nube ✦</span>
+                    </button>
+                </div>
+            </form>
         </div>
     </dialog>
 

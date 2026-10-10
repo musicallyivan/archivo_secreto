@@ -207,6 +207,51 @@ app.post('/api/custom-profiles', async (req, res) => {
   }
 });
 
+app.put('/api/custom-profiles/:name', async (req, res) => {
+  const currentName = String(req.params.name || '').trim().slice(0, 120);
+  const newName = String(req.body?.name || currentName).trim().slice(0, 120);
+  const data = req.body?.data;
+
+  if (!currentName) {
+    return res.status(400).json({ error: 'Nombre actual de perfil obligatorio.' });
+  }
+  if (!newName) {
+    return res.status(400).json({ error: 'El nombre del perfil no puede estar vacío.' });
+  }
+  if (!data || typeof data !== 'object') {
+    return res.status(400).json({ error: 'Los datos del perfil son obligatorios.' });
+  }
+
+  try {
+    if (newName.toLowerCase() !== currentName.toLowerCase()) {
+      const existing = await pool.query('SELECT name FROM custom_profiles WHERE LOWER(name) = LOWER($1)', [newName]);
+      if (existing.rows.length > 0) {
+        return res.status(409).json({ error: 'Ya existe otro archivo con ese nombre en la nube.' });
+      }
+      const { rows } = await pool.query(
+        `UPDATE custom_profiles SET name = $1, data = $2, updated_at = NOW()
+         WHERE LOWER(name) = LOWER($3)
+         RETURNING name, data, created_at, updated_at`,
+        [newName, JSON.stringify(data), currentName]
+      );
+      if (rows.length === 0) return res.status(404).json({ error: 'Perfil no encontrado en la nube.' });
+      return res.json({ ok: true, profile: rows[0] });
+    } else {
+      const { rows } = await pool.query(
+        `UPDATE custom_profiles SET data = $1, updated_at = NOW()
+         WHERE LOWER(name) = LOWER($2)
+         RETURNING name, data, created_at, updated_at`,
+        [JSON.stringify(data), currentName]
+      );
+      if (rows.length === 0) return res.status(404).json({ error: 'Perfil no encontrado en la nube.' });
+      return res.json({ ok: true, profile: rows[0] });
+    }
+  } catch (err) {
+    console.error('Error al actualizar perfil en la nube:', err);
+    res.status(500).json({ error: 'No se pudo actualizar el perfil en la nube.' });
+  }
+});
+
 app.delete('/api/custom-profiles/:name', async (req, res) => {
   const name = String(req.params.name || '').trim().slice(0, 120);
   if (!name) {
