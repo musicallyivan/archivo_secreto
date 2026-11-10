@@ -223,6 +223,8 @@ let selectedRating = 0;
 let activeProfileName = "";
 let activeAccess = "legacy";
 let editReturnToManage = true;
+let editContentState = { letters: [], photos: [], videos: [], tracks: [], timeline: [], capsule: [] };
+let editBackgroundImageValue = "";
 let lastSurpriseIndex = -1;
 let countdownTimerId = null;
 
@@ -241,7 +243,7 @@ function getRemainingLockSeconds() { return Math.max(0, Math.ceil((getLockUntil(
 function updateLoginAvailability() { if (!submitButton) return; const locked = isLocked(); submitButton.disabled = locked; if (locked) setFeedback(`Acceso bloqueado temporalmente. Espera ${getRemainingLockSeconds()}s.`, "error"); }
 function registerVisit() { const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}"); const visitKey = `${activeAccess}:${activeProfileName}`; const visits = Number(visitsByProfile[visitKey] || 0) + 1; visitsByProfile[visitKey] = visits; localStorage.setItem(VISITS_KEY, JSON.stringify(visitsByProfile)); visitCount.textContent = String(visits); }
 function renderFeatured(items) { featuredGrid.innerHTML = items.map((item) => `<article class="media-card"><figure class="media-frame"><video controls preload="metadata" playsinline src="${escapeHtml(item.file)}"></video></figure><div class="media-body"><p class="media-meta">Video</p><h4>${escapeHtml(item.title)}</h4><p class="media-description">${escapeHtml(item.description || "")}</p></div></article>`).join(""); }
-function renderPhotos(items) { photoGrid.innerHTML = items.map((item, index) => `<article class="photo-card" data-index="${index}" tabindex="0" role="button" aria-label="Abrir ${escapeHtml(item.title)}"><figure><img src="${escapeHtml(item.file)}" alt="${escapeHtml(item.title)}"><figcaption class="photo-caption">${escapeHtml(item.title)}</figcaption></figure></article>`).join(""); }
+function renderPhotos(items) { photoGrid.innerHTML = items.map((item, index) => `<article class="photo-card" data-index="${index}" tabindex="0" role="button" aria-label="Abrir ${escapeHtml(item.title)}"><figure><img src="${escapeHtml(item.file)}" alt="${escapeHtml(item.title)}"><figcaption class="photo-caption">${escapeHtml(item.title)}${item.description ? `<small>${escapeHtml(item.description)}</small>` : ""}</figcaption></figure></article>`).join(""); }
 function renderNotes(items) { notesList.innerHTML = items.map((item) => `<li>${escapeHtml(item)}</li>`).join(""); }
 function renderPlaylist(items) { playlistCard.innerHTML = items.map((item, index) => `<article class="playlist-item ${index === currentTrackIndex ? "is-active" : ""}"><div><p class="playlist-index">Pista ${index + 1}</p><h4>${escapeHtml(item.title || `Pista ${index + 1}`)}</h4></div></article>`).join(""); }
 function hashString(value) { let hash = 0; for (let index = 0; index < value.length; index += 1) hash = (hash * 31 + value.charCodeAt(index)) >>> 0; return hash; }
@@ -324,8 +326,30 @@ function showProfileStep() { document.body.dataset.screen = "login"; loginForm.c
 function showPasswordStep() { document.body.dataset.screen = "login"; profileStep.classList.add("hidden"); loginForm.classList.remove("hidden"); introScreen.classList.add("hidden"); app.classList.add("hidden"); floatingPlayer?.classList.add("hidden"); }
 function showIntroScreen() { document.body.dataset.screen = "intro"; loginShell.classList.add("hidden"); introScreen.classList.remove("hidden"); app.classList.add("hidden"); floatingPlayer?.classList.add("hidden"); }
 function showApp() { document.body.dataset.screen = "app"; loginShell.classList.add("hidden"); introScreen.classList.add("hidden"); app.classList.remove("hidden"); updateFloatingPlayerUi(); }
+function updateProfileBackground(profile) {
+    const background = String(profile?.backgroundImage || "").trim();
+    if (!background) {
+        app.style.backgroundImage = "";
+        app.style.backgroundSize = "";
+        app.style.backgroundPosition = "";
+        app.style.backgroundRepeat = "";
+        return;
+    }
+    let source = "";
+    if (/^data:image\/(png|jpeg|jpg|webp|gif);base64,/i.test(background)) source = background;
+    else {
+        try {
+            const parsed = new URL(background, window.location.href);
+            if (parsed.protocol === "https:" || parsed.protocol === "http:") source = parsed.href;
+        } catch { /* Invalid background URLs are ignored. */ }
+    }
+    app.style.backgroundImage = source ? `linear-gradient(rgba(255,255,255,.28), rgba(255,255,255,.28)), url("${source.replaceAll('"', "%22")}")` : "";
+    app.style.backgroundSize = source ? "cover" : "";
+    app.style.backgroundPosition = source ? "center" : "";
+    app.style.backgroundRepeat = source ? "no-repeat" : "";
+}
 function applyProfile(profileName) { const profile = content.profiles?.[profileName]; if (!profile) return; activeProfileName = profileName; currentTrackIndex = 0; document.body.dataset.profile = profile.theme || ""; introEyebrow.textContent = profile.introEyebrow || `Entrada de ${profileName}`; introTitle.textContent = profile.introTitle || "Una portada hecha para ti."; introDescription.textContent = profile.introDescription || "Tu version arranca con su propia introduccion."; enterProfileButton.textContent = profile.introButton || "Entrar a mi archivo"; heroEyebrow.textContent = profile.eyebrow; updateTimeGreeting(profile); heroTitle.textContent = profile.heroTitle; heroDescription.textContent = profile.heroDescription; statusValue.textContent = profile.statusLabel; profileValue.textContent = profileName; libraryTitle.textContent = profile.libraryTitle; galleryTitle.textContent = profile.galleryTitle; lettersTitle.textContent = profile.lettersTitle || "Mensajes solo para ti"; timelineTitle.textContent = profile.timelineTitle || "Recorrido de recuerdos"; capsuleTitle.textContent = profile.capsuleTitle || "Mensajes para otro momento"; playlistTitle.textContent = profile.playlistTitle || "Las pistas de esta version"; dailyMemoryTitle.textContent = profile.dailyMemoryTitle || "Hoy el archivo ha elegido esto"; countdownTitle.textContent = profile.countdownTitle || "Un momento marcado en el archivo"; notesTitle.textContent = profile.notesTitle; ratingTitle.textContent = profile.ratingTitle; securitySummary.textContent = profile.securitySummary || "La proteccion actual es solo de navegador."; securityNextStep.textContent = profile.securityNextStep || "Para privacidad real necesitas backend o una capa privada del hosting."; profileInput.value = profileName; renderFeatured(profile.featured || []); renderPhotos(profile.photos || []); renderLetters(profile.letters || []); renderTimeline(profile.timeline || []); renderCapsule(profile.capsule || []); renderDailyMemory(profile); renderPlaylist(profile.backgroundTracks || []); renderNotes(profile.notes || []); const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}"); visitCount.textContent = String(visitsByProfile[`${activeAccess}:${profileName}`] || 0); lastSurpriseIndex = -1; setTrack(0); updateSurpriseStatus(); startCountdown(); loadSavedRating(); }
-function unlockApp() { editActiveProfileBtn?.classList.toggle("hidden", !getCustomProfiles()[activeProfileName]); showApp(); localStorage.setItem(SESSION_KEY, "open"); localStorage.setItem(PROFILE_KEY, activeProfileName); localStorage.setItem(ACCESS_KEY, activeAccess); registerVisit(); playBackgroundMusic(); updateFloatingPlayerUi(); }
+function unlockApp() { editActiveProfileBtn?.classList.toggle("hidden", !getCustomProfiles()[activeProfileName]); updateProfileBackground(getActiveProfile()); showApp(); localStorage.setItem(SESSION_KEY, "open"); localStorage.setItem(PROFILE_KEY, activeProfileName); localStorage.setItem(ACCESS_KEY, activeAccess); registerVisit(); playBackgroundMusic(); updateFloatingPlayerUi(); }
 function lockApp() { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(PROFILE_KEY); localStorage.removeItem(ACCESS_KEY); loginShell.classList.remove("hidden"); app.classList.add("hidden"); floatingPlayer?.classList.add("hidden"); closeCinemaMode(); passwordInput.value = ""; setFeedback(""); pauseBackgroundMusic(); stopCountdown(); showPasswordStep(); activeProfileName = ""; activeAccess = "legacy"; document.body.removeAttribute("data-profile"); }
 function handleLogin(password) { if (isLocked()) { updateLoginAvailability(); return; } const matchedAccess = Object.keys(PASSWORDS).find((key) => PASSWORDS[key] && password === PASSWORDS[key]); if (matchedAccess) { activeAccess = matchedAccess; localStorage.removeItem(ATTEMPTS_KEY); localStorage.removeItem(LOCK_KEY); setFeedback(matchedAccess === "future" ? "Acceso 2027 desbloqueado. Ahora elige tu nombre." : "Contraseña correcta. Ahora elige tu nombre.", "success"); showProfileStep(); return; } const attempts = Number(localStorage.getItem(ATTEMPTS_KEY) || 0) + 1; localStorage.setItem(ATTEMPTS_KEY, String(attempts)); if (attempts >= MAX_ATTEMPTS) { const lockUntil = Date.now() + LOCK_MINUTES * 60 * 1000; localStorage.setItem(LOCK_KEY, String(lockUntil)); localStorage.removeItem(ATTEMPTS_KEY); updateLoginAvailability(); return; } setFeedback(`Contraseña incorrecta. Quedan ${MAX_ATTEMPTS - attempts} intento(s).`, "error"); }
 
@@ -704,6 +728,66 @@ function getCustomProfiles() {
     } catch {
         return {};
     }
+}
+
+const EDIT_CONTENT_FIELDS = {
+    letters: [{ key: "title", label: "Título" }, { key: "tag", label: "Etiqueta" }, { key: "body", label: "Texto", multiline: true }, { key: "signature", label: "Firma" }],
+    photos: [{ key: "title", label: "Título" }, { key: "description", label: "Texto o descripción", multiline: true }, { key: "file", label: "Enlace directo de la imagen", media: "image" }],
+    videos: [{ key: "title", label: "Título" }, { key: "description", label: "Descripción", multiline: true }, { key: "file", label: "Enlace directo del vídeo", media: "video" }],
+    tracks: [{ key: "title", label: "Nombre del audio" }, { key: "file", label: "Enlace directo del audio", media: "audio" }],
+    timeline: [{ key: "date", label: "Fecha" }, { key: "title", label: "Título" }, { key: "body", label: "Recuerdo", multiline: true }],
+    capsule: [{ key: "when", label: "Cuándo abrir" }, { key: "title", label: "Título" }, { key: "body", label: "Mensaje", multiline: true }]
+};
+
+const EDIT_CONTENT_CONTAINERS = {
+    letters: "editLettersList", photos: "editPhotosList", videos: "editVideosList",
+    tracks: "editTracksList", timeline: "editTimelineList", capsule: "editCapsuleList"
+};
+
+function renderEditContentList(kind) {
+    const container = document.getElementById(EDIT_CONTENT_CONTAINERS[kind]);
+    if (!container) return;
+    container.innerHTML = editContentState[kind].map((item, index) => `
+        <article class="edit-content-item" data-editor-kind="${kind}" data-editor-index="${index}">
+            ${EDIT_CONTENT_FIELDS[kind].map((field) => {
+                const value = item[field.key] || "";
+                if (field.media) {
+                    const isDataFile = value.startsWith("data:");
+                    const accept = field.media === "image" ? "image/*" : field.media === "video" ? "video/*" : "audio/*";
+                    return `<label class="field"><span>${field.label}</span><input type="url" data-editor-field="file" value="${isDataFile ? "" : escapeHtml(value)}" placeholder="https://..."></label>
+                        <div class="edit-media-upload"><input type="file" data-editor-upload accept="${accept}"><small class="field-help edit-media-status">${isDataFile ? "Archivo subido y guardado" : "También puedes seleccionar un archivo"}</small></div>`;
+                }
+                const input = field.multiline
+                    ? `<textarea data-editor-field="${field.key}" rows="3">${escapeHtml(value)}</textarea>`
+                    : `<input type="text" data-editor-field="${field.key}" value="${escapeHtml(value)}">`;
+                return `<label class="field"><span>${field.label}</span>${input}</label>`;
+            }).join("")}
+            <button class="edit-content-remove" type="button" data-remove-content aria-label="Eliminar elemento">Eliminar</button>
+        </article>`).join("");
+    if (!editContentState[kind].length) container.innerHTML = `<p class="edit-content-empty">Todavía no hay elementos. Usa el botón de añadir para empezar.</p>`;
+}
+
+function renderAllEditContent() {
+    Object.keys(EDIT_CONTENT_CONTAINERS).forEach(renderEditContentList);
+}
+
+function makeEditContentItem(kind) {
+    return Object.fromEntries(EDIT_CONTENT_FIELDS[kind].map(({ key }) => [key, ""]));
+}
+
+function addEditContentItem(kind) {
+    if (!editContentState[kind]) return;
+    editContentState[kind].push(makeEditContentItem(kind));
+    renderEditContentList(kind);
+}
+
+function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(reader.error || new Error("No se pudo leer el archivo."));
+        reader.readAsDataURL(file);
+    });
 }
 
 function isProfilePasswordTaken(password, excludingName = "") {
@@ -1439,6 +1523,28 @@ function openEditModal(name, options = {}) {
     if (memoryInput) memoryInput.value = profile.timeline?.[0]?.body || "";
     if (capsuleInput) capsuleInput.value = profile.capsule?.[0]?.body || "";
 
+    editContentState = {
+        letters: JSON.parse(JSON.stringify(profile.letters || [])),
+        photos: JSON.parse(JSON.stringify(profile.photos || [])),
+        videos: JSON.parse(JSON.stringify(profile.featured || [])),
+        tracks: JSON.parse(JSON.stringify(profile.backgroundTracks || [])),
+        timeline: JSON.parse(JSON.stringify(profile.timeline || [])),
+        capsule: JSON.parse(JSON.stringify(profile.capsule || []))
+    };
+    document.getElementById("editHeroTitle").value = profile.heroTitle || "";
+    document.getElementById("editHeroDescription").value = profile.heroDescription || "";
+    document.getElementById("editGalleryTitle").value = profile.galleryTitle || "";
+    document.getElementById("editLettersTitle").value = profile.lettersTitle || "";
+    document.getElementById("editPlaylistTitle").value = profile.playlistTitle || "";
+    editBackgroundImageValue = profile.backgroundImage || "";
+    const backgroundUrlInput = document.getElementById("editBackgroundUrl");
+    const backgroundFileInput = document.getElementById("editBackgroundFile");
+    const backgroundStatus = document.getElementById("editBackgroundStatus");
+    if (backgroundUrlInput) backgroundUrlInput.value = editBackgroundImageValue.startsWith("data:") ? "" : editBackgroundImageValue;
+    if (backgroundFileInput) backgroundFileInput.value = "";
+    if (backgroundStatus) backgroundStatus.textContent = editBackgroundImageValue.startsWith("data:") ? "Imagen personalizada guardada" : "Las imágenes se optimizan al subirlas.";
+    renderAllEditContent();
+
     editUploadedPhotoData = profile.cardInfo?.photo || "";
     if (photoInput) photoInput.value = "";
     if (avatarPreview) {
@@ -1532,6 +1638,93 @@ function initManagePanel() {
         editPhotoRemoveBtn?.classList.add("hidden");
     });
 
+    editModal?.addEventListener("click", (event) => {
+        const addButton = event.target.closest("[data-add-content]");
+        if (addButton) {
+            event.preventDefault();
+            addEditContentItem(addButton.dataset.addContent);
+            return;
+        }
+        const removeButton = event.target.closest("[data-remove-content]");
+        if (removeButton) {
+            const row = removeButton.closest("[data-editor-kind]");
+            if (!row) return;
+            const { editorKind, editorIndex } = row.dataset;
+            editContentState[editorKind].splice(Number(editorIndex), 1);
+            renderEditContentList(editorKind);
+        }
+    });
+    editModal?.addEventListener("input", (event) => {
+        if (event.target.id === "editBackgroundUrl") {
+            editBackgroundImageValue = event.target.value.trim();
+            return;
+        }
+        const field = event.target.closest("[data-editor-field]");
+        if (!field) return;
+        const row = field.closest("[data-editor-kind]");
+        if (!row) return;
+        const item = editContentState[row.dataset.editorKind]?.[Number(row.dataset.editorIndex)];
+        if (item) item[field.dataset.editorField] = field.value.trim();
+    });
+    editModal?.addEventListener("change", async (event) => {
+        if (event.target.id === "editBackgroundFile") {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            if (!file.type.startsWith("image/")) {
+                alert("El fondo personalizado debe ser una imagen.");
+                event.target.value = "";
+                return;
+            }
+            try {
+                editBackgroundImageValue = await compressAvatar(file, 1600, 0.82);
+                document.getElementById("editBackgroundUrl").value = "";
+                document.getElementById("editBackgroundStatus").textContent = `Fondo listo: ${file.name}`;
+            } catch {
+                alert("No se pudo procesar esa imagen.");
+            }
+            return;
+        }
+        if (event.target.id === "editBackgroundUrl") {
+            editBackgroundImageValue = event.target.value.trim();
+            document.getElementById("editBackgroundStatus").textContent = editBackgroundImageValue ? "Se usará esta imagen de fondo." : "Las imágenes se optimizan al subirlas.";
+            return;
+        }
+        const upload = event.target.closest("[data-editor-upload]");
+        if (!upload) return;
+        const file = upload.files?.[0];
+        if (!file) return;
+        const row = upload.closest("[data-editor-kind]");
+        const kind = row?.dataset.editorKind;
+        const index = Number(row?.dataset.editorIndex);
+        if (!row || !editContentState[kind]?.[index]) return;
+        const mediaType = kind === "photos" ? "image" : kind === "videos" ? "video" : "audio";
+        if (!file.type.startsWith(`${mediaType}/`)) {
+            alert(`Selecciona un archivo de tipo ${mediaType}.`);
+            upload.value = "";
+            return;
+        }
+        if (mediaType !== "image" && file.size > 1024 * 1024) {
+            alert("Los archivos de audio y vídeo subidos deben pesar como máximo 1 MB. Para archivos mayores, pega un enlace directo.");
+            upload.value = "";
+            return;
+        }
+        try {
+            editContentState[kind][index].file = mediaType === "image"
+                ? await compressAvatar(file, 1400, 0.82)
+                : await readFileAsDataUrl(file);
+            row.querySelector("[data-editor-field='file']").value = "";
+            row.querySelector(".edit-media-status").textContent = `Archivo listo: ${file.name}`;
+        } catch {
+            alert("No se pudo leer ese archivo.");
+        }
+    });
+    document.getElementById("editRemoveBackgroundBtn")?.addEventListener("click", () => {
+        editBackgroundImageValue = "";
+        document.getElementById("editBackgroundUrl").value = "";
+        document.getElementById("editBackgroundFile").value = "";
+        document.getElementById("editBackgroundStatus").textContent = "Se usará el fondo original del archivo.";
+    });
+
     editForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
         const oldName = document.getElementById("editOldName")?.value.trim();
@@ -1545,12 +1738,36 @@ function initManagePanel() {
         const colorKey = document.getElementById("editColorSelect")?.value || "pink";
         const instagram = document.getElementById("editInstagram")?.value.trim();
         const tiktok = document.getElementById("editTiktok")?.value.trim();
-        const letter = document.getElementById("editLetter")?.value.trim();
-        const memory = document.getElementById("editMemory")?.value.trim();
-        const capsule = document.getElementById("editCapsule")?.value.trim();
+        if (!name || !password) {
+            alert("Por favor, completa el nombre y la contraseña propia del archivo.");
+            return;
+        }
 
-        if (!name || !letter || !password) {
-            alert("Por favor, completa el nombre, la contraseña propia y la carta personal.");
+        const cleanEditContent = Object.fromEntries(Object.entries(editContentState).map(([kind, items]) => [
+            kind,
+            items.filter((item) => Object.values(item).some((value) => String(value || "").trim()))
+        ]));
+        const incompleteMedia = [
+            ...cleanEditContent.photos,
+            ...cleanEditContent.videos,
+            ...cleanEditContent.tracks
+        ].some((item) => !item.title?.trim() || !item.file?.trim());
+        const incompleteText = [
+            ...cleanEditContent.letters,
+            ...cleanEditContent.timeline,
+            ...cleanEditContent.capsule
+        ].some((item) => !item.body?.trim());
+        if (incompleteMedia || incompleteText) {
+            alert("Completa el título y el archivo de cada imagen, vídeo o audio; y escribe el texto de cada carta o recuerdo. También puedes eliminar las filas vacías.");
+            return;
+        }
+
+        const embeddedMediaLength = [
+            ...cleanEditContent.photos, ...cleanEditContent.videos, ...cleanEditContent.tracks
+        ].reduce((total, item) => total + (item.file?.startsWith("data:") ? item.file.length : 0),
+            editBackgroundImageValue.startsWith("data:") ? editBackgroundImageValue.length : 0);
+        if (embeddedMediaLength > 3_000_000) {
+            alert("Los archivos subidos superan el límite del archivo. Quita algunos o usa enlaces directos para audio y vídeo.");
             return;
         }
 
@@ -1607,14 +1824,14 @@ function initManagePanel() {
                 afternoon: `Buenas tardes, ${name}. Este refugio entra cálido y con buen ritmo.`,
                 evening: `Buenas noches, ${name}. Esta versión se ve mejor cuando todo va más lento.`
             },
-            heroTitle: `Un refugio privado hecho a la medida de ${name}.`,
-            heroDescription: `Cartas, recuerdos y música guardados con calma para volver cuando quieras.`,
+            heroTitle: document.getElementById("editHeroTitle").value.trim() || `Un refugio privado hecho a la medida de ${name}.`,
+            heroDescription: document.getElementById("editHeroDescription").value.trim() || `Cartas, recuerdos y música guardados con calma para volver cuando quieras.`,
             statusLabel: `Modo ${name}`,
             surpriseLabel: "Activa",
             libraryTitle: `Contenido especial de ${name}`,
-            galleryTitle: `Recuerdos para ${name}`,
-            lettersTitle: `Cartas para ${name}`,
-            playlistTitle: `La mezcla musical de ${name}`,
+            galleryTitle: document.getElementById("editGalleryTitle").value.trim() || `Recuerdos para ${name}`,
+            lettersTitle: document.getElementById("editLettersTitle").value.trim() || `Cartas para ${name}`,
+            playlistTitle: document.getElementById("editPlaylistTitle").value.trim() || `La mezcla musical de ${name}`,
             dailyMemoryTitle: `Hoy el archivo destaca este recuerdo para ${name}`,
             timelineTitle: `Momentos especiales con ${creator}`,
             capsuleTitle: `Cápsula del tiempo`,
@@ -1622,6 +1839,10 @@ function initManagePanel() {
             notesTitle: `Notas privadas`,
             securitySummary: `Este archivo personalizado está sincronizado en la nube y accesible desde cualquier dispositivo.`,
             securityNextStep: `Puedes descargar una copia de seguridad en formato JSON cuando quieras.`,
+            backgroundImage: editBackgroundImageValue,
+            featured: cleanEditContent.videos,
+            photos: cleanEditContent.photos,
+            backgroundTracks: cleanEditContent.tracks,
             cardInfo: {
                 ...(existingProfile.cardInfo || {}),
                 photo: editUploadedPhotoData || (colorKey === "pink" ? "assets/media/CUMPLE_CARLA/RETRATO-1.JPEG" : "assets/media/ALINA_ANUEL.PNG"),
@@ -1635,28 +1856,9 @@ function initManagePanel() {
                     ...(tiktok ? [{ name: "TikTok", icon: "tt", url: formatSocial(tiktok, "tiktok") }] : [])
                 ]
             },
-            letters: [
-                {
-                    title: `Para ${name}`,
-                    tag: "Carta principal",
-                    body: letter,
-                    signature: `Con cariño, ${creator}`
-                }
-            ],
-            timeline: [
-                {
-                    date: "El comienzo",
-                    title: tagline,
-                    body: memory || `Aquí empezó todo lo bueno. Cada conversación y cada broma compartida han sumado a este refugio.`
-                }
-            ],
-            capsule: [
-                {
-                    when: "Abrir cuando necesites sonreír",
-                    title: "Reserva de buen rollo",
-                    body: capsule || `Vuelve a esta parte cuando las cosas pesen. Aquí sigue guardada la mejor versión de esta historia.`
-                }
-            ]
+            letters: cleanEditContent.letters,
+            timeline: cleanEditContent.timeline,
+            capsule: cleanEditContent.capsule
         };
 
         const result = await updateProfileInCloud(oldName, name, updatedProfile);
@@ -1673,6 +1875,7 @@ function initManagePanel() {
                 localStorage.setItem(PROFILE_KEY, name);
                 localStorage.setItem(ACCESS_KEY, activeAccess);
                 applyProfile(name);
+                updateProfileBackground(getActiveProfile());
             }
             if (cloudStatus && cloudIcon && cloudText) {
                 cloudStatus.className = "creator-cloud-status is-success";

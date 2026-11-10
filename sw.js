@@ -1,4 +1,4 @@
-const CACHE_NAME = 'archivo-secreto-v26';
+const CACHE_NAME = 'archivo-secreto-v27';
 const STATIC_ASSETS = [
   './',
   './index.html',

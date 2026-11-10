@@ -465,6 +465,72 @@ body[data-profile="alina"] .intro-card {
     width: 100%;
 }
 
+.edit-content-section {
+    margin-top: 1.2rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.42);
+}
+
+.edit-content-section > h4,
+.edit-content-heading h4 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.edit-content-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+}
+
+.edit-content-heading p,
+.edit-content-empty {
+    margin: 0.25rem 0 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.edit-content-list {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.edit-content-item {
+    display: grid;
+    gap: 0.8rem;
+    padding: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.68);
+}
+
+.edit-media-upload {
+    display: grid;
+    gap: 0.3rem;
+}
+
+.edit-content-remove {
+    justify-self: start;
+    border: 0;
+    padding: 0.45rem 0.7rem;
+    border-radius: 999px;
+    color: #8a3030;
+    background: rgba(190, 55, 55, 0.1);
+    font: inherit;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .edit-content-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
 .layout {
     display: grid;
     gap: 1rem;
@@ -587,6 +653,14 @@ body[data-profile="alina"] .media-frame {
 
 .photo-caption {
     margin-top: 0.8rem;
+}
+
+.photo-caption small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 500;
 }
 
 .letters-grid {
