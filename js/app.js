@@ -38,6 +38,11 @@ const heroTitle = document.getElementById("heroTitle");
 const heroDescription = document.getElementById("heroDescription");
 const statusValue = document.getElementById("statusValue");
 const profileValue = document.getElementById("profileValue");
+const editActiveProfileBtn = document.getElementById("editActiveProfileBtn");
+const editAccessModal = document.getElementById("editAccessModal");
+const editAccessForm = document.getElementById("editAccessForm");
+const editAccessPassword = document.getElementById("editAccessPassword");
+const editAccessError = document.getElementById("editAccessError");
 const countdownStatus = document.getElementById("countdownStatus");
 const libraryTitle = document.getElementById("libraryTitle");
 const galleryTitle = document.getElementById("galleryTitle");
@@ -217,6 +222,7 @@ let currentTrackIndex = 0;
 let selectedRating = 0;
 let activeProfileName = "";
 let activeAccess = "legacy";
+let editReturnToManage = true;
 let lastSurpriseIndex = -1;
 let countdownTimerId = null;
 
@@ -319,7 +325,7 @@ function showPasswordStep() { document.body.dataset.screen = "login"; profileSte
 function showIntroScreen() { document.body.dataset.screen = "intro"; loginShell.classList.add("hidden"); introScreen.classList.remove("hidden"); app.classList.add("hidden"); floatingPlayer?.classList.add("hidden"); }
 function showApp() { document.body.dataset.screen = "app"; loginShell.classList.add("hidden"); introScreen.classList.add("hidden"); app.classList.remove("hidden"); updateFloatingPlayerUi(); }
 function applyProfile(profileName) { const profile = content.profiles?.[profileName]; if (!profile) return; activeProfileName = profileName; currentTrackIndex = 0; document.body.dataset.profile = profile.theme || ""; introEyebrow.textContent = profile.introEyebrow || `Entrada de ${profileName}`; introTitle.textContent = profile.introTitle || "Una portada hecha para ti."; introDescription.textContent = profile.introDescription || "Tu version arranca con su propia introduccion."; enterProfileButton.textContent = profile.introButton || "Entrar a mi archivo"; heroEyebrow.textContent = profile.eyebrow; updateTimeGreeting(profile); heroTitle.textContent = profile.heroTitle; heroDescription.textContent = profile.heroDescription; statusValue.textContent = profile.statusLabel; profileValue.textContent = profileName; libraryTitle.textContent = profile.libraryTitle; galleryTitle.textContent = profile.galleryTitle; lettersTitle.textContent = profile.lettersTitle || "Mensajes solo para ti"; timelineTitle.textContent = profile.timelineTitle || "Recorrido de recuerdos"; capsuleTitle.textContent = profile.capsuleTitle || "Mensajes para otro momento"; playlistTitle.textContent = profile.playlistTitle || "Las pistas de esta version"; dailyMemoryTitle.textContent = profile.dailyMemoryTitle || "Hoy el archivo ha elegido esto"; countdownTitle.textContent = profile.countdownTitle || "Un momento marcado en el archivo"; notesTitle.textContent = profile.notesTitle; ratingTitle.textContent = profile.ratingTitle; securitySummary.textContent = profile.securitySummary || "La proteccion actual es solo de navegador."; securityNextStep.textContent = profile.securityNextStep || "Para privacidad real necesitas backend o una capa privada del hosting."; profileInput.value = profileName; renderFeatured(profile.featured || []); renderPhotos(profile.photos || []); renderLetters(profile.letters || []); renderTimeline(profile.timeline || []); renderCapsule(profile.capsule || []); renderDailyMemory(profile); renderPlaylist(profile.backgroundTracks || []); renderNotes(profile.notes || []); const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}"); visitCount.textContent = String(visitsByProfile[`${activeAccess}:${profileName}`] || 0); lastSurpriseIndex = -1; setTrack(0); updateSurpriseStatus(); startCountdown(); loadSavedRating(); }
-function unlockApp() { showApp(); localStorage.setItem(SESSION_KEY, "open"); localStorage.setItem(PROFILE_KEY, activeProfileName); localStorage.setItem(ACCESS_KEY, activeAccess); registerVisit(); playBackgroundMusic(); updateFloatingPlayerUi(); }
+function unlockApp() { editActiveProfileBtn?.classList.toggle("hidden", !getCustomProfiles()[activeProfileName]); showApp(); localStorage.setItem(SESSION_KEY, "open"); localStorage.setItem(PROFILE_KEY, activeProfileName); localStorage.setItem(ACCESS_KEY, activeAccess); registerVisit(); playBackgroundMusic(); updateFloatingPlayerUi(); }
 function lockApp() { localStorage.removeItem(SESSION_KEY); localStorage.removeItem(PROFILE_KEY); localStorage.removeItem(ACCESS_KEY); loginShell.classList.remove("hidden"); app.classList.add("hidden"); floatingPlayer?.classList.add("hidden"); closeCinemaMode(); passwordInput.value = ""; setFeedback(""); pauseBackgroundMusic(); stopCountdown(); showPasswordStep(); activeProfileName = ""; activeAccess = "legacy"; document.body.removeAttribute("data-profile"); }
 function handleLogin(password) { if (isLocked()) { updateLoginAvailability(); return; } const matchedAccess = Object.keys(PASSWORDS).find((key) => PASSWORDS[key] && password === PASSWORDS[key]); if (matchedAccess) { activeAccess = matchedAccess; localStorage.removeItem(ATTEMPTS_KEY); localStorage.removeItem(LOCK_KEY); setFeedback(matchedAccess === "future" ? "Acceso 2027 desbloqueado. Ahora elige tu nombre." : "Contraseña correcta. Ahora elige tu nombre.", "success"); showProfileStep(); return; } const attempts = Number(localStorage.getItem(ATTEMPTS_KEY) || 0) + 1; localStorage.setItem(ATTEMPTS_KEY, String(attempts)); if (attempts >= MAX_ATTEMPTS) { const lockUntil = Date.now() + LOCK_MINUTES * 60 * 1000; localStorage.setItem(LOCK_KEY, String(lockUntil)); localStorage.removeItem(ATTEMPTS_KEY); updateLoginAvailability(); return; } setFeedback(`Contraseña incorrecta. Quedan ${MAX_ATTEMPTS - attempts} intento(s).`, "error"); }
 
@@ -700,6 +706,16 @@ function getCustomProfiles() {
     }
 }
 
+function isProfilePasswordTaken(password, excludingName = "") {
+    const normalized = String(password || "").trim().toLocaleLowerCase("es");
+    if (!normalized) return true;
+    if ([content.password, PASSWORDS.future].some((fixed) => String(fixed || "").trim().toLocaleLowerCase("es") === normalized)) return true;
+    return Object.entries(getCustomProfiles()).some(([name, profile]) =>
+        name.toLocaleLowerCase("es") !== excludingName.toLocaleLowerCase("es") &&
+        String(profile?.password || "").trim().toLocaleLowerCase("es") === normalized
+    );
+}
+
 function saveCustomProfile(name, profileData) {
     const list = getCustomProfiles();
     list[name] = profileData;
@@ -1039,8 +1055,16 @@ function initCreatorWizard() {
         const memory = document.getElementById("crMemory")?.value.trim();
         const capsule = document.getElementById("crCapsule")?.value.trim();
 
-        if (!name || !letter) {
-            alert("Por favor, indica al menos el nombre y la carta personal.");
+        if (!name || !letter || !password) {
+            alert("Por favor, completa el nombre, la contraseña propia y la carta personal.");
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+            return;
+        }
+        if (isProfilePasswordTaken(password)) {
+            alert("Esa contraseña ya está en uso. Elige una diferente para este archivo.");
             if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
@@ -1370,7 +1394,8 @@ function renderManageList() {
     });
 }
 
-function openEditModal(name) {
+function openEditModal(name, options = {}) {
+    editReturnToManage = options.returnToManage !== false;
     const list = getCustomProfiles();
     const profile = list[name] || content.profiles?.[name];
     if (!profile) return;
@@ -1471,11 +1496,11 @@ function initManagePanel() {
 
     closeEditBtn?.addEventListener("click", () => {
         editModal?.close();
-        manageModal?.showModal();
+        if (editReturnToManage) manageModal?.showModal();
     });
     editCancelBtn?.addEventListener("click", () => {
         editModal?.close();
-        manageModal?.showModal();
+        if (editReturnToManage) manageModal?.showModal();
     });
     editModal?.addEventListener("click", (e) => {
         if (e.target === editModal) editModal.close();
@@ -1524,14 +1549,18 @@ function initManagePanel() {
         const memory = document.getElementById("editMemory")?.value.trim();
         const capsule = document.getElementById("editCapsule")?.value.trim();
 
-        if (!name || !letter) {
-            alert("Por favor, indica al menos el nombre y la carta personal.");
+        if (!name || !letter || !password) {
+            alert("Por favor, completa el nombre, la contraseña propia y la carta personal.");
             return;
         }
 
         const list = getCustomProfiles();
         if (oldName.toLowerCase() !== name.toLowerCase() && list[name]) {
             alert(`Ya existe un archivo con el nombre "${name}". Por favor elige otro.`);
+            return;
+        }
+        if (isProfilePasswordTaken(password, oldName)) {
+            alert("Esa contraseña ya está en uso. Elige una diferente para este archivo.");
             return;
         }
 
@@ -1638,6 +1667,13 @@ function initManagePanel() {
         }
 
         if (result.ok) {
+            if (!editReturnToManage) {
+                activeProfileName = name;
+                activeAccess = name.toLowerCase();
+                localStorage.setItem(PROFILE_KEY, name);
+                localStorage.setItem(ACCESS_KEY, activeAccess);
+                applyProfile(name);
+            }
             if (cloudStatus && cloudIcon && cloudText) {
                 cloudStatus.className = "creator-cloud-status is-success";
                 cloudIcon.textContent = "☁️ ✨";
@@ -1645,7 +1681,7 @@ function initManagePanel() {
             }
             setTimeout(() => {
                 editModal?.close();
-                manageModal?.showModal();
+                if (editReturnToManage) manageModal?.showModal();
             }, 800);
         } else {
             if (cloudStatus && cloudIcon && cloudText) {
@@ -1680,6 +1716,33 @@ function bootstrap() {
    ========================================================================== */
 loginForm.addEventListener("submit", (event) => { event.preventDefault(); handleLogin(passwordInput.value.trim()); });
 logoutButton.addEventListener("click", lockApp);
+editActiveProfileBtn?.addEventListener("click", () => {
+    const profile = getCustomProfiles()[activeProfileName] || content.profiles?.[activeProfileName];
+    if (!profile) return;
+    editAccessPassword.value = "";
+    editAccessError?.classList.add("hidden");
+    editAccessModal?.showModal();
+    editAccessPassword?.focus();
+});
+editAccessForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const profile = getCustomProfiles()[activeProfileName] || content.profiles?.[activeProfileName];
+    if (!profile) return;
+    const expectedPassword = profile.password || content.password;
+    if (editAccessPassword?.value.trim() !== expectedPassword) {
+        editAccessError?.classList.remove("hidden");
+        editAccessPassword?.select();
+        return;
+    }
+    const name = activeProfileName;
+    editAccessModal?.close();
+    openEditModal(name, { returnToManage: false });
+});
+document.getElementById("closeEditAccessBtn")?.addEventListener("click", () => editAccessModal?.close());
+document.getElementById("cancelEditAccessBtn")?.addEventListener("click", () => editAccessModal?.close());
+editAccessModal?.addEventListener("click", (event) => {
+    if (event.target === editAccessModal) editAccessModal.close();
+});
 backToPasswordButton.addEventListener("click", showPasswordStep);
 profileButtons.forEach((button) => button.addEventListener("click", () => { applyProfile(button.dataset.profile); showIntroScreen(); }));
 enterProfileButton.addEventListener("click", unlockApp);
