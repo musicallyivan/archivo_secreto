@@ -275,6 +275,7 @@
                     <p class="panel-label">Perfil</p>
                     <strong id="profileValue">Sin elegir</strong>
                 </div>
+                <button class="secondary-button hidden" type="button" id="editActiveProfileBtn">✏️ Editar este archivo</button>
                 <div>
                     <p class="panel-label">Musica de fondo</p>
                     <strong id="musicStatus">Lista</strong>
@@ -608,9 +609,9 @@
                         </label>
 
                         <label class="field">
-                            <span>Contraseña propia para entrar (opcional)</span>
-                            <input type="text" id="crPassword" placeholder="Por defecto: chispa" maxlength="20">
-                            <small class="field-help">Si no pones ninguna, usará la clave principal «chispa».</small>
+                            <span>Contraseña propia para entrar y editar *</span>
+                            <input type="password" id="crPassword" placeholder="Crea una contraseña" required maxlength="20" autocomplete="new-password">
+                            <small class="field-help">La necesitarás para volver a entrar y personalizar este archivo.</small>
                         </label>
                     </div>
 
@@ -794,6 +795,28 @@
         </div>
     </dialog>
 
+    <dialog class="creator-modal" id="editAccessModal" aria-labelledby="editAccessTitle">
+        <div class="creator-modal-card">
+            <button type="button" class="creator-close-btn" id="closeEditAccessBtn" aria-label="Cerrar">✕</button>
+            <header class="creator-header">
+                <span class="creator-badge">🔐 Acceso de edición</span>
+                <h3 id="editAccessTitle">Personaliza tu archivo</h3>
+                <p class="creator-subtitle">Escribe la contraseña que se creó para este archivo.</p>
+            </header>
+            <form id="editAccessForm" class="creator-form" novalidate>
+                <label class="field">
+                    <span>Contraseña del archivo</span>
+                    <input type="password" id="editAccessPassword" autocomplete="current-password" required>
+                </label>
+                <p class="field-help hidden" id="editAccessError" role="alert">La contraseña no coincide. Inténtalo de nuevo.</p>
+                <div class="creator-step-actions">
+                    <button class="secondary-button" type="button" id="cancelEditAccessBtn">Cancelar</button>
+                    <button class="creator-action-btn creator-submit-btn" type="submit">Continuar</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
     <!-- Modal: Editor de Archivo en la Nube -->
     <dialog class="creator-modal edit-modal" id="editModal" aria-label="Editar archivo secreto en la nube">
         <div class="creator-modal-card">
@@ -826,8 +849,8 @@
                             <input type="text" id="editTagline" required maxlength="45">
                         </label>
                         <label class="field">
-                            <span>PIN o clave de acceso</span>
-                            <input type="text" id="editPassword" maxlength="20" placeholder="Ej. 1234">
+                            <span>Contraseña propia del archivo *</span>
+                            <input type="password" id="editPassword" maxlength="20" required autocomplete="new-password">
                         </label>
                     </div>
 

@@ -191,8 +191,21 @@ app.post('/api/custom-profiles', async (req, res) => {
   if (!data || typeof data !== 'object') {
     return res.status(400).json({ error: 'Los datos del perfil son obligatorios.' });
   }
+  const password = String(data.password || '').trim();
+  if (!password) {
+    return res.status(400).json({ error: 'Cada archivo debe tener una contraseña propia.' });
+  }
 
   try {
+    const duplicate = await pool.query(
+      `SELECT name FROM custom_profiles
+       WHERE LOWER(data->>'password') = LOWER($1) AND LOWER(name) <> LOWER($2)
+       LIMIT 1`,
+      [password, name]
+    );
+    if (duplicate.rows.length) {
+      return res.status(409).json({ error: 'Esa contraseña ya está en uso. Elige una diferente.' });
+    }
     const { rows } = await pool.query(
       `INSERT INTO custom_profiles (name, data)
        VALUES ($1, $2)
@@ -221,8 +234,21 @@ app.put('/api/custom-profiles/:name', async (req, res) => {
   if (!data || typeof data !== 'object') {
     return res.status(400).json({ error: 'Los datos del perfil son obligatorios.' });
   }
+  const password = String(data.password || '').trim();
+  if (!password) {
+    return res.status(400).json({ error: 'Cada archivo debe tener una contraseña propia.' });
+  }
 
   try {
+    const duplicate = await pool.query(
+      `SELECT name FROM custom_profiles
+       WHERE LOWER(data->>'password') = LOWER($1) AND LOWER(name) <> LOWER($2)
+       LIMIT 1`,
+      [password, currentName]
+    );
+    if (duplicate.rows.length) {
+      return res.status(409).json({ error: 'Esa contraseña ya está en uso. Elige una diferente.' });
+    }
     if (newName.toLowerCase() !== currentName.toLowerCase()) {
       const existing = await pool.query('SELECT name FROM custom_profiles WHERE LOWER(name) = LOWER($1)', [newName]);
       if (existing.rows.length > 0) {
