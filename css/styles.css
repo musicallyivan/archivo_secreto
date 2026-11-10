@@ -3469,6 +3469,27 @@ body[data-profile^="custom-gold"] {
     }
 }
 
+@media (max-width: 719px), (pointer: coarse) {
+    .ambient-canvas {
+        opacity: 0.4;
+    }
+
+    .login-card,
+    .intro-card,
+    .hero,
+    .section,
+    .notes-card,
+    .media-card,
+    .photo-card {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    body::before {
+        opacity: 0.28;
+    }
+}
+
 /* ==========================================================================
    CLOUD SYNC STATUS & BADGES
    ========================================================================== */
