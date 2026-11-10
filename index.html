@@ -907,21 +907,55 @@
                         </label>
                     </div>
 
-                    <label class="field">
-                        <span>Carta privada o dedicatoria *</span>
-                        <textarea id="editLetter" rows="4" required></textarea>
-                    </label>
-
-                    <label class="field">
-                        <span>Recuerdo o anécdota especial</span>
-                        <input type="text" id="editMemory" maxlength="120">
-                    </label>
-
-                    <label class="field">
-                        <span>Mensaje para la cápsula del tiempo</span>
-                        <input type="text" id="editCapsule" maxlength="140">
-                    </label>
                 </div>
+
+                <section class="edit-content-section">
+                    <h4>Portada y textos</h4>
+                    <div class="creator-fields-grid">
+                        <label class="field"><span>Título principal</span><input id="editHeroTitle" maxlength="100"></label>
+                        <label class="field"><span>Descripción de portada</span><textarea id="editHeroDescription" rows="3" maxlength="500"></textarea></label>
+                        <label class="field"><span>Título de la galería</span><input id="editGalleryTitle" maxlength="80"></label>
+                        <label class="field"><span>Título de las cartas</span><input id="editLettersTitle" maxlength="80"></label>
+                        <label class="field"><span>Título de la música</span><input id="editPlaylistTitle" maxlength="80"></label>
+                        <label class="field"><span>Imagen de fondo (enlace)</span><input id="editBackgroundUrl" type="url" placeholder="https://..."></label>
+                        <div class="field">
+                            <span>O subir una imagen de fondo</span>
+                            <input type="file" id="editBackgroundFile" accept="image/*">
+                            <small class="field-help" id="editBackgroundStatus">Las imágenes se optimizan al subirlas.</small>
+                            <button class="edit-content-remove" type="button" id="editRemoveBackgroundBtn">Quitar fondo personalizado</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="edit-content-section">
+                    <div class="edit-content-heading"><div><h4>Cartas y textos</h4><p>Añade, edita o elimina los mensajes que aparecen en el archivo.</p></div><button class="secondary-button" type="button" data-add-content="letters">＋ Añadir texto</button></div>
+                    <div class="edit-content-list" id="editLettersList"></div>
+                </section>
+
+                <section class="edit-content-section">
+                    <div class="edit-content-heading"><div><h4>Imágenes</h4><p>Pega un enlace o sube una imagen (se comprime automáticamente). El total de archivos subidos por archivo personalizado es de 3 MB.</p></div><button class="secondary-button" type="button" data-add-content="photos">＋ Añadir imagen</button></div>
+                    <div class="edit-content-list" id="editPhotosList"></div>
+                </section>
+
+                <section class="edit-content-section">
+                    <div class="edit-content-heading"><div><h4>Vídeos</h4><p>Para vídeos grandes, pega un enlace directo. Los archivos subidos tienen un límite de 1 MB.</p></div><button class="secondary-button" type="button" data-add-content="videos">＋ Añadir vídeo</button></div>
+                    <div class="edit-content-list" id="editVideosList"></div>
+                </section>
+
+                <section class="edit-content-section">
+                    <div class="edit-content-heading"><div><h4>Música y audios</h4><p>Pega un enlace directo o sube un audio de hasta 1 MB.</p></div><button class="secondary-button" type="button" data-add-content="tracks">＋ Añadir audio</button></div>
+                    <div class="edit-content-list" id="editTracksList"></div>
+                </section>
+
+                <section class="edit-content-section">
+                    <div class="edit-content-heading"><div><h4>Línea del tiempo</h4><p>Guarda anécdotas y momentos con fecha.</p></div><button class="secondary-button" type="button" data-add-content="timeline">＋ Añadir recuerdo</button></div>
+                    <div class="edit-content-list" id="editTimelineList"></div>
+                </section>
+
+                <section class="edit-content-section">
+                    <div class="edit-content-heading"><div><h4>Cápsula del tiempo</h4><p>Escribe mensajes para volver a leer más adelante.</p></div><button class="secondary-button" type="button" data-add-content="capsule">＋ Añadir mensaje</button></div>
+                    <div class="edit-content-list" id="editCapsuleList"></div>
+                </section>
 
                 <div class="creator-cloud-status hidden" id="editCloudStatus" role="status">
                     <span class="cloud-icon" id="editCloudIcon">☁️</span>
