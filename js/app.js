@@ -242,8 +242,8 @@ function isLocked() { return Date.now() < getLockUntil(); }
 function getRemainingLockSeconds() { return Math.max(0, Math.ceil((getLockUntil() - Date.now()) / 1000)); }
 function updateLoginAvailability() { if (!submitButton) return; const locked = isLocked(); submitButton.disabled = locked; if (locked) setFeedback(`Acceso bloqueado temporalmente. Espera ${getRemainingLockSeconds()}s.`, "error"); }
 function registerVisit() { const visitsByProfile = JSON.parse(localStorage.getItem(VISITS_KEY) || "{}"); const visitKey = `${activeAccess}:${activeProfileName}`; const visits = Number(visitsByProfile[visitKey] || 0) + 1; visitsByProfile[visitKey] = visits; localStorage.setItem(VISITS_KEY, JSON.stringify(visitsByProfile)); visitCount.textContent = String(visits); }
-function renderFeatured(items) { featuredGrid.innerHTML = items.map((item) => `<article class="media-card"><figure class="media-frame"><video controls preload="metadata" playsinline src="${escapeHtml(item.file)}"></video></figure><div class="media-body"><p class="media-meta">Video</p><h4>${escapeHtml(item.title)}</h4><p class="media-description">${escapeHtml(item.description || "")}</p></div></article>`).join(""); }
-function renderPhotos(items) { photoGrid.innerHTML = items.map((item, index) => `<article class="photo-card" data-index="${index}" tabindex="0" role="button" aria-label="Abrir ${escapeHtml(item.title)}"><figure><img src="${escapeHtml(item.file)}" alt="${escapeHtml(item.title)}"><figcaption class="photo-caption">${escapeHtml(item.title)}${item.description ? `<small>${escapeHtml(item.description)}</small>` : ""}</figcaption></figure></article>`).join(""); }
+function renderFeatured(items) { featuredGrid.innerHTML = items.map((item) => `<article class="media-card"><figure class="media-frame"><video controls preload="none" playsinline src="${escapeHtml(item.file)}"></video></figure><div class="media-body"><p class="media-meta">Video</p><h4>${escapeHtml(item.title)}</h4><p class="media-description">${escapeHtml(item.description || "")}</p></div></article>`).join(""); }
+function renderPhotos(items) { photoGrid.innerHTML = items.map((item, index) => `<article class="photo-card" data-index="${index}" tabindex="0" role="button" aria-label="Abrir ${escapeHtml(item.title)}"><figure><img src="${escapeHtml(item.file)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async"><figcaption class="photo-caption">${escapeHtml(item.title)}${item.description ? `<small>${escapeHtml(item.description)}</small>` : ""}</figcaption></figure></article>`).join(""); }
 function renderNotes(items) { notesList.innerHTML = items.map((item) => `<li>${escapeHtml(item)}</li>`).join(""); }
 function renderPlaylist(items) { playlistCard.innerHTML = items.map((item, index) => `<article class="playlist-item ${index === currentTrackIndex ? "is-active" : ""}"><div><p class="playlist-index">Pista ${index + 1}</p><h4>${escapeHtml(item.title || `Pista ${index + 1}`)}</h4></div></article>`).join(""); }
 function hashString(value) { let hash = 0; for (let index = 0; index < value.length; index += 1) hash = (hash * 31 + value.charCodeAt(index)) >>> 0; return hash; }
@@ -366,6 +366,10 @@ function initAmbientCanvas() {
     let height = 0;
     let particles = [];
     let animationId = null;
+    const lowPowerMode = window.matchMedia("(max-width: 719px), (pointer: coarse)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const minimumFrameTime = lowPowerMode ? 1000 / 30 : 0;
+    let lastFrameTime = 0;
     const mouse = { x: -1000, y: -1000, active: false };
 
     function resize() {
@@ -387,7 +391,9 @@ function initAmbientCanvas() {
     }
 
     function initParticles() {
-        const count = Math.min(45, Math.max(20, Math.floor((width * height) / 30000)));
+        const minCount = lowPowerMode ? 8 : 20;
+        const maxCount = lowPowerMode ? 14 : 45;
+        const count = Math.min(maxCount, Math.max(minCount, Math.floor((width * height) / (lowPowerMode ? 80000 : 30000))));
         particles = [];
         for (let i = 0; i < count; i++) {
             particles.push(createParticle());
@@ -406,7 +412,12 @@ function initAmbientCanvas() {
     }
 
     let tick = 0;
-    function render() {
+    function render(timestamp = 0) {
+        if (!prefersReducedMotion && lowPowerMode && timestamp - lastFrameTime < minimumFrameTime) {
+            animationId = requestAnimationFrame(render);
+            return;
+        }
+        lastFrameTime = timestamp;
         ctx.clearRect(0, 0, width, height);
         tick += 1;
         const palette = getPalette();
@@ -437,12 +448,12 @@ function initAmbientCanvas() {
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(${color}, ${Math.max(0.08, alpha)})`;
-            ctx.shadowBlur = p.radius * 3.5;
+            ctx.shadowBlur = lowPowerMode ? 0 : p.radius * 3.5;
             ctx.shadowColor = `rgba(${color}, ${alpha * 0.8})`;
             ctx.fill();
         }
 
-        animationId = requestAnimationFrame(render);
+        animationId = prefersReducedMotion ? null : requestAnimationFrame(render);
     }
 
     resize();
@@ -452,6 +463,7 @@ function initAmbientCanvas() {
     window.addEventListener("resize", () => {
         resize();
         initParticles();
+        if (prefersReducedMotion) render(0);
     });
 
     const setPointer = (e) => {
