@@ -50,6 +50,7 @@
       this.capturedImage = null; // Image o Canvas con la foto capturada
       this.isMirrored = true; // Por defecto true para frontal
       this.audioCtx = null;
+      this.muralSavePending = false;
 
       this.initElements();
       if (!this.container) return;
@@ -367,6 +368,39 @@
       }
       if (this.downloadBtn) this.downloadBtn.disabled = false;
       if (this.retakeBtn) this.retakeBtn.style.display = 'inline-flex';
+      this.saveToMural();
+    }
+
+    async saveToMural() {
+      if (!this.capturedImage || this.muralSavePending) return;
+      this.muralSavePending = true;
+      try {
+        const size = 800;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        const filter = FILTERS[this.activeFilter]?.canvasFilter || 'none';
+        if (filter !== 'none') ctx.filter = filter;
+        ctx.drawImage(this.capturedImage, 0, 0, size, size);
+        const response = await fetch('https://archivo-secreto-api-v3.onrender.com/api/mural-photos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            author: 'Carla',
+            caption: (this.polaroidCaption?.value || 'Un recuerdo para siempre 💗').trim(),
+            filter: this.activeFilter,
+            image_data: canvas.toDataURL('image/jpeg', 0.86)
+          })
+        });
+        if (!response.ok) throw new Error('No se pudo guardar en el mural');
+        this.showToast('✨ ¡Foto guardada automáticamente en el mural!');
+      } catch (error) {
+        console.warn('No se pudo guardar la Polaroid en el mural:', error);
+        this.showToast('No se pudo conectar con el mural. Inténtalo de nuevo más tarde.');
+      } finally {
+        this.muralSavePending = false;
+      }
     }
 
     resetSnapshot() {
